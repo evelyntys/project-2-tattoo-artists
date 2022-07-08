@@ -30,6 +30,24 @@ export default class AddNewArtist extends React.Component {
         })
     }
 
+    updateCheckboxes = (e) => {
+        if (this.state[e.target.name].includes(e.target.value)){
+            let indexToRemove = this.state[e.target.name].indexOf(e.target.value);
+
+            let cloned = [...this.state[e.target.name].slice(0, indexToRemove),
+            ...this.state[e.target.name].slice(indexToRemove+1)]
+            this.setState({
+                [e.target.name]: cloned
+            })
+        }
+        else{
+            let cloned = [...this.state[e.target.name], e.target.value]
+            this.setState({
+                [e.target.name]: cloned
+            })
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -90,15 +108,18 @@ export default class AddNewArtist extends React.Component {
                             <label className="form-label">Please select your method(s) of tattooing:</label>
 
                             <input type="checkbox" className="form-check-input mx-2" 
-                            value="handpoke" name="methods" />
+                            value="handpoke" name="methods"
+                            onChange={this.updateCheckboxes} checked={this.state.methods.includes('handpoke')} />
                             <label className="form-check-label">Handpoke</label>
 
                             <input type="checkbox" className="form-check-input mx-2" 
-                            value="machine" name="methods" />
+                            value="machine" name="methods"
+                            onChange={this.updateCheckboxes} checked={this.state.methods.includes('machine')} />
                             <label className="form-check-label">Machine</label>
 
                             <input type="checkbox" className="form-check-input mx-2" 
-                            value="jagua" name="methods" />
+                            value="jagua" name="methods"
+                            onChange={this.updateCheckboxes} checked={this.state.methods.includes('jagua')} />
                             <label className="form-check-label">Jagua</label>
                         </div>
 
@@ -129,10 +150,25 @@ export default class AddNewArtist extends React.Component {
 
                         <div>
                             <label className="form-label">Please select your ink(s):</label>
-                            <input type="checkbox" className="form-check-input mx-2" value="black" name="methods" /><label className="form-check-label">Black</label>
-                            <input type="checkbox" className="form-check-input mx-2" value="colours" name="methods" /><label className="form-check-label">Colours</label>
-                            <input type="checkbox" className="form-check-input mx-2" value="jagua" name="methods" /><label className="form-check-label">Jagua</label>
-                            <input type="checkbox" className="form-check-input mx-2" value="uv" name="methods" /><label className="form-check-label">UV</label>
+                            <input type="checkbox" className="form-check-input mx-2" 
+                            value="black" name="inks"
+                            onChange={this.updateCheckboxes} checked={this.state.inks.includes('black')} />
+                            <label className="form-check-label">Black</label>
+
+                            <input type="checkbox" className="form-check-input mx-2" 
+                            value="colours" name="inks"
+                            onChange={this.updateCheckboxes} checked={this.state.inks.includes('colours')} />
+                            <label className="form-check-label">Colours</label>
+
+                            <input type="checkbox" className="form-check-input mx-2" 
+                            value="jagua" name="inks"
+                            onChange={this.updateCheckboxes} checked={this.state.inks.includes('jagua')} />
+                            <label className="form-check-label">Jagua</label>
+
+                            <input type="checkbox" className="form-check-input mx-2" 
+                            value="uv" name="inks"
+                            onChange={this.updateCheckboxes} checked={this.state.inks.includes('uv')} />
+                            <label className="form-check-label">UV</label>
                         </div>
 
                         <div>
