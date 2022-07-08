@@ -34,6 +34,12 @@ export default class AddNewArtist extends React.Component {
         otherServices: [],
         testSelect: [],
     }
+
+    handleSelect = (data) => {
+        this.setState({
+            testSelect: data
+        })
+    }
     
 
     updateFormField = (e) => {
@@ -185,7 +191,7 @@ export default class AddNewArtist extends React.Component {
 
                         <div>
                         <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                        <StyleMultiSelect/>
+                        <StyleMultiSelect handleSelect={this.handleSelect} testSelect={this.state.testSelect}/>
                         {/* <StyleMultiSelect updateMulti={this.updateMulti} things={this.state.testSelect} /> */}
                         </div>
 
