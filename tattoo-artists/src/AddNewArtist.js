@@ -19,7 +19,7 @@ export default class AddNewArtist extends React.Component {
         ink: [],
         contactKey: "",
         contactValue: "",
-        contact: {},
+        contact: [{contactKey: "", contactValue: ""}],
         image1: "",
         image2: "",
         image3: "",
@@ -32,15 +32,25 @@ export default class AddNewArtist extends React.Component {
         unit: "",
         postal: "",
         otherServices: [],
-        testSelect: [],
     }
 
     handleSelect = (data) => {
         this.setState({
-            testSelect: data
+            style: data
+        })
+    }
+
+    handleAddClick = () => {
+        this.setState({
+            contact: [...this.state.contact,{contactKey: "", contactValue:""}]
         })
     }
     
+    updateData = (list) => {
+        this.setState({
+            contact: list
+        })
+    }
 
     updateFormField = (e) => {
         this.setState({
@@ -232,7 +242,9 @@ export default class AddNewArtist extends React.Component {
                         </div> */}
 
                         <label className="form-label">Please enter the artist's contact details: </label>
-                        <ContactFields />
+                        <ContactFields handleAddClick={this.handleAddClick}
+                        inputList = {this.state.contact}
+                        setInputList={this.updateData} />
 
 
 
