@@ -2,25 +2,27 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContactFields from './ContactFields';
 import Select from 'react-select';
-import {useState} from 'react';
+import { useState } from 'react';
 import StyleMultiSelect from './StyleMultiSelect';
+import axios from 'axios';
 
 
 export default class AddNewArtist extends React.Component {
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us53.gitpod.io/"
 
     state = {
         artistName: "",
         gender: "others",
         yearStarted: "",
         apprentice: "no",
-        methods: [],
+        method: [],
         temporary: "no",
         style: [],
         ink: [],
         contactKey: "",
         contactValue: "",
-        contact: [{contactKey: "", contactValue: ""}],
-        image1: "",
+        contact: [{ contactKey: "", contactValue: "" }],
+        images: "",
         image2: "",
         image3: "",
         ownerName: "",
@@ -42,10 +44,10 @@ export default class AddNewArtist extends React.Component {
 
     handleAddClick = () => {
         this.setState({
-            contact: [...this.state.contact,{contactKey: "", contactValue:""}]
+            contact: [...this.state.contact, { contactKey: "", contactValue: "" }]
         })
     }
-    
+
     updateData = (list) => {
         this.setState({
             contact: list
@@ -73,6 +75,55 @@ export default class AddNewArtist extends React.Component {
             this.setState({
                 [e.target.name]: cloned
             })
+        }
+    }
+
+    addData = async () => {
+        console.log(this.state.artistName)
+
+        try{let response = await axios.post(this.url + "add-new-artist", {
+            name: this.state.artistName,
+            gender: this.state.gender,
+            yearStarted: this.state.yearStarted,
+            apprentice: this.state.apprentice,
+            method: this.state.method,
+            temporary: this.state.temporary,
+            style: this.state.style,
+            ink: this.state.ink,
+            contact: this.state.contact,
+            images: this.state.images,
+            studioName: this.state.studioName,
+            private: this.state.private,
+            bookingsRequired: this.state.bookingsRequired,
+            street: this.state.street,
+            unit: this.state.unit,
+            postal: this.state.postal,
+            otherServices: this.state.otherServices,
+            // image2: this.state.image2,
+            // image3: this.state.image3,
+            ownerName: this.state.ownerName,
+            ownerEmail: this.state.ownerEmail,
+            studio: {
+                studioName: this.state.studioName,
+                private: this.state.private,
+                bookingsRequired: this.state.bookingsRequired,
+                address: {
+                    street: this.state.street,
+                    unit: this.state.unit,
+                    postal: this.state.post
+                },
+                otherServices: this.state.otherServices,
+            },
+            owner: {
+                ownerName: this.state.ownerName,
+                ownerEmail: this.state.ownerEmail
+            },
+        })
+        console.log(response.data)
+        }
+        catch (e) {
+            alert('error adding')
+            console.log(e)
         }
     }
 
@@ -160,18 +211,18 @@ export default class AddNewArtist extends React.Component {
                             <label className="form-label">Please select your method(s) of tattooing:</label>
 
                             <input type="checkbox" className="form-check-input mx-2"
-                                value="handpoke" name="methods"
-                                onChange={this.updateCheckboxes} checked={this.state.methods.includes('handpoke')} />
+                                value="handpoke" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
                             <label className="form-check-label">Handpoke</label>
 
                             <input type="checkbox" className="form-check-input mx-2"
-                                value="machine" name="methods"
-                                onChange={this.updateCheckboxes} checked={this.state.methods.includes('machine')} />
+                                value="machine" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
                             <label className="form-check-label">Machine</label>
 
                             <input type="checkbox" className="form-check-input mx-2"
-                                value="jagua" name="methods"
-                                onChange={this.updateCheckboxes} checked={this.state.methods.includes('jagua')} />
+                                value="jagua" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
                             <label className="form-check-label">Jagua</label>
                         </div>
 
@@ -200,9 +251,9 @@ export default class AddNewArtist extends React.Component {
                         </div> */}
 
                         <div>
-                        <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                        <StyleMultiSelect handleSelect={this.handleSelect} testSelect={this.state.testSelect}/>
-                        {/* <StyleMultiSelect updateMulti={this.updateMulti} things={this.state.testSelect} /> */}
+                            <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
+                            <StyleMultiSelect handleSelect={this.handleSelect} testSelect={this.state.testSelect} />
+                            {/* <StyleMultiSelect updateMulti={this.updateMulti} things={this.state.testSelect} /> */}
                         </div>
 
 
@@ -243,16 +294,16 @@ export default class AddNewArtist extends React.Component {
 
                         <label className="form-label">Please enter the artist's contact details: </label>
                         <ContactFields handleAddClick={this.handleAddClick}
-                        inputList = {this.state.contact}
-                        setInputList={this.updateData} />
+                            inputList={this.state.contact}
+                            setInputList={this.updateData} />
 
 
 
                         {/* push to images array after submission */}
                         <div>
                             <label className="form-label">Please provide link to the artist's reference artwork (up to 3): </label>
-                            <input type="text" className="form-control" placeholder="image link" name="image1"
-                                onChange={this.updateFormField} value={this.state.image1} />
+                            <input type="text" className="form-control" placeholder="image link" name="images"
+                                onChange={this.updateFormField} value={this.state.images} />
                             <input type="text" className="form-control" placeholder="image link" name="image2"
                                 onChange={this.updateFormField} value={this.state.image2} />
                             <input type="text" className="form-control" placeholder="image link" name="image3"
@@ -328,7 +379,7 @@ export default class AddNewArtist extends React.Component {
                                 value={this.state.otherServices} onChange={this.updateFormField} />
                         </div>
 
-                        <button className="btn btn-primary mt-2">Add new artist</button>
+                        <button className="btn btn-primary mt-2" onClick={this.addData}>Add new artist</button>
                     </div>
 
 

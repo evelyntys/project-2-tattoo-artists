@@ -2,7 +2,7 @@
 
 // export default function ContactFields() {
 //     const [inputList, setInputList] = useState([{ contactKey: "", contactValue: "" }]);
-    
+
 //     let handleInputChange = (e, index) => {
 //         const { name, value } = e.target;
 //         const list = [...inputList];
@@ -56,7 +56,7 @@ import React, { useState } from 'react';
 
 export default function ContactFields(props) {
     // const [inputList, setInputList] = useState([{ contactKey: "", contactValue: "" }]);
-    
+
     let handleInputChange = (e, index) => {
         const { name, value } = e.target;
         const list = [...props.inputList];
@@ -71,31 +71,38 @@ export default function ContactFields(props) {
         props.setInputList(list)
     }
 
-//    let handleAddClick = () => {
-//         setInputList([...inputList, { contactKey: "", contactValue: "" }])
-//     }
+    //    let handleAddClick = () => {
+    //         setInputList([...inputList, { contactKey: "", contactValue: "" }])
+    //     }
 
     return (
         <div className="contacts">
             {props.inputList.map((x, i) => {
                 return (
-                    <div className="box">
-                        <input name="contactKey"
-                            value={x.contactKey}
-                            placeholder="platform e.g. instagram"
-                            onChange={e => handleInputChange(e, i)} />
+                    <div className="row">
+                        <div className="col">
+                            <input type="text"
+                                className="form-control"
+                                name="contactKey"
+                                value={x.contactKey}
+                                placeholder="platform e.g. instagram"
+                                onChange={e => handleInputChange(e, i)} />
+                        </div>
 
-                        <input className="ml10"
-                            name="contactValue"
-                            value={x.contactValue}
-                            placeholder="platform e.g. @todayi.poke"
-                            onChange={e => handleInputChange(e, i)} />
+                        <div className="col">
+                            <input type="text"
+                                className="form-control"
+                                name="contactValue"
+                                value={x.contactValue}
+                                placeholder="platform e.g. @todayi.poke"
+                                onChange={e => handleInputChange(e, i)} />
+                        </div>
 
                         <div className="btn-box">
                             {props.inputList.length !== 1 && <button
-                                className="mr10"
+                                className="btn btn-danger my-2"
                                 onClick={() => handleRemoveClick(i)}>Remove</button>}
-                            {props.inputList.length - 1 === i && <button onClick={props.handleAddClick}>Add</button>}
+                            {props.inputList.length - 1 === i && <button className="btn btn-primary my-2" onClick={props.handleAddClick}>Add</button>}
                         </div>
                     </div>
                 );
