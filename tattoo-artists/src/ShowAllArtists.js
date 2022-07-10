@@ -67,7 +67,11 @@ export default class ShowAllArtists extends React.Component {
             modifiedInk: artist.ink,
             contactKey: "",
             contactValue: "",
-            modifiedContact: artist.contact,
+            modifiedContact: [{ contactKey: "instagram", contactValue: "@lush_tattoo" },
+            { contactKey: "phone", contactValue: "88375217" },
+            { contactKey: "email", contactValue: "enquiry@monstrotattoo.sg" },
+            { contactKey: "wechat", contactValue: "monstrotattoo" }
+        ],
             modifiedImage: artist.image,
             modifiedStudioName: artist.studio.name,
             modifiedPrivate: artist.studio.private,
@@ -115,51 +119,47 @@ export default class ShowAllArtists extends React.Component {
         }
     }
 
-    addData = async () => {
+    updateArtist = async () => {
+        let id = this.state.artistToShow._id
         this.setState({
             submitted: true
         })
         try {
-            let response = await axios.post(this.url + "add-new-artist", {
-                name: this.state.artistName,
-                gender: this.state.gender,
-                yearStarted: this.state.yearStarted,
-                apprentice: this.state.apprentice,
-                modifiedMethod: this.state.modifiedMethod,
-                temporary: this.state.temporary,
-                style: this.state.style,
-                ink: this.state.ink,
-                contact: this.state.contact,
-                image: this.state.image,
-                studioName: this.state.studioName,
-                private: this.state.private,
-                bookingsRequired: this.state.bookingsRequired,
-                street: this.state.street,
-                unit: this.state.unit,
-                postal: this.state.postal,
-                otherServices: this.state.otherServices,
-                ownerName: this.state.ownerName,
-                ownerEmail: this.state.ownerEmail,
+            let response = await axios.put(this.url + `tattoo-artist/${id}`, {
+                ownerEmail: this.state.confirmEditEmail,
+                name: this.state.modifiedArtistName,
+                gender: this.state.modifiedGender,
+                yearStarted: this.state.modifiedYearStarted,
+                apprentice: this.state.modifiedApprentice,
+                method: this.state.modifiedMethod,
+                temporary: this.state.modifiedTemporary,
+                style: this.state.modifiedStyle,
+                ink: this.state.modifiedInk,
+                contact: this.state.modifiedContact,
+                image: this.state.modifiedImage,
+                studioName: this.state.modifiedStudioName,
+                private: this.state.modifiedPrivate,
+                bookingsRequired: this.state.modifiedBookingsRequired,
+                street: this.state.modifiedStreet,
+                unit: this.state.modifiedUnit,
+                postal: this.state.modifiedPostal,
+                otherServices: this.state.modifiedOtherServices,
                 studio: {
-                    studioName: this.state.studioName,
-                    private: this.state.private,
-                    bookingsRequired: this.state.bookingsRequired,
+                    studioName: this.state.modifiedStudioName,
+                    private: this.state.modifiedPrivate,
+                    bookingsRequired: this.state.modifiedBookingsRequired,
                     address: {
-                        street: this.state.street,
-                        unit: this.state.unit,
-                        postal: this.state.post
+                        street: this.state.modifiedStreet,
+                        unit: this.state.modifiedUnit,
+                        postal: this.state.modifiedPostal
                     },
-                    otherServices: this.state.otherServices,
-                },
-                owner: {
-                    ownerName: this.state.ownerName,
-                    ownerEmail: this.state.ownerEmail
-                },
+                    otherServices: this.state.modifiedOtherServices,
+                }
             })
             console.log(response.data)
         }
         catch (e) {
-            alert('error adding')
+            alert('error updating')
             console.log(e)
         }
     }
@@ -286,7 +286,7 @@ export default class ShowAllArtists extends React.Component {
 
                                         <div>
                                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                            <StyleMultiSelect handleSelect={this.handleSelect} testSelect={this.state.modifiedStyle} />
+                                            <StyleMultiSelect handleSelect={this.handleSelect} value={this.state.modifiedStyle} />
                                         </div>
 
 
@@ -313,10 +313,10 @@ export default class ShowAllArtists extends React.Component {
                                             <label className="form-check-label">UV</label>
                                         </div>
 
-                                        {/* <label className="form-label">Please enter the artist's contact details: </label>
+                                        <label className="form-label">Please enter the artist's contact details: </label>
                                         <ContactFields handleAddClick={this.handleAddClick}
                                             inputList={this.state.modifiedContact}
-                                            setInputList={this.updateData} /> */}
+                                            setInputList={this.updateData} />
 
                                         <div>
                                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
@@ -384,7 +384,7 @@ export default class ShowAllArtists extends React.Component {
                                                 value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
                                         </div>
 
-                                        <button className="btn btn-primary mt-2" onClick={this.addData}>Update artist</button>
+                                        <button className="btn btn-primary mt-2" onClick={this.updateArtist}>Update artist</button>
                                     </div>
 
 
@@ -452,81 +452,79 @@ export default class ShowAllArtists extends React.Component {
         }
     }
 
-    processDelete = async (id) => {
+    processDelete = async (id, confirmDeleteEmail) => {
         try {
             let response = await axios.delete(this.url + `tattoo-artist/${id}`, {
-                email: this.state.confirmDeleteEmail
+                email: confirmDeleteEmail
             })
             console.log(response.data)
         }
         catch (e) {
             alert(404)
             console.log(e)
-            console.log(id)
-            console.log(this.url + `tattoo-artist/${id}`)
-            console.log(this.state.confirmDeleteEmail)
+            console.log(confirmDeleteEmail)
         }
 
     }
 
-    GoToEdit(inputEmail, ownerEmail){
-        if (inputEmail === ownerEmail){
+    GoToEdit(inputEmail, ownerEmail) {
+        if (inputEmail === ownerEmail) {
             this.setState({
                 editMode: true,
             })
         }
-        else{
+        else {
             this.setState({
-                showValidateEmail:true
+                showValidateEmail: true
             })
         }
     }
 
-    ConfirmEdit(){
+    ConfirmEdit() {
 
-    const handleClose = () => this.setState({
-        showConfirmEdit: false
-    });
-    const handleShow = () => this.setState({
-        showConfirmEdit: true
-    });
+        const handleClose = () => this.setState({
+            showConfirmEdit: false
+        });
+        const handleShow = () => this.setState({
+            showConfirmEdit: true
+        });
 
-    return (
-        <React.Fragment>
-            <Button variant="secondary" onClick={handleShow}>
-                Edit
-            </Button>
+        return (
+            <React.Fragment>
+                <Button variant="secondary" onClick={handleShow}>
+                    Edit
+                </Button>
 
-            <Modal
-                show={this.state.showConfirmEdit}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Edit Entry</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Are you sure you want to edit the record for {this.state.artistToShow.name}?
-                    Please enter your email to confirm your identity:
-                    <div>
-                        <label className="form-label">Email: </label>
-                        <input type="text" className="form-control" name="confirmEditEmail" placeholder="email" value={this.state.confirmEditEmail} onChange={this.updateFormField} />
-                    </div>
-                    {this.state.showValidateEmail ? <div style={{"color": "red"}}> sorry, it seems that you are not the owner of this document</div>
-                    :""}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary" onClick={() => {this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email)}}>Confirm identity</Button>
-                </Modal.Footer>
-            </Modal>
-        </React.Fragment>
-    );
+                <Modal
+                    show={this.state.showConfirmEdit}
+                    onHide={handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm Edit Entry</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Are you sure you want to edit the record for {this.state.artistToShow.name}?
+                        Please enter your email to confirm your identity:
+                        <div>
+                            <label className="form-label">Email: </label>
+                            <input type="text" className="form-control" name="confirmEditEmail" placeholder="email" value={this.state.confirmEditEmail} onChange={this.updateFormField} />
+                        </div>
+                        {this.state.showValidateEmail ? <div style={{ "color": "red" }}> sorry, it seems that you are not the owner of this document</div>
+                            : ""}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                        <Button variant="primary" onClick={() => { this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email) }}>Confirm identity</Button>
+                    </Modal.Footer>
+                </Modal>
+            </React.Fragment>
+        );
 
-}
+    }
 
     ConfirmDelete(artist) {
 
@@ -564,7 +562,7 @@ export default class ShowAllArtists extends React.Component {
                         <Button variant="secondary" onClick={handleClose}>
                             Cancel
                         </Button>
-                        <Button variant="primary" onClick={() => { this.processDelete(artist._id) }}>Confirm delete</Button>
+                        <Button variant="primary" onClick={() => { this.processDelete(artist._id, this.state.confirmDeleteEmail) }}>Confirm delete</Button>
                     </Modal.Footer>
                 </Modal>
             </React.Fragment>
