@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Col, Row, Toast } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 
@@ -24,8 +24,6 @@ export default class ShowAllArtists extends React.Component {
         modifiedTemporary: "",
         modifiedStyle: [],
         modifiedInk: [],
-        contactKey: "",
-        contactValue: "",
         modifiedContact: [{ contactKey: "", contactValue: "" }],
         modifiedImage: "",
         modifiedStudioName: "",
@@ -36,9 +34,43 @@ export default class ShowAllArtists extends React.Component {
         modifiedPostal: "",
         modifiedOtherServices: [],
         submitted: false,
-        showValidateEmail: false
+        showValidateEmail: false,
+        showCreateToast: false,
+        showReviews: false,
     }
 
+    AutoHideToast() {
+        return (
+            <Row>
+                <Col xs={6}>
+                    <Toast onClose={() => this.setState({
+                        showCreateToast: false
+                    })} show={this.state.showCreateToast} delay={3000} autohide>
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded me-2"
+                                alt=""
+                            />
+                            <strong className="me-auto">Bootstrap</strong>
+                            <small>11 mins ago</small>
+                        </Toast.Header>
+                        <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
+                    </Toast>
+                </Col>
+                <Col xs={6}>
+                    <Button onClick={() => this.setState({ showCreateToast: true })}>Show Toast</Button>
+                </Col>
+            </Row>
+        );
+    }
+
+    ToggleShowReviews(artist) {
+        this.setState({
+            showReviews: true,
+            artistToShow: artist
+        })
+    }
     async componentDidMount() {
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
@@ -65,13 +97,7 @@ export default class ShowAllArtists extends React.Component {
             modifiedTemporary: artist.temporary,
             modifiedStyle: artist.style,
             modifiedInk: artist.ink,
-            contactKey: "",
-            contactValue: "",
-            modifiedContact: [{ contactKey: "instagram", contactValue: "@lush_tattoo" },
-            { contactKey: "phone", contactValue: "88375217" },
-            { contactKey: "email", contactValue: "enquiry@monstrotattoo.sg" },
-            { contactKey: "wechat", contactValue: "monstrotattoo" }
-        ],
+            modifiedContact: artist.contact,
             modifiedImage: artist.image,
             modifiedStudioName: artist.studio.name,
             modifiedPrivate: artist.studio.private,
@@ -85,13 +111,13 @@ export default class ShowAllArtists extends React.Component {
 
     handleSelect = (data) => {
         this.setState({
-            style: data
+            modifiedStyle: data
         })
     }
 
     handleAddClick = () => {
         this.setState({
-            modifiedContact: [...this.state.contact, { contactKey: "", contactValue: "" }]
+            modifiedContact: [...this.state.modifiedContact, { contactKey: "", contactValue: "" }]
         })
     }
 
@@ -120,7 +146,8 @@ export default class ShowAllArtists extends React.Component {
     }
 
     updateArtist = async () => {
-        let id = this.state.artistToShow._id
+        let id = this.state.artistToShow._id;
+        console.log(this.state.modifiedPostal)
         this.setState({
             submitted: true
         })
@@ -157,6 +184,11 @@ export default class ShowAllArtists extends React.Component {
                 }
             })
             console.log(response.data)
+            this.setState({
+                showOne: true,
+                editMode: false,
+                showConfirmEdit: false
+            })
         }
         catch (e) {
             alert('error updating')
@@ -178,7 +210,55 @@ export default class ShowAllArtists extends React.Component {
         if (this.state.showOne) {
             if (!this.state.editMode) {
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={this.state.artistToShow._id}>
+                        <div className="card" style={{ "width": "20rem" }}>
+                            <img src={this.state.artistToShow.image} style={{ "height": "auto" }} class="card-img-top" alt="..." />
+                            <div className="card-body">
+                                <h5 className="card-title">{this.state.artistToShow.name}</h5>
+                                <p className="card-text">
+                                    Gender: {this.state.artistToShow.gender}<br />
+                                    Years of experience: {this.state.artistToShow.yearsOfExperience}<br />
+                                    Apprentice? {this.state.artistToShow.apprentice}<br />
+                                    Methods: {this.state.artistToShow.method.map(a => (
+                                        <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                    ))}<br />
+                                    Temporary? {this.state.artistToShow.temporary}<br />
+                                    Style: {this.state.artistToShow.style.map(a => (
+                                        <span class="badge rounded-pill bg-secondary">{a.label}</span>
+                                    ))}<br />
+                                    Ink: {this.state.artistToShow.ink.map(a => (
+                                        <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                    ))}<br />
+
+                                    <h6>Contact: </h6>
+                                    {this.state.artistToShow.contact.map(a => (
+                                        <React.Fragment>
+                                            <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                        </React.Fragment>
+                                    ))}
+
+                                    <div>
+                                        studio name: {this.state.artistToShow.studio.name}<br />
+                                        private studio: {this.state.artistToShow.studio.private} <br />
+                                        address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
+                                        bookings required: {this.state.artistToShow.studio.bookingsRequired} <br />
+                                        other services: {this.state.artistToShow.studio.otherServices} <br />
+                                    </div>
+
+
+                                    reviews:
+                                    {this.state.artistToShow.reviews != undefined ?
+                                        <div>{this.state.artistToShow.reviews.map(each => (
+                                            each._id + each.reviewer + each.rating + each.comment
+                                        ))}
+                                        </div>
+                                        :
+                                        "no reviews available"}
+
+                                </p>
+                            </div>
+                        </div>
+
                         <h1>hi! i am just one artist</h1>
                         <div className="container">
                             <h2>{this.state.artistToShow.name}</h2>
@@ -286,7 +366,7 @@ export default class ShowAllArtists extends React.Component {
 
                                         <div>
                                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                            <StyleMultiSelect handleSelect={this.handleSelect} value={this.state.modifiedStyle} />
+                                            <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.modifiedStyle} />
                                         </div>
 
 
@@ -397,12 +477,27 @@ export default class ShowAllArtists extends React.Component {
             }
         }
         else {
+            if (this.state.showReviews) {
+                return (
+                    <React.Fragment>
+                        reviews:
+                        {this.state.artistToShow.reviews != undefined ?
+                            <div>{this.state.artistToShow.reviews.map(each => (
+                                each._id + each.reviewer + each.rating + each.comment
+                            ))}
+                            </div>
+                            :
+                            "no reviews available"}
+                    </React.Fragment>
+                )
+            }
+            else{
             return (
                 <React.Fragment>
                     {this.state.data.map(e => (
                         <React.Fragment key={e._id}>
-                            <div className="card" style={{ "width": "auto" }}>
-                                <img src="..." class="card-img-top" alt="..." />
+                            <div className="card" style={{ "width": "20rem" }}>
+                                <img src={e.image} style={{ "height": "auto" }} class="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">{e.name}</h5>
                                     <p className="card-text">
@@ -414,14 +509,18 @@ export default class ShowAllArtists extends React.Component {
                                         ))}<br />
                                         Temporary? {e.temporary}<br />
                                         Style: {e.style.map(a => (
-                                            <span class="badge rounded-pill bg-secondary">{a}</span>
+                                            <span class="badge rounded-pill bg-secondary">{a.label}</span>
                                         ))}<br />
                                         Ink: {e.ink.map(a => (
                                             <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
                                         ))}<br />
-                                        {Object.keys(e.contact).map((key) => {
-                                            <span>{key}: {e.contact[key]}</span>
-                                        })}
+
+                                        <h6>Contact: </h6>
+                                        {e.contact.map(a => (
+                                            <React.Fragment>
+                                                <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                            </React.Fragment>
+                                        ))}
 
                                         <div>
                                             studio name: {e.studio.name}<br />
@@ -443,13 +542,14 @@ export default class ShowAllArtists extends React.Component {
 
                                     </p>
                                     <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
+                                    <button className="btn btn-warning" onClick={() => this.ToggleShowReviews(e)}>Show reviews</button>
                                 </div>
                             </div>
                         </React.Fragment>
                     ))}
                 </React.Fragment>
             )
-        }
+        }}
     }
 
     processDelete = async (id, confirmDeleteEmail) => {
