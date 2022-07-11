@@ -46,7 +46,12 @@ export default class ShowAllArtists extends React.Component {
         deleteReviewEmail: "",
         correctDeleteEmail: false,
         updatedRating: 0,
-        updatedComment: ""
+        updatedComment: "",
+        addReview: false,
+        addReviewReviewer: "",
+        addReviewEmail: "",
+        addReviewRating: 0,
+        addReviewComment: "",
     }
 
     AutoHideToast() {
@@ -790,24 +795,37 @@ export default class ShowAllArtists extends React.Component {
         else if (!this.state.editReview) {
             contentToReturn =
                 <React.Fragment>
-                    reviews:
-                    {this.state.artistToShow.reviews != undefined ?
-                        <div className="list-group">{this.state.artistToShow.reviews.map(
-                            each => (
-                                <div className="list-group-item list-group-item-action">
-                                    <div className="d-flex w-100 justify-content-between">
-                                        <h5 className="mb-1">{each.reviewer}</h5>
-                                        <small className="text-muted">{each._id}</small>
-                                    </div>
-                                    <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
-                                    <p className="mb-1">{each.comment}</p>
-                                    <button className="btn btn-warning" onClick={() => { this.setState({ reviewBeingEdited: each, editReview: true, updatedRating: each.rating, updatedComment: each.comment }) }}>Edit</button>
-                                    <button className="btn btn-danger" onClick={() => { this.setState({ reviewBeingDeleted: each, deleteReview: true }) }}>Delete</button>
-                                </div>
-                            ))}
+                    {this.state.artistToShow.reviews == undefined || this.state.artistToShow.reviews.length == 0 ?
+                        <div>
+                            <h1>no reviews available</h1>
+                            <button className="btn btn-primary" onClick={() => {
+                                this.setState({
+                                    addReview: true
+                                })
+                            }}>Add a new review</button>
                         </div>
                         :
-                        "no reviews available"}
+                        <div>
+                            <div className="list-group">{this.state.artistToShow.reviews.map(
+                                each => (
+                                    <div className="list-group-item list-group-item-action">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">{each.reviewer}</h5>
+                                            <small className="text-muted">{each._id}</small>
+                                        </div>
+                                        <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
+                                        <p className="mb-1">{each.comment}</p>
+                                        <button className="btn btn-warning" onClick={() => { this.setState({ reviewBeingEdited: each, editReview: true, updatedRating: each.rating, updatedComment: each.comment }) }}>Edit</button>
+                                        <button className="btn btn-danger" onClick={() => { this.setState({ reviewBeingDeleted: each, deleteReview: true }) }}>Delete</button>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="btn btn-primary" onClick={() => {
+                                this.setState({
+                                    addReview: true
+                                })
+                            }}>Add a new review</button>
+                        </div>}
                 </React.Fragment>
         }
 
@@ -837,6 +855,30 @@ export default class ShowAllArtists extends React.Component {
                             </div>
                         </div>
                     </div>
+                </React.Fragment>
+        }
+
+        if (this.state.addReview) {
+            contentToReturn =
+                <React.Fragment>
+                    <div>
+                        <label>Name: </label>
+                        <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
+                    </div>
+                    <div>
+                        <label>Email: </label>
+                        <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
+                    </div>
+                    <div>
+                        <label>Rating: </label>
+                        <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} />
+                    </div>
+                    <div>
+                        <label>comment: </label>
+                        <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
+                        </textarea>
+                    </div>
+                    <button className="btn btn-primary" onClick={this.addReview}>add review</button>
                 </React.Fragment>
         }
 
@@ -877,6 +919,25 @@ export default class ShowAllArtists extends React.Component {
                 alert('error deleting')
             }
         }
+    }
+
+    addReview = async () => {
+        console.log(this.state.artistToShow._id)
+        try {
+            let result = await axios.post(this.url + `tattoo-artist/${this.state.artistToShow._id}/add-review`, {
+                reviewer: this.state.addReviewReviewer,
+                email: this.state.addReviewEmail,
+                rating: this.state.addReviewRating,
+                comment: this.state.addReviewComment
+            })
+            console.log(result)
+        }
+        catch (e) {
+            console.log(e)
+        }
+        this.setState({
+            addReview: false
+        })
     }
 
     render() {
