@@ -262,25 +262,25 @@ export default class ShowAllArtists extends React.Component {
                                     </div>
 
 
-                                    reviews:
+                                    {/* reviews:
                                     {this.state.artistToShow.reviews != undefined ?
                                         <div>{this.state.artistToShow.reviews.map(each => (
                                             each._id + each.reviewer + each.rating + each.comment
                                         ))}
                                         </div>
                                         :
-                                        "no reviews available"}
+                                        "no reviews available"} */}
 
                                 </p>
                             </div>
                         </div>
 
-                        <h1>hi! i am just one artist</h1>
+                        {/* <h1>hi! i am just one artist</h1>
                         <div className="container">
                             <h2>{this.state.artistToShow.name}</h2>
                             <h4>artist id: {this.state.artistToShow._id}</h4>
                             <p>gender: {this.state.artistToShow.gender}</p>
-                        </div>
+                        </div> */}
                         <div>
                             {this.ConfirmEdit()}
                             {this.ConfirmDelete(this.state.artistToShow)}
@@ -520,10 +520,11 @@ export default class ShowAllArtists extends React.Component {
             // else{
             return (
                 <React.Fragment>
+                    <div className="container d-flex flex-row flex-wrap justify-content-evenly">
                     {this.state.data.map(e => (
                         <React.Fragment key={e._id}>
-                            <div className="card" style={{ "width": "20rem" }}>
-                                <img src={e.image} style={{ "height": "auto" }} class="card-img-top" alt="..." />
+                            <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
+                                <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">{e.name}</h5>
                                     <p className="card-text">
@@ -570,9 +571,10 @@ export default class ShowAllArtists extends React.Component {
                                     <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
                                     {this.ReviewsModal(e)}
                                 </div>
-                            </div>
+                                </div>
                         </React.Fragment>
                     ))}
+                    </div>
                 </React.Fragment>
             )
         }
