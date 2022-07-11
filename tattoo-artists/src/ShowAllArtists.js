@@ -37,6 +37,16 @@ export default class ShowAllArtists extends React.Component {
         showValidateEmail: false,
         showCreateToast: false,
         showReviews: false,
+        editReview: false,
+        reviewBeingEdited: {},
+        editReviewEmail: "",
+        correctReviewEmail: false,
+        deleteReview: false,
+        reviewBeingDeleted: {},
+        deleteReviewEmail: "",
+        correctDeleteEmail: false,
+        updatedRating: 0,
+        updatedComment: ""
     }
 
     AutoHideToast() {
@@ -65,12 +75,13 @@ export default class ShowAllArtists extends React.Component {
         );
     }
 
-    ToggleShowReviews(artist) {
-        this.setState({
-            showReviews: true,
-            artistToShow: artist
-        })
-    }
+    // ToggleShowReviews(artist) {
+    //     this.setState({
+    //         showReviews: true,
+    //         artistToShow: artist
+    //     })
+    // }
+
     async componentDidMount() {
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
@@ -477,21 +488,31 @@ export default class ShowAllArtists extends React.Component {
             }
         }
         else {
-            if (this.state.showReviews) {
-                return (
-                    <React.Fragment>
-                        reviews:
-                        {this.state.artistToShow.reviews != undefined ?
-                            <div>{this.state.artistToShow.reviews.map(each => (
-                                each._id + each.reviewer + each.rating + each.comment
-                            ))}
-                            </div>
-                            :
-                            "no reviews available"}
-                    </React.Fragment>
-                )
-            }
-            else{
+            // if (this.state.showReviews) {
+            //     return (
+            //         <React.Fragment>
+            //             reviews:
+            //             {this.state.artistToShow.reviews != undefined ?
+            //                 <div>{this.state.artistToShow.reviews.map(
+            //                     each => (
+            //                         <div className="list-group">
+            //                         <div className="list-group-item list-group-item-action">
+            //                         <div className="d-flex w-100 justify-content-between">
+            //                           <h5 className="mb-1">{each.reviewer}</h5>
+            //                           <small className="text-muted">{each._id}</small>
+            //                         </div>
+            //                         <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
+            //                         <p className="mb-1">{each.comment}</p>
+            //                       </div>
+            //                       </div>
+            //                 ))}
+            //                 </div>
+            //                 :
+            //                 "no reviews available"}
+            //         </React.Fragment>
+            //     )
+            // }
+            // else{
             return (
                 <React.Fragment>
                     {this.state.data.map(e => (
@@ -542,14 +563,24 @@ export default class ShowAllArtists extends React.Component {
 
                                     </p>
                                     <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
-                                    <button className="btn btn-warning" onClick={() => this.ToggleShowReviews(e)}>Show reviews</button>
+                                    {this.ReviewsModal(e)}
                                 </div>
                             </div>
                         </React.Fragment>
                     ))}
                 </React.Fragment>
             )
-        }}
+        }
+    }
+    // }
+
+    validateEditEmail(review) {
+        if (this.state.editReviewEmail === review.email) {
+            this.setState({
+                correctReviewEmail: true
+            })
+        }
+        console.log(review.email)
     }
 
     processDelete = async (id, confirmDeleteEmail) => {
@@ -667,6 +698,185 @@ export default class ShowAllArtists extends React.Component {
                 </Modal>
             </React.Fragment>
         );
+    }
+
+
+    ReviewsModal(artist) {
+        return (
+            <>
+                <Button onClick={() => this.setState({
+                    showReviews: true,
+                    artistToShow: artist,
+                })}>Show reviews</Button>
+                <Modal
+                    size="lg"
+                    show={this.state.showReviews}
+                    onHide={() => this.setState({
+                        showReviews: false,
+                        editReview: false
+                    })}
+                    aria-labelledby="example-modal-sizes-title-lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title show={this.state.editReview} id="example-modal-sizes-title-lg">
+                            {this.state.editReview ? <React.Fragment>Editing review</React.Fragment>
+                                :
+                                <React.Fragment>
+                                    Showing reviews for {this.state.artistToShow.name}
+                                </React.Fragment>
+                            }
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {this.renderReviewModal()}
+                    </Modal.Body>
+                </Modal>
+            </>
+        );
+        // else {
+        //     return(
+        //         <React.Fragment>
+        //         <label>please confirm your email:</label>
+        //         <input type="email" className="form-control"/>
+        //         </React.Fragment>
+        //     )
+        //  }
+    }
+
+    renderReviewModal() {
+        let contentToReturn = ""
+        if (this.state.editReview && !this.state.correctReviewEmail) {
+            contentToReturn =
+                <React.Fragment>
+                    <div>
+                        <label>Please enter your email to confirm your identity:</label>
+                        <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
+                    </div>
+                    <div>
+                        <button className="btn btn-primary" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
+                        <button className="btn btn-secondary" onClick={() => {
+                            this.setState({
+                                editReview: false
+                            })
+                        }}>Cancel</button>
+                    </div>
+                </React.Fragment>
+        }
+        else if (this.state.editReview && this.state.correctReviewEmail) {
+            contentToReturn =
+                <React.Fragment>
+                    <div className="list-group">
+                        <div className="list-group-item list-group-item-action">
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
+                                <small className="text-muted">{this.state.reviewBeingEdited._id}</small>
+                            </div>
+                            <small className="text-muted">ratings: <input type="text" className="form-control"
+                                name="updatedRating" value={this.state.updatedRating}
+                                onChange={this.updateFormField} /> <i class="bi bi-star-fill"></i></small>
+                            <p className="mb-1"><textarea className="form-control" name="updatedComment" value={this.state.updatedComment} onChange={this.updateFormField}>
+                            </textarea></p>
+                            <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
+                            <button className="btn btn-secondary" onClick={() => {
+                                this.setState({
+                                    editReview: false
+                                })
+                            }}>Cancel</button>
+                        </div>
+                    </div>
+
+                </React.Fragment>
+        }
+        else if (!this.state.editReview) {
+            contentToReturn =
+                <React.Fragment>
+                    reviews:
+                    {this.state.artistToShow.reviews != undefined ?
+                        <div className="list-group">{this.state.artistToShow.reviews.map(
+                            each => (
+                                <div className="list-group-item list-group-item-action">
+                                    <div className="d-flex w-100 justify-content-between">
+                                        <h5 className="mb-1">{each.reviewer}</h5>
+                                        <small className="text-muted">{each._id}</small>
+                                    </div>
+                                    <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
+                                    <p className="mb-1">{each.comment}</p>
+                                    <button className="btn btn-warning" onClick={() => { this.setState({ reviewBeingEdited: each, editReview: true, updatedRating: each.rating, updatedComment: each.comment }) }}>Edit</button>
+                                    <button className="btn btn-danger" onClick={() => { this.setState({ reviewBeingDeleted: each, deleteReview: true }) }}>Delete</button>
+                                </div>
+                            ))}
+                        </div>
+                        :
+                        "no reviews available"}
+                </React.Fragment>
+        }
+
+        if (this.state.deleteReview) {
+            contentToReturn =
+                <React.Fragment>
+                    Are you sure you want to delete this review?
+                    <div className="list-group">
+                        <div className="list-group-item list-group-item-action">
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="mb-1">{this.state.reviewBeingDeleted.reviewer}</h5>
+                                <small className="text-muted">{this.state.reviewBeingDeleted._id}</small>
+                            </div>
+                            <small className="text-muted">ratings: {this.state.reviewBeingDeleted.rating} <i class="bi bi-star-fill"></i></small>
+                            <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
+                            <div>
+                                <label>Please enter your email to confirm deletion</label>
+                                <input type="email" name="deleteReviewEmail" onChange={this.updateFormField} />
+                            </div>
+                            <div>
+                                <button className='btn btn-danger' onClick={this.validateDeleteEmail}>Confirm</button>
+                                <button className='btn btn-secondary' onClick={() => {
+                                    this.setState({
+                                        deleteReview: false
+                                    })
+                                }}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </React.Fragment>
+        }
+
+        return contentToReturn
+    }
+
+
+    updateReview = async () => {
+        try {
+            let result = await axios.post(this.url + `reviews/${this.state.reviewBeingEdited._id}/edit`, {
+                reviewer: this.state.reviewBeingEdited.reviewer,
+                email: this.state.editReviewEmail,
+                rating: this.state.updatedRating,
+                comment: this.state.updatedComment
+            })
+            console.log(result)
+        }
+        catch (e) {
+            console.log(e)
+            alert('error udpating')
+        }
+        this.setState({
+            editReview: false
+        })
+    }
+
+    validateDeleteEmail = async () => {
+        if (this.state.deleteReviewEmail === this.state.reviewBeingDeleted.email) {
+            this.setState({
+                correctDeleteEmail: true
+            })
+            try {
+                let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`);
+                console.log(result)
+            }
+            catch (e) {
+                console.log(e)
+                alert('error deleting')
+            }
+        }
     }
 
     render() {
