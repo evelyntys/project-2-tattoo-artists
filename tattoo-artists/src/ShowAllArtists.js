@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal, Col, Row, Toast } from 'react-bootstrap';
+import { Button, Modal, Col, Row, Toast, CloseButton } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 
@@ -521,59 +521,59 @@ export default class ShowAllArtists extends React.Component {
             return (
                 <React.Fragment>
                     <div className="container d-flex flex-row flex-wrap justify-content-evenly">
-                    {this.state.data.map(e => (
-                        <React.Fragment key={e._id}>
-                            <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
-                                <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">{e.name}</h5>
-                                    <p className="card-text">
-                                        Gender: {e.gender}<br />
-                                        Years of experience: {e.yearsOfExperience}<br />
-                                        Apprentice? {e.apprentice}<br />
-                                        Methods: {e.method.map(a => (
-                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                        ))}<br />
-                                        Temporary? {e.temporary}<br />
-                                        Style: {e.style.map(a => (
-                                            <span class="badge rounded-pill bg-secondary">{a.label}</span>
-                                        ))}<br />
-                                        Ink: {e.ink.map(a => (
-                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                        ))}<br />
+                        {this.state.data.map(e => (
+                            <React.Fragment key={e._id}>
+                                <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
+                                    <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{e.name}</h5>
+                                        <p className="card-text">
+                                            Gender: {e.gender}<br />
+                                            Years of experience: {e.yearsOfExperience}<br />
+                                            Apprentice? {e.apprentice}<br />
+                                            Methods: {e.method.map(a => (
+                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                            ))}<br />
+                                            Temporary? {e.temporary}<br />
+                                            Style: {e.style.map(a => (
+                                                <span class="badge rounded-pill bg-secondary">{a.label}</span>
+                                            ))}<br />
+                                            Ink: {e.ink.map(a => (
+                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                            ))}<br />
 
-                                        <h6>Contact: </h6>
-                                        {e.contact.map(a => (
-                                            <React.Fragment>
-                                                <div><b>{a.contactKey}</b>: {a.contactValue}</div>
-                                            </React.Fragment>
-                                        ))}
-
-                                        <div>
-                                            studio name: {e.studio.name}<br />
-                                            private studio: {e.studio.private} <br />
-                                            address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
-                                            bookings required: {e.studio.bookingsRequired} <br />
-                                            other services: {e.studio.otherServices} <br />
-                                        </div>
-
-
-                                        reviews:
-                                        {e.reviews != undefined ?
-                                            <div>{e.reviews.map(each => (
-                                                each._id + each.reviewer + each.rating + each.comment
+                                            <h6>Contact: </h6>
+                                            {e.contact.map(a => (
+                                                <React.Fragment>
+                                                    <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                </React.Fragment>
                                             ))}
-                                            </div>
-                                            :
-                                            "no reviews available"}
 
-                                    </p>
-                                    <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
-                                    {this.ReviewsModal(e)}
+                                            <div>
+                                                studio name: {e.studio.name}<br />
+                                                private studio: {e.studio.private} <br />
+                                                address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
+                                                bookings required: {e.studio.bookingsRequired} <br />
+                                                other services: {e.studio.otherServices} <br />
+                                            </div>
+
+
+                                            reviews:
+                                            {e.reviews != undefined ?
+                                                <div>{e.reviews.map(each => (
+                                                    each._id + each.reviewer + each.rating + each.comment
+                                                ))}
+                                                </div>
+                                                :
+                                                "no reviews available"}
+
+                                        </p>
+                                        <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
+                                        {this.ReviewsModal(e)}
+                                    </div>
                                 </div>
-                                </div>
-                        </React.Fragment>
-                    ))}
+                            </React.Fragment>
+                        ))}
                     </div>
                 </React.Fragment>
             )
@@ -621,7 +621,7 @@ export default class ShowAllArtists extends React.Component {
     ConfirmEdit() {
 
         const handleClose = () => this.setState({
-            showConfirmEdit: false
+            showConfirmEdit: false,
         });
         const handleShow = () => this.setState({
             showConfirmEdit: true
@@ -640,6 +640,7 @@ export default class ShowAllArtists extends React.Component {
                     keyboard={false}
                 >
                     <Modal.Header closeButton>
+
                         <Modal.Title>Confirm Edit Entry</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -667,7 +668,7 @@ export default class ShowAllArtists extends React.Component {
     ConfirmDelete(artist) {
 
         const handleClose = () => this.setState({
-            showConfirmDelete: false
+            showConfirmDelete: false,
         });
         const handleShow = () => this.setState({
             showConfirmDelete: true
@@ -720,7 +721,11 @@ export default class ShowAllArtists extends React.Component {
                     show={this.state.showReviews}
                     onHide={() => this.setState({
                         showReviews: false,
-                        editReview: false
+                        editReview: false,
+                        showConfirmEdit: false,
+                        addReview: false,
+                        editReview: false,
+                        deleteReview: false
                     })}
                     aria-labelledby="example-modal-sizes-title-lg"
                 >
