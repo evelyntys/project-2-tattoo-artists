@@ -157,11 +157,11 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidatArtistName() {
+    ValidateName(state, field) {
         if (this.state.submitted) {
-            if (!this.state.artistName || this.state.artistName.length < 2) {
+            if (!state || state.length < 2) {
                 return (
-                    <div style={{ "color": "red" }}>Please ensure that the artist name is at least 2 characters long</div>
+                    <div style={{ "color": "red" }}>Please ensure that the {field} is at least 2 characters long</div>
                 )
             }
         }
@@ -247,6 +247,15 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
+    ValidateEmail(){
+        if (this.state.submitted){
+            if (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') || !this.state.ownerEmail.includes('.com')){
+                return(
+                    <div style={{"color": "red"}}>Please enter a valid email</div>
+                )
+            }
+        }
+    }
 
 
 
@@ -269,7 +278,7 @@ export default class AddNewArtist extends React.Component {
                             name="artistName"
                             value={this.state.artistName}
                             onChange={this.updateFormField} />
-                        {this.ValidatArtistName()}
+                        {this.ValidateName(this.state.artistName, 'artist name')}
                     </div>
 
                     <div>
@@ -492,10 +501,12 @@ export default class AddNewArtist extends React.Component {
                     <label className="form-label">Your name: </label>
                     <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
                         value={this.state.ownerName} onChange={this.updateFormField} />
+                        {this.ValidateName(this.state.ownerName, 'name')}
 
                     <label className="form-label">Your email: </label>
                     <input type="text" className="form-control" placeholder="e.g. johndoe@email.com" name="ownerEmail"
                         value={this.state.ownerEmail} onChange={this.updateFormField} />
+                        {this.ValidateEmail()}
 
                     <div>
                         <button className="btn btn-primary" onClick={() => {
