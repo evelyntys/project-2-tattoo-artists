@@ -3,6 +3,8 @@ import axios from 'axios';
 import StyleMultiSelect from './StyleMultiSelect';
 
 export default class Explore extends React.Component {
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us53.gitpod.io/";
+
     state = {
         showFilters: true,
         search: '',
@@ -14,7 +16,8 @@ export default class Explore extends React.Component {
         ink: [],
         private: [],
         bookingsRequired: [],
-        otherServices: []
+        otherServices: [],
+        results: []
     }
 
     renderFilters() {
@@ -268,7 +271,7 @@ export default class Explore extends React.Component {
         }
     }
 
-    updateCheckboxes = (e) => {
+    updateFormFields = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -299,6 +302,14 @@ export default class Explore extends React.Component {
         })
     }
 
+    clickSearch = async () => {
+        let response = await axios.get(this.url + 'show-artists?search=' + this.state.search);
+        this.setState({
+            results: response.data
+        })
+        console.log(response.data)
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -306,14 +317,74 @@ export default class Explore extends React.Component {
                     <h1>search for an artist: </h1>
                     <div class="row">
                         <div class="col-8">
-                            <input type="text" className="form-control" placeholder="search for anything..." />
+                            <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
                         </div>
                         <div class="col-4">
-                            <button className="btn btn-primary me-1" onChange={this.updateFormFields} value={this.state.search}><i class="bi bi-search"></i></button>
+                            <button className="btn btn-primary me-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
                             <button className="btn btn-primary ms-1" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}><i class="bi bi-funnel-fill"></i></button>
                         </div>
                     </div>
                     {this.renderFilters()}
+                    <div>
+                        <h1>search results</h1>
+                        <React.Fragment>
+                    <div className="container d-flex flex-row flex-wrap justify-content-evenly">
+                        {this.state.results.map(e => (
+                            <React.Fragment key={e._id}>
+                                <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
+                                    <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{e.name}</h5>
+                                        <p className="card-text">
+                                            Gender: {e.gender}<br />
+                                            Years of experience: {e.yearsOfExperience}<br />
+                                            Apprentice? {e.apprentice}<br />
+                                            Methods: {e.method.map(a => (
+                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                            ))}<br />
+                                            Temporary? {e.temporary}<br />
+                                            Style: {e.style.map(a => (
+                                                <span class="badge rounded-pill bg-secondary">{a.label}</span>
+                                            ))}<br />
+                                            Ink: {e.ink.map(a => (
+                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                            ))}<br />
+
+                                            <h6>Contact: </h6>
+                                            {e.contact.map(a => (
+                                                <React.Fragment>
+                                                    <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                </React.Fragment>
+                                            ))}
+
+                                            <div>
+                                                studio name: {e.studio.name}<br />
+                                                private studio: {e.studio.private} <br />
+                                                address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
+                                                bookings required: {e.studio.bookingsRequired} <br />
+                                                other services: {e.studio.otherServices} <br />
+                                            </div>
+
+
+                                            reviews:
+                                            {e.reviews != undefined ?
+                                                <div>{e.reviews.map(each => (
+                                                    each._id + each.reviewer + each.rating + each.comment
+                                                ))}
+                                                </div>
+                                                :
+                                                "no reviews available"}
+
+                                        </p>
+                                        <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
+                                        {/* {this.ReviewsModal(e)} */}
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        ))}
+                    </div>
+                </React.Fragment>
+                    </div>
                 </div>
             </React.Fragment>
         )
