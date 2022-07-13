@@ -14,7 +14,7 @@ export default class Explore extends React.Component {
         ink: [],
         private: [],
         bookingsRequired: [],
-        otherServices: ""
+        otherServices: []
     }
 
     renderFilters() {
@@ -235,6 +235,24 @@ export default class Explore extends React.Component {
                         </div>
 
                         {/* other services */}
+
+                        <div>
+                            <label className="form-label me-2">Bookings required: </label>
+
+                            <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="yes" name="bookingsRequired"
+                                onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("yes")} />
+                            <label className="form-check-label">Yes</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="no" name="bookingsRequired"
+                                onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("no")} />
+                            <label className="form-check-label">No</label>
+                            </div>
+                        </div>
 
                     </div>
                     <button className="btn btn-light w-100" onClick={() => { this.setState({ showFilters: false }) }}><i class="bi bi-caret-up-fill"></i></button>

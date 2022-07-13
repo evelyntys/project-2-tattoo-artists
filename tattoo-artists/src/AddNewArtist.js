@@ -226,6 +226,30 @@ export default class AddNewArtist extends React.Component {
             }
         }
     }
+
+    ValidateStudio(state, field){
+        if (this.state.submitted){
+            if (!state || state.length ==0){
+                return(
+                    <div style={{ "color": "red" }}>Please enter the {field}</div>
+                )
+            }
+        }
+    }
+
+    ValidatePostal(){
+        if (this.state.submitted){
+            if (!this.state.postal || this.state.postal.length !=6 || parseInt(this.state.postal) == NaN){
+                return(
+                    <div style={{ "color": "red" }}>Please enter a valid postal code</div>
+                )
+            }
+        }
+    }
+
+
+
+
     renderSection() {
 
         let contentToRender = "";
@@ -386,6 +410,7 @@ export default class AddNewArtist extends React.Component {
                         placeholder="studio name" name="studioName"
                         value={this.state.studioName}
                         onChange={this.updateFormField} />
+                        {this.ValidateStudio(this.state.studioName, 'studio name')}
                 </div>
 
                 <div>
@@ -420,20 +445,24 @@ export default class AddNewArtist extends React.Component {
                     <label className="form-label">Street: (please enter "nil" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="street" name="street"
                         value={this.state.street} onChange={this.updateFormField} />
+                        {this.ValidateStudio(this.state.street, 'street')}
 
                     <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="unit" name="unit"
                         value={this.state.unit} onChange={this.updateFormField} />
+                        {this.ValidateStudio(this.state.unit, 'unit')}
 
                     <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="postal code" name="postal"
                         value={this.state.postal} onChange={this.updateFormField} />
+                        {this.ValidatePostal()}
                 </div>
 
                 <div>
                     <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
                     <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
                         value={this.state.otherServices} onChange={this.updateFormField} />
+                        {this.ValidateStudio(this.state.otherServices, 'services provided')}
                 </div>
                 <div>
                     <button className="btn btn-primary" onClick={() => {

@@ -745,14 +745,6 @@ export default class ShowAllArtists extends React.Component {
                 </Modal>
             </>
         );
-        // else {
-        //     return(
-        //         <React.Fragment>
-        //         <label>please confirm your email:</label>
-        //         <input type="email" className="form-control"/>
-        //         </React.Fragment>
-        //     )
-        //  }
     }
 
     renderReviewModal() {
@@ -848,18 +840,20 @@ export default class ShowAllArtists extends React.Component {
                             </div>
                             <small className="text-muted">ratings: {this.state.reviewBeingDeleted.rating} <i class="bi bi-star-fill"></i></small>
                             <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
-                            <div>
-                                <label>Please enter your email to confirm deletion</label>
-                                <input type="email" name="deleteReviewEmail" onChange={this.updateFormField} />
-                            </div>
-                            <div>
-                                <button className='btn btn-danger' onClick={this.validateDeleteEmail}>Confirm</button>
-                                <button className='btn btn-secondary' onClick={() => {
-                                    this.setState({
-                                        deleteReview: false
-                                    })
-                                }}>Cancel</button>
-                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Please enter your email to confirm deletion</label>
+                            <input type="email" name="deleteReviewEmail" onChange={this.updateFormField} />
+                        </div>
+                        <div>
+                            <button className='btn btn-danger' onClick={this.validateDeleteEmail}>Confirm</button>
+                            <button className='btn btn-secondary' onClick={() => {
+                                this.setState({
+                                    deleteReview: false
+                                })
+                            }}>Cancel</button>
                         </div>
                     </div>
                 </React.Fragment>

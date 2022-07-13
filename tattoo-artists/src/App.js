@@ -1,9 +1,14 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, Navbar, NavDropdown, Container} from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown, Container } from 'react-bootstrap';
 import './App.css';
 import AddNewArtist from './AddNewArtist';
 import ShowAllArtists from './ShowAllArtists';
+import AboutUs from './AboutUs';
+import Explore from './Explore';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 class App extends React.Component {
   state = {
@@ -16,12 +21,18 @@ class App extends React.Component {
     })
   }
 
-  changePages(){
-    if (this.state.active==="add-new"){
+  changePages() {
+    if (this.state.active === "add-new") {
       return <AddNewArtist />
     }
-    else if (this.state.active==="view-all"){
-      return <ShowAllArtists/>
+    else if (this.state.active === "view-all") {
+      return <ShowAllArtists />
+    }
+    else if (this.state.active === "about-us") {
+      return <AboutUs />
+    }
+    else if (this.state.active === "explore") {
+      return <Explore />
     }
   }
 
@@ -34,22 +45,20 @@ class App extends React.Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                <Nav.Link className="mx-auto" value ='about-us' onClick={() => {this.changeActive("about-us")}} >About Us / FAQ</Nav.Link>
-                <Nav.Link className="mx-auto" value='view-all'  onClick={() => {this.changeActive("view-all")}} >View all</Nav.Link>
-                <Nav.Link className="mx-auto" value='explore'  onClick={() => {this.changeActive("explore")}}>Explore</Nav.Link>
-                <Nav.Link className="mx-auto" value='add-new'  onClick={() => {this.changeActive("add-new")}} >Add new</Nav.Link>
+                <Nav.Link className="mx-auto" value='about-us' onClick={() => { this.changeActive("about-us") }} >About Us / FAQ</Nav.Link>
+                <Nav.Link className="mx-auto" value='view-all' onClick={() => { this.changeActive("view-all") }} >View all</Nav.Link>
+                <Nav.Link className="mx-auto" value='explore' onClick={() => { this.changeActive("explore") }}>Explore</Nav.Link>
+                <Nav.Link className="mx-auto" value='add-new' onClick={() => { this.changeActive("add-new") }} >Add new</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
         </Navbar>
 
-        <div height="200px" width="100vw">
-          <div height="100%" width="100%">
-            <img width="100%" src="https://drive.google.com/uc?id=12PQFEtg6EJ7kSUiO8MWeHwYQ0O74b8hd" style={{ "objectFit": "cover" }} />
-          </div>
-          <div height="100%" width="100%" style={{"backgroundColor": "black"}}>
-
-          </div>
+        <div style={{"max-height":"300px", "width":"100vw", "position": "relative"}}>
+        <img src="https://drive.google.com/uc?id=12PQFEtg6EJ7kSUiO8MWeHwYQ0O74b8hd" style={{ "objectFit": "cover", 'width': "100%", 'max-height': '300px' }} />
+        {/* <div style={{ "color": "white", "backgroundColor": "black", 'width': "100%", "position": "absolute", "bottom": "0"}}>
+          TATTOOFINDWHO
+          </div> */}
         </div>
 
         {this.changePages()}

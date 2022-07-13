@@ -55,7 +55,6 @@
 import React, { useState } from 'react';
 
 export default function ContactFields(props) {
-    // const [inputList, setInputList] = useState([{ contactKey: "", contactValue: "" }]);
 
     let handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -70,10 +69,6 @@ export default function ContactFields(props) {
         list.splice(index, 1);
         props.setInputList(list)
     }
-
-    //    let handleAddClick = () => {
-    //         setInputList([...inputList, { contactKey: "", contactValue: "" }])
-    //     }
 
     return (
         <div className="contacts">
@@ -107,7 +102,6 @@ export default function ContactFields(props) {
                     </div>
                 );
             })}
-            <div style={{ marginTop: 20 }}>{JSON.stringify(props.inputList)}</div>
         </div>
     )
 }

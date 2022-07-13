@@ -55,7 +55,7 @@ export default function StyleMultiSelect (props) {
             isMulti
             name="style"
             options={options}
-            value={props.testSelect}
+            value={props.style}
             onChange={props.handleSelect}
             className="basic-multi-select"
             classNamePrefix="select" />
