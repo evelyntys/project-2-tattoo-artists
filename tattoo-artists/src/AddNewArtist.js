@@ -4,7 +4,7 @@ import ContactFields from './ContactFields';
 import Select from 'react-select';
 import StyleMultiSelect from './StyleMultiSelect';
 import axios from 'axios';
-import { Col, Row, Toast, Button } from 'react-bootstrap'
+import { Col, Row, Toast, Button, ToastContainer } from 'react-bootstrap'
 
 
 export default class AddNewArtist extends React.Component {
@@ -19,7 +19,7 @@ export default class AddNewArtist extends React.Component {
         temporary: "no",
         style: [],
         ink: [],
-        contact: [{contactKey: "", contactValue: "",}],
+        contact: [{ contactKey: "", contactValue: "", }],
         image: "",
         ownerName: "",
         ownerEmail: "",
@@ -35,31 +35,68 @@ export default class AddNewArtist extends React.Component {
         thirdPage: false,
         submitted: false,
         showCreateToast: false,
-        toastPosition: 'top-end'
+        addSuccess: false
+    }
+
+    renderToastContent() {
+        let contentToRender = "";
+        if (this.state.addSuccess) {
+            contentToRender =
+                <React.Fragment>
+                    Your artist listing has been successfully created!
+                </React.Fragment>
+        }
+        else {
+            contentToRender= 
+            <React.Fragment>
+                There were some problems in adding a new artist, please check that you have filled in
+                the fields appropriately
+            </React.Fragment>
+        }
+        return contentToRender
     }
 
     AutoHideToast() {
         return (
-            <Row>
-                <Col xs={6}>
-                    <Toast onClose={() => this.setState({
-                        showCreateToast: false
-                    })} show={this.state.showCreateToast} autohide position={this.state.toastPosition}>
-                        <Toast.Header>
-                            <img
-                                src="holder.js/20x20?text=%20"
-                                className="rounded me-2"
-                                alt=""
-                            />
-                            <strong className="me-auto">Success</strong>
-                        </Toast.Header>
-                        <Toast.Body>Your artist listing has been successfully created!</Toast.Body>
-                    </Toast>
-                </Col>
-                <Col xs={6}>
+            <React.Fragment>
+                <ToastContainer position="top-end" autohide>
+                <Toast onClose={() => this.setState({
+                    showCreateToast: false
+                })} show={this.state.showCreateToast}>
+                    <Toast.Header>
+                        <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
+                            :
+                            'Error!'
+                        }</strong>
+                    </Toast.Header>
+                    <Toast.Body>{this.renderToastContent()}</Toast.Body>
+                </Toast>
+                </ToastContainer>
+                <div className="progress my-2">
+                    <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <h1>your information</h1>
+                <label className="form-label">Your name: </label>
+                <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
+                    value={this.state.ownerName} onChange={this.updateFormField} />
+                {this.ValidateName(this.state.ownerName, 'name')}
+
+                <label className="form-label">Your email: </label>
+                <input type="text" className="form-control" placeholder="e.g. johndoe@email.com" name="ownerEmail"
+                    value={this.state.ownerEmail} onChange={this.updateFormField} />
+                {this.ValidateEmail()}
+
+                <div>
+                    <button className="btn btn-primary" onClick={() => {
+                        this.setState({
+                            firstPage: false,
+                            secondPage: true,
+                            thirdPage: false
+                        })
+                    }}>previous</button>
                     <Button onClick={this.addData}>Add new artist</Button>
-                </Col>
-            </Row>
+                </div>
+            </React.Fragment>
         );
     }
 
@@ -108,6 +145,7 @@ export default class AddNewArtist extends React.Component {
     addData = async () => {
         this.setState({
             submitted: true,
+            showCreateToast: true
         })
         try {
             let response = await axios.post(this.url + "add-new-artist", {
@@ -148,11 +186,13 @@ export default class AddNewArtist extends React.Component {
             })
             console.log(response.data)
             this.setState({
-                showCreateToast: true
+                addSuccess: true
             })
         }
         catch (e) {
-            alert('error adding')
+            this.setState({
+                addSuccess: false
+            })
             console.log(e)
         }
     }
@@ -167,9 +207,9 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateYearStarted(){
-        if (this.state.submitted){
-            if (!this.state.yearStarted || parseInt(this.state.yearStarted) === NaN){
+    ValidateYearStarted() {
+        if (this.state.submitted) {
+            if (!this.state.yearStarted || parseInt(this.state.yearStarted) === NaN) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you fill in a valid year</div>
                 )
@@ -177,9 +217,9 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateMethod(){
-        if (this.state.submitted){
-            if (this.state.method == [] || this.state.method.length == 0){
+    ValidateMethod() {
+        if (this.state.submitted) {
+            if (this.state.method == [] || this.state.method.length == 0) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one method</div>
                 )
@@ -187,9 +227,9 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateStyle(){
-        if (this.state.submitted){
-            if (this.state.style.length == 0 || !this.state.style || this.state.style == null || this.state.style.length > 3){
+    ValidateStyle() {
+        if (this.state.submitted) {
+            if (this.state.style.length == 0 || !this.state.style || this.state.style == null || this.state.style.length > 3) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one and at most 3 styles</div>
                 )
@@ -197,9 +237,9 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateInk(){
-        if (this.state.submitted){
-            if (this.state.ink == [] || this.state.ink.length == 0){
+    ValidateInk() {
+        if (this.state.submitted) {
+            if (this.state.ink == [] || this.state.ink.length == 0) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one type of ink</div>
                 )
@@ -207,9 +247,9 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateContact(){
-        if (this.state.submitted){
-            if (!this.state.contact[0].contactKey || !this.state.contact[0].contactValue){
+    ValidateContact() {
+        if (this.state.submitted) {
+            if (!this.state.contact[0].contactKey || !this.state.contact[0].contactValue) {
                 return (
                     <div style={{ "color": "red" }}>Please enter at least one contact information</div>
                 )
@@ -217,41 +257,41 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
-    ValidateImage(){
-        if (this.state.submitted){
-            if (!this.state.image){
-                return(
+    ValidateImage() {
+        if (this.state.submitted) {
+            if (!this.state.image) {
+                return (
                     <div style={{ "color": "red" }}>Please provide a reference image link</div>
                 )
             }
         }
     }
 
-    ValidateStudio(state, field){
-        if (this.state.submitted){
-            if (!state || state.length ==0){
-                return(
+    ValidateStudio(state, field) {
+        if (this.state.submitted) {
+            if (!state || state.length == 0) {
+                return (
                     <div style={{ "color": "red" }}>Please enter the {field}</div>
                 )
             }
         }
     }
 
-    ValidatePostal(){
-        if (this.state.submitted){
-            if (!this.state.postal || this.state.postal.length !=6 || parseInt(this.state.postal) == NaN){
-                return(
+    ValidatePostal() {
+        if (this.state.submitted) {
+            if (!this.state.postal || this.state.postal.length != 6 || parseInt(this.state.postal) == NaN) {
+                return (
                     <div style={{ "color": "red" }}>Please enter a valid postal code</div>
                 )
             }
         }
     }
 
-    ValidateEmail(){
-        if (this.state.submitted){
-            if (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') || !this.state.ownerEmail.includes('.com')){
-                return(
-                    <div style={{"color": "red"}}>Please enter a valid email</div>
+    ValidateEmail() {
+        if (this.state.submitted) {
+            if (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') || !this.state.ownerEmail.includes('.com')) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter a valid email</div>
                 )
             }
         }
@@ -305,7 +345,7 @@ export default class AddNewArtist extends React.Component {
                         <input type="text" className="form-control"
                             placeholder="year started tattooing" name="yearStarted"
                             onChange={this.updateFormField} />
-                            {this.ValidateYearStarted()}
+                        {this.ValidateYearStarted()}
                     </div>
 
                     <div>
@@ -386,13 +426,13 @@ export default class AddNewArtist extends React.Component {
                     <ContactFields handleAddClick={this.handleAddClick}
                         inputList={this.state.contact}
                         setInputList={this.updateData} />
-                        {this.ValidateContact()}
+                    {this.ValidateContact()}
 
                     <div>
                         <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
                         <input type="text" className="form-control" placeholder="image link" name="image"
                             onChange={this.updateFormField} value={this.state.image} />
-                            {this.ValidateImage()}
+                        {this.ValidateImage()}
                     </div>
 
                     <div>
@@ -419,7 +459,7 @@ export default class AddNewArtist extends React.Component {
                         placeholder="studio name" name="studioName"
                         value={this.state.studioName}
                         onChange={this.updateFormField} />
-                        {this.ValidateStudio(this.state.studioName, 'studio name')}
+                    {this.ValidateStudio(this.state.studioName, 'studio name')}
                 </div>
 
                 <div>
@@ -454,24 +494,24 @@ export default class AddNewArtist extends React.Component {
                     <label className="form-label">Street: (please enter "nil" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="street" name="street"
                         value={this.state.street} onChange={this.updateFormField} />
-                        {this.ValidateStudio(this.state.street, 'street')}
+                    {this.ValidateStudio(this.state.street, 'street')}
 
                     <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="unit" name="unit"
                         value={this.state.unit} onChange={this.updateFormField} />
-                        {this.ValidateStudio(this.state.unit, 'unit')}
+                    {this.ValidateStudio(this.state.unit, 'unit')}
 
                     <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                     <input type="text" className="form-control" placeholder="postal code" name="postal"
                         value={this.state.postal} onChange={this.updateFormField} />
-                        {this.ValidatePostal()}
+                    {this.ValidatePostal()}
                 </div>
 
                 <div>
                     <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
                     <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
                         value={this.state.otherServices} onChange={this.updateFormField} />
-                        {this.ValidateStudio(this.state.otherServices, 'services provided')}
+                    {this.ValidateStudio(this.state.otherServices, 'services provided')}
                 </div>
                 <div>
                     <button className="btn btn-primary" onClick={() => {
@@ -494,31 +534,9 @@ export default class AddNewArtist extends React.Component {
         else if (this.state.thirdPage) {
             contentToRender =
                 <div className="container">
-                    <div className="progress my-2">
-                        <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h1>your information</h1>
-                    <label className="form-label">Your name: </label>
-                    <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
-                        value={this.state.ownerName} onChange={this.updateFormField} />
-                        {this.ValidateName(this.state.ownerName, 'name')}
-
-                    <label className="form-label">Your email: </label>
-                    <input type="text" className="form-control" placeholder="e.g. johndoe@email.com" name="ownerEmail"
-                        value={this.state.ownerEmail} onChange={this.updateFormField} />
-                        {this.ValidateEmail()}
-
-                    <div>
-                        <button className="btn btn-primary" onClick={() => {
-                            this.setState({
-                                firstPage: false,
-                                secondPage: true,
-                                thirdPage: false
-                            })
-                        }}>previous</button>
-                        {this.AutoHideToast()}
-                    </div>
+                    {this.AutoHideToast()}
                 </div>
+
         }
         return contentToRender
     }
