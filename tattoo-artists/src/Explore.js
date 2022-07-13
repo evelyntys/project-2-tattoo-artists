@@ -305,7 +305,8 @@ export default class Explore extends React.Component {
     clickSearch = async () => {
         let response = await axios.get(this.url + 
             'show-artists?search=' + this.state.search
-            + '&gender=' + this.state.gender);
+            + '&gender=' + this.state.gender
+            + '&method=' + this.state.method);
         this.setState({
             results: response.data
         })
