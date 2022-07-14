@@ -3,7 +3,17 @@ import axios from 'axios';
 import StyleMultiSelect from './StyleMultiSelect';
 
 export default class Explore extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us53.gitpod.io/";
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
+    styleKeys = {
+        "surrealism": "Surrealism",
+        "traditional-americana": "Traditional Americana",
+        "traditional-japanese": "Traditional Japanese",
+        "blackwork": "Blackwork",
+        "minimalist": "Minimalist",
+        "water-colour": "Water colour",
+        "pet/animals": "Pet/Animals",
+        "floral": "Floral"
+    }
 
     state = {
         showFilters: true,
@@ -113,57 +123,57 @@ export default class Explore extends React.Component {
                             {/* <StyleMultiSelect value={this.state.style} onChange={this.handleSelect}/> */}
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='{ value: "surrealism", label: "Surrealism" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('{ value: "surrealism", label: "Surrealism" }')} />
+                                    value='surrealism' onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes('surrealism')} />
                                 <label className="form-check-label">Surrealism</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='{ value: "traditional-americana", label: "Traditional Americana" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('{ value: "traditional-americana", label: "Traditional Americana" }')} />
+                                    value="traditional-americana" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("traditional-americana")} />
                                 <label className="form-check-label">Traditional Americana</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='{ value: "traditional-japanese", label: "Traditional Japanese" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('{ value: "traditional-japanese", label: "Traditional Japanese" }')} />
+                                    value="traditional-japanese" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("traditional-japanese")} />
                                 <label className="form-check-label">Traditional Japanese</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='{ value: "blackwork", label: "Blackwork" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('{ value: "blackwork", label: "Blackwork" }')} />
+                                    value="blackwork" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("blackwork")} />
                                 <label className="form-check-label"> Blackwork</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='{ value: "minimalist", label: "Minimalist" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('{ value: "minimalist", label: "Minimalist" }')} />
+                                    value="minimalist" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("minimalist")} />
                                 <label className="form-check-label"> Minimalist</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value=' { value: "water-colour", label: "Water colour" },' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes(' { value: "water-colour", label: "Water colour" }')} />
+                                    value="water-colour" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("water-colour")} />
                                 <label className="form-check-label"> Water Colour</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value=' { value: "pet/animals", label: "Pet/Animals" }' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes(' { value: "pet/animals", label: "Pet/Animals" }')} />
+                                    value="pet/animals" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("pet/animals")} />
                                 <label className="form-check-label"> Pet/Animals</label>
                             </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
-                                    value='        { value: "floral", label: "Floral" } ' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('        { value: "floral", label: "Floral" }                                    ')} />
+                                    value="floral" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("floral")} />
                                 <label className="form-check-label"> Floral</label>
                             </div>
 
@@ -205,17 +215,17 @@ export default class Explore extends React.Component {
                             <label className="form-label me-2">Private Studio: </label>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="yes" name="private"
-                                onChange={this.updateCheckboxes} checked={this.state.private.includes("yes")} />
-                            <label className="form-check-label">Yes</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="private"
+                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
                             </div>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="no" name="private"
-                                onChange={this.updateCheckboxes} checked={this.state.private.includes("no")} />
-                            <label className="form-check-label">No</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="private"
+                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("no")} />
+                                <label className="form-check-label">No</label>
                             </div>
                         </div>
 
@@ -223,37 +233,37 @@ export default class Explore extends React.Component {
                             <label className="form-label me-2">Bookings required: </label>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="yes" name="bookingsRequired"
-                                onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("yes")} />
-                            <label className="form-check-label">Yes</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="bookingsRequired"
+                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
                             </div>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="no" name="bookingsRequired"
-                                onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("no")} />
-                            <label className="form-check-label">No</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="bookingsRequired"
+                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("no")} />
+                                <label className="form-check-label">No</label>
                             </div>
                         </div>
 
                         {/* other services */}
 
                         <div>
-                            <label className="form-label me-2">Bookings required: </label>
+                            <label className="form-label me-2">Other services: </label>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="yes" name="bookingsRequired"
-                                onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("yes")} />
-                            <label className="form-check-label">Yes</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="otherServices"
+                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
                             </div>
 
                             <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="no" name="bookingsRequired"
-                                onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("no")} />
-                            <label className="form-check-label">No</label>
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="otherServices"
+                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("no")} />
+                                <label className="form-check-label">No</label>
                             </div>
                         </div>
 
@@ -303,14 +313,25 @@ export default class Explore extends React.Component {
     }
 
     clickSearch = async () => {
-        let response = await axios.get(this.url + 
+        //if send back array
+        //can put 3 params inside axios.get -> url 
+        //get can send back something to backend
+        //have to grab this.state.style by something else
+        let response = await axios.get(this.url +
             'show-artists?search=' + this.state.search
             + '&gender=' + this.state.gender
-            + '&method=' + this.state.method);
+            + '&apprentice=' + this.state.apprentice
+            + '&temporary=' + this.state.temporary
+            + '&method=' + this.state.method
+            + '&ink=' + this.state.ink
+            + '&private=' + this.state.private
+            + '&bookings=' + this.state.bookingsRequired
+            + '&otherServices=' + this.state.otherServices, { params: { style: this.state.style } });
         this.setState({
             results: response.data
         })
         console.log(response.data)
+        console.log(this.state.style)
     }
 
     render() {
@@ -330,66 +351,71 @@ export default class Explore extends React.Component {
                     {this.renderFilters()}
                     <div>
                         <h1>search results</h1>
-                        <React.Fragment>
-                    <div className="container d-flex flex-row flex-wrap justify-content-evenly">
-                        {this.state.results.map(e => (
-                            <React.Fragment key={e._id}>
-                                <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
-                                    <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{e.name}</h5>
-                                        <p className="card-text">
-                                            Gender: {e.gender}<br />
-                                            Years of experience: {e.yearsOfExperience}<br />
-                                            Apprentice? {e.apprentice}<br />
-                                            Methods: {e.method.map(a => (
-                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                            ))}<br />
-                                            Temporary? {e.temporary}<br />
-                                            Style: {e.style.map(a => (
-                                                <span class="badge rounded-pill bg-secondary">{a.label}</span>
-                                            ))}<br />
-                                            Ink: {e.ink.map(a => (
-                                                <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                            ))}<br />
+                        {this.state.results != [] ?
+                            <React.Fragment>
+                                <div className="container d-flex flex-row flex-wrap justify-content-evenly">
+                                    {this.state.results.map(e => (
+                                        <React.Fragment key={e._id}>
+                                            <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
+                                                <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{e.name}</h5>
+                                                    <p className="card-text">
+                                                        Gender: {e.gender}<br />
+                                                        Years of experience: {e.yearsOfExperience}<br />
+                                                        Apprentice? {e.apprentice}<br />
+                                                        Methods: {e.method.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                        ))}<br />
+                                                        Temporary? {e.temporary}<br />
+                                                        Style: {e.style.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
+                                                        ))}<br />
+                                                        Ink: {e.ink.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                        ))}<br />
 
-                                            <h6>Contact: </h6>
-                                            {e.contact.map(a => (
-                                                <React.Fragment>
-                                                    <div><b>{a.contactKey}</b>: {a.contactValue}</div>
-                                                </React.Fragment>
-                                            ))}
+                                                        <h6>Contact: </h6>
+                                                        {e.contact.map(a => (
+                                                            <React.Fragment>
+                                                                <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                            </React.Fragment>
+                                                        ))}
 
-                                            <div>
-                                                studio name: {e.studio.name}<br />
-                                                private studio: {e.studio.private} <br />
-                                                address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
-                                                bookings required: {e.studio.bookingsRequired} <br />
-                                                other services: {e.studio.otherServices} <br />
-                                            </div>
+                                                        <div>
+                                                            studio name: {e.studio.name}<br />
+                                                            private studio: {e.studio.private} <br />
+                                                            address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
+                                                            bookings required: {e.studio.bookingsRequired} <br />
+                                                            other services: {e.studio.otherServices} <br />
+                                                        </div>
 
 
-                                            reviews:
-                                            {e.reviews != undefined ?
-                                                <div>{e.reviews.map(each => (
-                                                    each._id + each.reviewer + each.rating + each.comment
-                                                ))}
+                                                        reviews:
+                                                        {e.reviews != undefined ?
+                                                            <div>{e.reviews.map(each => (
+                                                                each._id + each.reviewer + each.rating + each.comment
+                                                            ))}
+                                                            </div>
+                                                            :
+                                                            "no reviews available"}
+
+                                                    </p>
+                                                    <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
+                                                    {/* {this.ReviewsModal(e)} */}
                                                 </div>
-                                                :
-                                                "no reviews available"}
-
-                                        </p>
-                                        <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
-                                        {/* {this.ReviewsModal(e)} */}
-                                    </div>
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
                                 </div>
                             </React.Fragment>
-                        ))}
-                    </div>
-                </React.Fragment>
+                            :
+                            'no results found'
+                        }
                     </div>
                 </div>
             </React.Fragment>
+
         )
     }
 }

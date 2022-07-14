@@ -5,8 +5,20 @@ import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 
 export default class ShowAllArtists extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us53.gitpod.io/";
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
 
+    //have state for view-all (originally true) so that it will change to false whe nclick on artist
+    //when click on view-all navbar, check if view-all is false => then change to true 
+    styleKeys = {
+        "surrealism": "Surrealism",
+        "traditional-americana": "Traditional Americana",
+        "traditional-japanese": "Traditional Japanese",
+        "blackwork": "Blackwork",
+        "minimalist": "Minimalist",
+        "water-colour": "Water colour",
+        "pet/animals": "Pet/Animals",
+        "floral": "Floral"
+    }
     state = {
         data: [],
         showConfirmDelete: false,
@@ -52,32 +64,290 @@ export default class ShowAllArtists extends React.Component {
         addReviewEmail: "",
         addReviewRating: 0,
         addReviewComment: "",
+        showFilters: true,
+        search: '',
+        gender: [],
+        apprentice: [],
+        temporary: [],
+        method: [],
+        style: [],
+        ink: [],
+        private: [],
+        bookingsRequired: [],
+        otherServices: [],
     }
 
-    AutoHideToast() {
-        return (
-            <Row>
-                <Col xs={6}>
-                    <Toast onClose={() => this.setState({
-                        showCreateToast: false
-                    })} show={this.state.showCreateToast} delay={3000} autohide>
-                        <Toast.Header>
-                            <img
-                                src="holder.js/20x20?text=%20"
-                                className="rounded me-2"
-                                alt=""
-                            />
-                            <strong className="me-auto">Bootstrap</strong>
-                            <small>11 mins ago</small>
-                        </Toast.Header>
-                        <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
-                    </Toast>
-                </Col>
-                <Col xs={6}>
-                    <Button onClick={() => this.setState({ showCreateToast: true })}>Show Toast</Button>
-                </Col>
-            </Row>
-        );
+    renderFilters() {
+        if (this.state.showFilters) {
+            return (
+                <div style={{ "border": "1px solid gray", "border-radius": "0.6px" }} className="mt-2">
+                    <div className="container">
+                        <div>
+                            <label className="form-label me-2">Gender:</label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="gender"
+                                    value="female" onChange={this.updateCheckboxes}
+                                    checked={this.state.gender.includes("female")} />
+                                <label className="form-check-label">Female</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="gender"
+                                    value="male" onChange={this.updateCheckboxes}
+                                    checked={this.state.gender.includes("male")} />
+                                <label className="form-check-label">Male</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="gender"
+                                    value="others" onChange={this.updateCheckboxes}
+                                    checked={this.state.gender.includes("others")} />
+                                <label className="form-check-label">Others</label>
+                            </div>
+                        </div>
+                        {/* years of exp, ink, private, bookings required, other services */}
+
+                        <div>
+                            <label className="form-label me-2">Apprentice:</label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="apprentice"
+                                    value="yes" onChange={this.updateCheckboxes}
+                                    checked={this.state.apprentice.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="apprentice"
+                                    value="no" onChange={this.updateCheckboxes}
+                                    checked={this.state.apprentice.includes("no")} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="form-label me-2">Temporary:</label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="temporary"
+                                    value="yes" onChange={this.updateCheckboxes}
+                                    checked={this.state.temporary.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="temporary"
+                                    value="no" onChange={this.updateCheckboxes}
+                                    checked={this.state.temporary.includes("no")} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="form-label me-2">Method(s):</label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="handpoke" name="method"
+                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
+                                <label className="form-check-label">Handpoke</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="machine" name="method"
+                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
+                                <label className="form-check-label">Machine</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="jagua" name="method"
+                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
+                                <label className="form-check-label">Jagua</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="form-label me-2">Style(s):</label>
+                            {/* <StyleMultiSelect value={this.state.style} onChange={this.handleSelect}/> */}
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value='surrealism' onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes('surrealism')} />
+                                <label className="form-check-label">Surrealism</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="traditional-americana" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("traditional-americana")} />
+                                <label className="form-check-label">Traditional Americana</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="traditional-japanese" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("traditional-japanese")} />
+                                <label className="form-check-label">Traditional Japanese</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="blackwork" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("blackwork")} />
+                                <label className="form-check-label"> Blackwork</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="minimalist" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("minimalist")} />
+                                <label className="form-check-label"> Minimalist</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="water-colour" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("water-colour")} />
+                                <label className="form-check-label"> Water Colour</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="pet/animals" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("pet/animals")} />
+                                <label className="form-check-label"> Pet/Animals</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="style"
+                                    value="floral" onChange={this.updateCheckboxes}
+                                    checked={this.state.style.includes("floral")} />
+                                <label className="form-check-label"> Floral</label>
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <label className="form-label me-2">Ink(s):</label>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="black" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
+                                <label className="form-check-label">Black</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="colours" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
+                                <label className="form-check-label">Colours</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="jagua" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
+                                <label className="form-check-label">Jagua</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="uv" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
+                                <label className="form-check-label">UV</label>
+                            </div>
+                        </div>
+
+                        {/* private */}
+
+                        <div>
+                            <label className="form-label me-2">Private Studio: </label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="private"
+                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="private"
+                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("no")} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="form-label me-2">Bookings required: </label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="bookingsRequired"
+                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="bookingsRequired"
+                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("no")} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                        {/* other services */}
+
+                        <div>
+                            <label className="form-label me-2">Other services: </label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="yes" name="otherServices"
+                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("yes")} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="no" name="otherServices"
+                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("no")} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button className="btn btn-light w-100" onClick={() => { this.setState({ showFilters: false }) }}><i class="bi bi-caret-up-fill"></i></button>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div style={{ "border": "1px solid black" }}>
+                    no filters yet
+                </div>
+            )
+        }
+    }
+
+    clickSearch = async () => {
+        //if send back array
+        //can put 3 params inside axios.get -> url 
+        //get can send back something to backend
+        //have to grab this.state.style by something else
+        let response = await axios.get(this.url +
+            'show-artists?search=' + this.state.search
+            + '&gender=' + this.state.gender
+            + '&apprentice=' + this.state.apprentice
+            + '&temporary=' + this.state.temporary
+            + '&method=' + this.state.method
+            + '&ink=' + this.state.ink
+            + '&private=' + this.state.private
+            + '&bookings=' + this.state.bookingsRequired
+            + '&otherServices=' + this.state.otherServices, { params: { style: this.state.style } });
+        this.setState({
+            data: response.data
+        })
+        console.log(response.data)
+        console.log(this.state.style)
     }
 
     // ToggleShowReviews(artist) {
@@ -240,7 +510,7 @@ export default class ShowAllArtists extends React.Component {
                                     ))}<br />
                                     Temporary? {this.state.artistToShow.temporary}<br />
                                     Style: {this.state.artistToShow.style.map(a => (
-                                        <span class="badge rounded-pill bg-secondary">{a.label}</span>
+                                        <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
                                     ))}<br />
                                     Ink: {this.state.artistToShow.ink.map(a => (
                                         <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
@@ -536,7 +806,7 @@ export default class ShowAllArtists extends React.Component {
                                             ))}<br />
                                             Temporary? {e.temporary}<br />
                                             Style: {e.style.map(a => (
-                                                <span class="badge rounded-pill bg-secondary">{a.label}</span>
+                                                <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
                                             ))}<br />
                                             Ink: {e.ink.map(a => (
                                                 <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
@@ -592,9 +862,7 @@ export default class ShowAllArtists extends React.Component {
 
     processDelete = async (id, confirmDeleteEmail) => {
         try {
-            let response = await axios.delete(this.url + `tattoo-artist/${id}`, {
-                email: confirmDeleteEmail
-            })
+            let response = await axios.delete(this.url + `tattoo-artist/${id}` + '?email=' + this.state.confirmDeleteEmail)
             console.log(response.data)
         }
         catch (e) {
@@ -944,6 +1212,82 @@ export default class ShowAllArtists extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <div className="container">
+                    <h1>search for an artist: </h1>
+                    <div class="row">
+                        <div class="col-8">
+                            <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
+                        </div>
+                        <div class="col-4">
+                            <button className="btn btn-primary me-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
+                            <button className="btn btn-primary ms-1" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}><i class="bi bi-funnel-fill"></i></button>
+                        </div>
+                    </div>
+                    {this.renderFilters()}
+                    {/* <div>
+                        <h1>search results</h1>
+                        {this.state.data != [] ?
+                            <React.Fragment>
+                                <div className="container d-flex flex-row flex-wrap justify-content-evenly">
+                                    {this.state.data.map(e => (
+                                        <React.Fragment key={e._id}>
+                                            <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
+                                                <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{e.name}</h5>
+                                                    <p className="card-text">
+                                                        Gender: {e.gender}<br />
+                                                        Years of experience: {e.yearsOfExperience}<br />
+                                                        Apprentice? {e.apprentice}<br />
+                                                        Methods: {e.method.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                        ))}<br />
+                                                        Temporary? {e.temporary}<br />
+                                                        Style: {e.style.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
+                                                        ))}<br />
+                                                        Ink: {e.ink.map(a => (
+                                                            <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                        ))}<br />
+
+                                                        <h6>Contact: </h6>
+                                                        {e.contact.map(a => (
+                                                            <React.Fragment>
+                                                                <div><b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                            </React.Fragment>
+                                                        ))}
+
+                                                        <div>
+                                                            studio name: {e.studio.name}<br />
+                                                            private studio: {e.studio.private} <br />
+                                                            address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
+                                                            bookings required: {e.studio.bookingsRequired} <br />
+                                                            other services: {e.studio.otherServices} <br />
+                                                        </div>
+
+
+                                                        reviews:
+                                                        {e.reviews != undefined ?
+                                                            <div>{e.reviews.map(each => (
+                                                                each._id + each.reviewer + each.rating + each.comment
+                                                            ))}
+                                                            </div>
+                                                            :
+                                                            "no reviews available"}
+
+                                                    </p>
+                                                    <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            </React.Fragment>
+                            :
+                            'no results found'
+                        }
+                    </div> */}
+                </div>
                 {this.ShowOneOrAll()}
             </React.Fragment>
         )
