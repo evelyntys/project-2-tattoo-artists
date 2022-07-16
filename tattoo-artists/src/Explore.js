@@ -456,30 +456,6 @@ export default class ShowAllArtists extends React.Component {
         this.setState({
             submitted: true
         })
-        const modifiedArtist = {
-            ...this.state.artistToShow,
-            name: this.state.modifiedArtistName,
-            gender: this.state.modifiedGender,
-            yearStarted: this.state.modifiedYearStarted,
-            apprentice: this.state.modifiedApprentice,
-            method: this.state.modifiedMethod,
-            temporary: this.state.modifiedTemporary,
-            style: this.state.modifiedStyle,
-            ink: this.state.modifiedInk,
-            contact: this.state.modifiedContact,
-            image: this.state.modifiedImage,
-            studio: {
-                studioName: this.state.modifiedStudioName,
-                private: this.state.modifiedPrivate,
-                bookingsRequired: this.state.modifiedBookingsRequired,
-                address: {
-                    street: this.state.modifiedStreet,
-                    unit: this.state.modifiedUnit,
-                    postal: this.state.modifiedPostal
-                },
-                otherServices: this.state.modifiedOtherServices,
-            }
-        }
         try {
             let response = await axios.put(this.url + `tattoo-artist/${id}`, {
                 ownerEmail: this.state.confirmEditEmail,
@@ -512,17 +488,16 @@ export default class ShowAllArtists extends React.Component {
                     otherServices: this.state.modifiedOtherServices,
                 }
             })
-            // const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
-            // const cloned = this.state.data.slice();
-            // cloned.splice(index, 1, modifiedArtist);
             console.log(response.data)
-            let updatedArtists = await axios.get(this.url + 'show-artists');
+            let updatedResponse = await axios.get(this.url + 'show-artists');
+            let updatedArtists = updatedResponse.data;
+            let indexOfModified = updatedArtists.findIndex(artist => artist._id === this.state.artistToShow._id);
             this.setState({
                 showOne: true,
                 editMode: false,
                 showConfirmEdit: false,
-                data: updatedArtists.data,
-                artistToShow: modifiedArtist
+                data: updatedArtists,
+                artistToShow: updatedArtists[indexOfModified]
             })
         }
         catch (e) {
@@ -546,46 +521,6 @@ export default class ShowAllArtists extends React.Component {
             // showing one artist, not editing
             if (!this.state.editMode) {
                 return (
-                    //                 Methods: {this.state.artistToShow.method.map(a => (
-                    //                     <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                    //                 ))}<br />
-                    //                 Temporary? {this.state.artistToShow.temporary}<br />
-                    //                 Style: {this.state.artistToShow.style.map(a => (
-                    //                     <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
-                    //                 ))}<br />
-                    //                 Ink: {this.state.artistToShow.ink.map(a => (
-                    //                     <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                    //                 ))}<br />
-
-                    //                 <h6>Contact: </h6>
-                    //                 {this.state.artistToShow.contact.map(a => (
-                    //                     <React.Fragment>
-                    //                         <div><b>{a.contactKey}</b>: {a.contactValue}</div>
-                    //                     </React.Fragment>
-                    //                 ))}
-
-                    //                 <div>
-                    //                     studio name: {this.state.artistToShow.studio.name}<br />
-                    //                     private studio: {this.state.artistToShow.studio.private} <br />
-                    //                     address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
-                    //                     bookings required: {this.state.artistToShow.studio.bookingsRequired} <br />
-                    //                     other services: {this.state.artistToShow.studio.otherServices} <br />
-                    //                 </div>
-                    //             </p>
-                    //         </div>
-                    //     </div>
-                    //     <div>
-                    //         {this.ConfirmEdit()}
-                    //         {this.ConfirmDelete(this.state.artistToShow)}
-                    //         <button className="btn btn-secondary" onClick={() => {
-                    //             this.setState({
-                    //                 showOne: false
-                    //             })
-                    //         }}>return to all artists</button>
-                    //     </div>
-                    //     </div>
-                    //         {this.RenderReviews()}
-                    // </React.Fragment>
                     <React.Fragment>
                         <div className="container">
                             <div>
@@ -619,7 +554,6 @@ export default class ShowAllArtists extends React.Component {
                                         <p>{this.state.artistToShow.ink}</p>
                                         {/* have to map */}
                                         <p>{this.state.artistToShow.contact.contactKey}: {this.state.artistToShow.contact.contactValue}</p>
-
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="1">
