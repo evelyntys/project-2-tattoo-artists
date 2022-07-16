@@ -88,6 +88,23 @@ export default class ShowAllArtists extends React.Component {
         console.log(response.data)
     }
 
+    ResetSearch = async () => {
+        let response = await axios.get(this.url + 'show-artists');
+        this.setState({
+                search: '',
+                gender: [],
+                apprentice: [],
+                temporary: [],
+                method: [],
+                style: [],
+                ink: [],
+                private: [],
+                bookingsRequired: [],
+                otherServices: [],
+                data: response.data
+        })
+    }
+
     renderFilters() {
         if (this.state.showFilters) {
             return (
@@ -355,7 +372,6 @@ export default class ShowAllArtists extends React.Component {
             showFilters: false
         })
         console.log(response.data)
-        console.log(this.state.style)
     }
 
     findInstagram(array, title) {
@@ -437,10 +453,33 @@ export default class ShowAllArtists extends React.Component {
 
     updateArtist = async () => {
         let id = this.state.artistToShow._id;
-        console.log(this.state.modifiedPostal)
         this.setState({
             submitted: true
         })
+        const modifiedArtist = {
+            ...this.state.artistToShow,
+            name: this.state.modifiedArtistName,
+            gender: this.state.modifiedGender,
+            yearStarted: this.state.modifiedYearStarted,
+            apprentice: this.state.modifiedApprentice,
+            method: this.state.modifiedMethod,
+            temporary: this.state.modifiedTemporary,
+            style: this.state.modifiedStyle,
+            ink: this.state.modifiedInk,
+            contact: this.state.modifiedContact,
+            image: this.state.modifiedImage,
+            studio: {
+                studioName: this.state.modifiedStudioName,
+                private: this.state.modifiedPrivate,
+                bookingsRequired: this.state.modifiedBookingsRequired,
+                address: {
+                    street: this.state.modifiedStreet,
+                    unit: this.state.modifiedUnit,
+                    postal: this.state.modifiedPostal
+                },
+                otherServices: this.state.modifiedOtherServices,
+            }
+        }
         try {
             let response = await axios.put(this.url + `tattoo-artist/${id}`, {
                 ownerEmail: this.state.confirmEditEmail,
@@ -473,13 +512,17 @@ export default class ShowAllArtists extends React.Component {
                     otherServices: this.state.modifiedOtherServices,
                 }
             })
+            // const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
+            // const cloned = this.state.data.slice();
+            // cloned.splice(index, 1, modifiedArtist);
             console.log(response.data)
             let updatedArtists = await axios.get(this.url + 'show-artists');
             this.setState({
                 showOne: true,
                 editMode: false,
                 showConfirmEdit: false,
-                data: this.updatedArtists.data
+                data: updatedArtists.data,
+                artistToShow: modifiedArtist
             })
         }
         catch (e) {
@@ -572,7 +615,7 @@ export default class ShowAllArtists extends React.Component {
                                         <p>Gender: {this.state.artistToShow.gender}</p>
                                         <p>{this.state.artistToShow.yearsOfExperience} years of experience</p>
                                         <p>{this.state.artistToShow.apprentice}</p>
-                                        <p>{this.state.artistToShow.style}</p>
+                                        {/* <p>{this.state.artistToShow.style}</p> */}
                                         <p>{this.state.artistToShow.ink}</p>
                                         {/* have to map */}
                                         <p>{this.state.artistToShow.contact.contactKey}: {this.state.artistToShow.contact.contactValue}</p>
@@ -1030,7 +1073,6 @@ export default class ShowAllArtists extends React.Component {
         catch (e) {
             alert(404)
             console.log(e)
-            console.log(confirmDeleteEmail)
         }
 
     }
@@ -1286,12 +1328,23 @@ export default class ShowAllArtists extends React.Component {
                             <React.Fragment>
                                 <h1>search for an artist: </h1>
                                 <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-6">
                                         <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
                                     </div>
-                                    <div class="col-4">
-                                        <button className="btn btn-primary me-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
-                                        <button className="btn btn-primary ms-1" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}><i class="bi bi-funnel-fill"></i></button>
+                                    <div class="col-6">
+                                        <button className="btn btn-primary mx-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
+                                        <button className="btn btn-primary mx-1"
+                                            onClick={() => {
+                                                this.setState({
+                                                    showFilters: !this.state.showFilters
+                                                })
+                                            }}>
+                                            <i class="bi bi-funnel-fill"></i>
+                                        </button>
+                                        <button className="btn btn-primary mx-1"
+                                            onClick={this.ResetSearch}>
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 {this.renderFilters()}
