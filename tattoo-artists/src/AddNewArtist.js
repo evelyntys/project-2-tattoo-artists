@@ -8,7 +8,7 @@ import { Col, Row, Toast, Button, ToastContainer } from 'react-bootstrap'
 
 
 export default class AddNewArtist extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us53.gitpod.io/"
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/"
 
     state = {
         artistName: "",
@@ -59,10 +59,16 @@ export default class AddNewArtist extends React.Component {
     AutoHideToast() {
         return (
             <React.Fragment>
-                <ToastContainer position="top-end" autohide>
+                {/* have to find margin and adjust by className */}
+                {/* bs-prefix in react-bootstrap toast container */}
+                {/* change position */}
+                {/* don't use toast can try modal also */}
+                {/* toast should not sit for too long - autohide */}
+                {/* delayed props */}
+                <ToastContainer position="top-end">
                 <Toast onClose={() => this.setState({
                     showCreateToast: false
-                })} show={this.state.showCreateToast}>
+                })} show={this.state.showCreateToast} autohide>
                     <Toast.Header>
                         <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
                             :
@@ -147,6 +153,41 @@ export default class AddNewArtist extends React.Component {
             submitted: true,
             showCreateToast: true
         })
+        let newArtist = {name: this.state.artistName,
+            gender: this.state.gender,
+            yearStarted: this.state.yearStarted,
+            apprentice: this.state.apprentice,
+            method: this.state.method,
+            temporary: this.state.temporary,
+            style: this.state.style,
+            ink: this.state.ink,
+            contact: this.state.contact,
+            image: this.state.image,
+            studioName: this.state.studioName,
+            private: this.state.private,
+            bookingsRequired: this.state.bookingsRequired,
+            street: this.state.street,
+            unit: this.state.unit,
+            postal: this.state.postal,
+            otherServices: this.state.otherServices,
+            ownerName: this.state.ownerName,
+            ownerEmail: this.state.ownerEmail,
+            studio: {
+                studioName: this.state.studioName,
+                private: this.state.private,
+                bookingsRequired: this.state.bookingsRequired,
+                address: {
+                    street: this.state.street,
+                    unit: this.state.unit,
+                    postal: this.state.post
+                },
+                otherServices: this.state.otherServices,
+            },
+            owner: {
+                ownerName: this.state.ownerName,
+                ownerEmail: this.state.ownerEmail
+            },
+        }
         try {
             let response = await axios.post(this.url + "add-new-artist", {
                 name: this.state.artistName,
@@ -186,8 +227,10 @@ export default class AddNewArtist extends React.Component {
             })
             console.log(response.data)
             this.setState({
-                addSuccess: true
+                addSuccess: true,
+                // data: [...this.state.data, newArtist]
             })
+           { this.props.ChangePages('explore')}
         }
         catch (e) {
             this.setState({
