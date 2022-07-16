@@ -47,11 +47,11 @@ export default class AddNewArtist extends React.Component {
                 </React.Fragment>
         }
         else {
-            contentToRender= 
-            <React.Fragment>
-                There were some problems in adding a new artist, please check that you have filled in
-                the fields appropriately
-            </React.Fragment>
+            contentToRender =
+                <React.Fragment>
+                    There were some problems in adding a new artist, please check that you have filled in
+                    the fields appropriately
+                </React.Fragment>
         }
         return contentToRender
     }
@@ -66,17 +66,17 @@ export default class AddNewArtist extends React.Component {
                 {/* toast should not sit for too long - autohide */}
                 {/* delayed props */}
                 <ToastContainer position="top-end">
-                <Toast onClose={() => this.setState({
-                    showCreateToast: false
-                })} show={this.state.showCreateToast} autohide>
-                    <Toast.Header>
-                        <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
-                            :
-                            'Error!'
-                        }</strong>
-                    </Toast.Header>
-                    <Toast.Body>{this.renderToastContent()}</Toast.Body>
-                </Toast>
+                    <Toast onClose={() => this.setState({
+                        showCreateToast: false
+                    })} show={this.state.showCreateToast} autohide>
+                        <Toast.Header>
+                            <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
+                                :
+                                'Error!'
+                            }</strong>
+                        </Toast.Header>
+                        <Toast.Body>{this.renderToastContent()}</Toast.Body>
+                    </Toast>
                 </ToastContainer>
                 <div className="progress my-2">
                     <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -153,41 +153,6 @@ export default class AddNewArtist extends React.Component {
             submitted: true,
             showCreateToast: true
         })
-        let newArtist = {name: this.state.artistName,
-            gender: this.state.gender,
-            yearStarted: this.state.yearStarted,
-            apprentice: this.state.apprentice,
-            method: this.state.method,
-            temporary: this.state.temporary,
-            style: this.state.style,
-            ink: this.state.ink,
-            contact: this.state.contact,
-            image: this.state.image,
-            studioName: this.state.studioName,
-            private: this.state.private,
-            bookingsRequired: this.state.bookingsRequired,
-            street: this.state.street,
-            unit: this.state.unit,
-            postal: this.state.postal,
-            otherServices: this.state.otherServices,
-            ownerName: this.state.ownerName,
-            ownerEmail: this.state.ownerEmail,
-            studio: {
-                studioName: this.state.studioName,
-                private: this.state.private,
-                bookingsRequired: this.state.bookingsRequired,
-                address: {
-                    street: this.state.street,
-                    unit: this.state.unit,
-                    postal: this.state.post
-                },
-                otherServices: this.state.otherServices,
-            },
-            owner: {
-                ownerName: this.state.ownerName,
-                ownerEmail: this.state.ownerEmail
-            },
-        }
         try {
             let response = await axios.post(this.url + "add-new-artist", {
                 name: this.state.artistName,
@@ -228,9 +193,33 @@ export default class AddNewArtist extends React.Component {
             console.log(response.data)
             this.setState({
                 addSuccess: true,
-                // data: [...this.state.data, newArtist]
+                artistName: "",
+                gender: "others",
+                yearStarted: "",
+                apprentice: "no",
+                method: [],
+                temporary: "no",
+                style: [],
+                ink: [],
+                contact: [{ contactKey: "", contactValue: "", }],
+                image: "",
+                ownerName: "",
+                ownerEmail: "",
+                studioName: "",
+                private: "no",
+                bookingsRequired: "no",
+                street: "",
+                unit: "",
+                postal: "",
+                otherServices: [],
+                firstPage: true,
+                secondPage: false,
+                thirdPage: false,
+                submitted: false,
+                showCreateToast: false,
+                addSuccess: false
             })
-           { this.props.ChangePages('explore')}
+            { this.props.ChangePages('explore') }
         }
         catch (e) {
             this.setState({
