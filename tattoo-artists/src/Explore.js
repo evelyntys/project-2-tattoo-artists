@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal, Col, Row, Toast, CloseButton } from 'react-bootstrap';
+import { Button, Modal, Col, Row, Toast, CloseButton, Accordion } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 
@@ -78,6 +78,14 @@ export default class ShowAllArtists extends React.Component {
         showAddReviewButton: true,
         submittedReview: false,
         startEditReview: false,
+    }
+
+    async componentDidMount() {
+        let response = await axios.get(this.url + 'show-artists');
+        this.setState({
+            data: response.data
+        })
+        console.log(response.data)
     }
 
     renderFilters() {
@@ -350,19 +358,14 @@ export default class ShowAllArtists extends React.Component {
         console.log(this.state.style)
     }
 
-    findInstagram(array, title){
+    findInstagram(array, title) {
         let instagram = array.find((element) => {
-              return element.contactKey === title;
-            })
-          return instagram.contactValue;
-    }
-
-    async componentDidMount() {
-        let response = await axios.get(this.url + 'show-artists');
-        this.setState({
-            data: response.data
+            return element.contactKey === title;
         })
-        console.log(response.data)
+        if (instagram) {
+            return instagram.contactValue;
+        }
+        return 'nil'
     }
 
     updateFormField = (e) => {
@@ -471,10 +474,12 @@ export default class ShowAllArtists extends React.Component {
                 }
             })
             console.log(response.data)
+            let updatedArtists = await axios.get(this.url + 'show-artists');
             this.setState({
                 showOne: true,
                 editMode: false,
-                showConfirmEdit: false
+                showConfirmEdit: false,
+                data: this.updatedArtists.data
             })
         }
         catch (e) {
@@ -498,16 +503,6 @@ export default class ShowAllArtists extends React.Component {
             // showing one artist, not editing
             if (!this.state.editMode) {
                 return (
-                    // <React.Fragment key={this.state.artistToShow._id}>
-                    //     <div className="container d-flex">
-                    //     <div className="card" style={{ "width": "20rem" }}>
-                    //         <img src={this.state.artistToShow.image} style={{ "height": "auto" }} class="card-img-top" alt="..." />
-                    //         <div className="card-body">
-                    //             <h5 className="card-title">{this.state.artistToShow.name}</h5>
-                    //             <p className="card-text">
-                    //                 Gender: {this.state.artistToShow.gender}<br />
-                    //                 Years of experience: {this.state.artistToShow.yearsOfExperience}<br />
-                    //                 Apprentice? {this.state.artistToShow.apprentice}<br />
                     //                 Methods: {this.state.artistToShow.method.map(a => (
                     //                     <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
                     //                 ))}<br />
@@ -550,17 +545,59 @@ export default class ShowAllArtists extends React.Component {
                     // </React.Fragment>
                     <React.Fragment>
                         <div className="container">
-                            <div style={{"width": "100%", "maxHeight": "300px" }}>
-                            <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "width": "100%", "maxHeight": "300px" }}/>
+                            <div>
+                                <div>
+                                    <button className="btn"
+                                        onClick={() => {
+                                            this.setState({
+                                                showOne: false
+                                            })
+                                        }}><i class="bi bi-arrow-90deg-left"></i></button>
+                                </div>
+                                <div class="text-end">
+                                    {this.ConfirmEdit()}
+                                    {this.ConfirmDelete(this.state.artistToShow)}
+                                </div>
+                            </div>
+                            <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact, 'instagram')}</h1>
+                            <div style={{ "width": "100%", "maxHeight": "300px" }}>
+                                <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "width": "100%", "maxHeight": "300px" }} />
                             </div>
 
-                            <div>
-                                <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact, 'instagram')}</h1>
-                                <p>{this.state.artistToShow.gender}</p>
-                            </div>
+                            <Accordion defaultActiveKey="0" flush>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Artist's Details</Accordion.Header>
+                                    <Accordion.Body>
+                                        <p>Name: {this.state.artistToShow.name}</p>
+                                        <p>Gender: {this.state.artistToShow.gender}</p>
+                                        <p>{this.state.artistToShow.yearsOfExperience} years of experience</p>
+                                        <p>{this.state.artistToShow.apprentice}</p>
+                                        <p>{this.state.artistToShow.style}</p>
+                                        <p>{this.state.artistToShow.ink}</p>
+                                        {/* have to map */}
+                                        <p>{this.state.artistToShow.contact.contactKey}: {this.state.artistToShow.contact.contactValue}</p>
+
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Studio Details</Accordion.Header>
+                                    <Accordion.Body>
+                                        <p>Name: {this.state.artistToShow.studio.name}</p>
+                                        <p>{this.state.artistToShow.studio.private === "yes" ? "Private Studio" : "Shared Studio"}</p>
+                                        <div>
+                                            <h4>ADDRESS</h4>
+                                            <p>Street: {this.state.artistToShow.studio.address.street}</p>
+                                            <p>Unit: {this.state.artistToShow.studio.address.unit}</p>
+                                            <p>Postal code: {this.state.artistToShow.studio.address.postal}</p>
+                                        </div>
+                                        <p>{this.state.artistToShow.studio.bookingsRequired === "yes" ? "BOOKINGS REQUIRED" : "NO BOOKINGS REQUIRED"}</p>
+                                        <p>{this.state.artistToShow.studio.otherServices}</p>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
 
                             <div className="mt-2">
-                            {this.RenderReviews()}
+                                {this.RenderReviews()}
                             </div>
                         </div>
                     </React.Fragment>
@@ -779,7 +816,7 @@ export default class ShowAllArtists extends React.Component {
                                         <div className="card-body">
                                             <h5 className="card-title">{this.findInstagram(e.contact, 'instagram')}</h5>
                                             <p className="card-text">
-                                                Name: {e.name} <br/>
+                                                Name: {e.name} <br />
                                                 Gender: {e.gender}<br />
                                                 Years of experience: {e.yearsOfExperience}<br />
                                                 Apprentice? {e.apprentice}<br />
@@ -827,12 +864,13 @@ export default class ShowAllArtists extends React.Component {
         if (!this.state.startEditReview || !this.state.correctReviewEmail) {
             contentToReturn =
                 <React.Fragment>
+                    <h1>Reviews:</h1>
                     {this.state.artistToShow.reviews == undefined || this.state.artistToShow.reviews.length == 0 ?
                         <div>
                             <h1>no reviews available</h1>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
-                                <button className="btn btn-primary" onClick={() => {
+                                <button className="btn btn-primary my-2" onClick={() => {
                                     this.setState({
                                         addReview: true,
                                         showAddReviewButton: false
@@ -846,7 +884,7 @@ export default class ShowAllArtists extends React.Component {
                         <div>
                             <div className="list-group">{this.state.artistToShow.reviews.map(
                                 each => (
-                                    <div className="list-group-item">
+                                    <div className="list-group-item my-1">
                                         <div className="d-flex w-100 justify-content-between">
                                             <div>
                                                 <h5 className="mb-1">{each.reviewer}</h5>
@@ -867,7 +905,9 @@ export default class ShowAllArtists extends React.Component {
                                                     })}><i class="bi bi-trash"></i></button>
                                             </div>
                                         </div>
-                                        <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
+                                        <small className="text-muted">
+                                            ratings: {each.rating} &#9733;
+                                        </small>
                                         <p className="mb-1">{each.comment}</p>
                                         {this.state.startEditReview && this.state.reviewBeingEdited === each ?
                                             <div>
@@ -892,7 +932,7 @@ export default class ShowAllArtists extends React.Component {
                             </div>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
-                                <button className="btn btn-primary" onClick={() => {
+                                <button className="btn btn-primary my-2" onClick={() => {
                                     this.setState({
                                         addReview: true,
                                         showAddReviewButton: false
@@ -914,9 +954,11 @@ export default class ShowAllArtists extends React.Component {
                                 <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
                                 <small className="text-muted">{this.state.reviewBeingEdited._id}</small>
                             </div>
-                            <small className="text-muted">ratings: <input type="text" className="form-control"
-                                name="updatedRating" value={this.state.updatedRating}
-                                onChange={this.updateFormField} /> <i class="bi bi-star-fill"></i></small>
+
+                            <small className="text-muted">ratings:
+                                {this.EditStarRating()}
+                            </small>
+
                             <p className="mb-1"><textarea className="form-control" name="updatedComment" value={this.state.updatedComment} onChange={this.updateFormField}>
                             </textarea></p>
                             <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
@@ -974,7 +1016,15 @@ export default class ShowAllArtists extends React.Component {
 
     processDelete = async (id, confirmDeleteEmail) => {
         try {
-            let response = await axios.delete(this.url + `tattoo-artist/${id}` + '?email=' + this.state.confirmDeleteEmail)
+            let response = await axios.delete(this.url + `tattoo-artist/${id}` + '?email=' + this.state.confirmDeleteEmail);
+            const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
+            const modifiedData = [...this.state.data.slice(0, index),
+            ...this.state.data.slice(index + 1)]
+            this.setState({
+                showConfirmDelete: false,
+                showOne: false,
+                data: modifiedData
+            })
             console.log(response.data)
         }
         catch (e) {
@@ -1009,9 +1059,9 @@ export default class ShowAllArtists extends React.Component {
 
         return (
             <React.Fragment>
-                <Button variant="secondary" onClick={handleShow}>
-                    Edit
-                </Button>
+                <button className="btn" onClick={handleShow}>
+                    <i class="bi bi-pencil-square"></i>
+                </button>
 
                 <Modal
                     show={this.state.showConfirmEdit}
@@ -1056,9 +1106,9 @@ export default class ShowAllArtists extends React.Component {
 
         return (
             <React.Fragment>
-                <Button variant="danger" onClick={handleShow}>
-                    Delete
-                </Button>
+                <button className="btn" onClick={handleShow}>
+                    <i class="bi bi-trash"></i>
+                </button>
 
                 <Modal
                     show={this.state.showConfirmDelete}
@@ -1088,45 +1138,6 @@ export default class ShowAllArtists extends React.Component {
         );
     }
 
-
-    // ReviewsModal(artist) {
-    //     return (
-    //         <>
-    //             <Button onClick={() => this.setState({
-    //                 showReviews: true,
-    //                 artistToShow: artist,
-    //             })}>Show reviews</Button>
-    //             <Modal
-    //                 size="lg"
-    //                 show={this.state.showReviews}
-    //                 onHide={() => this.setState({
-    //                     showReviews: false,
-    //                     editReview: false,
-    //                     showConfirmEdit: false,
-    //                     addReview: false,
-    //                     editReview: false,
-    //                     deleteReview: false
-    //                 })}
-    //                 aria-labelledby="example-modal-sizes-title-lg"
-    //             >
-    //                 <Modal.Header closeButton>
-    //                     <Modal.Title show={this.state.editReview} id="example-modal-sizes-title-lg">
-    //                         {this.state.editReview ? <React.Fragment>Editing review</React.Fragment>
-    //                             :
-    //                             <React.Fragment>
-    //                                 Showing reviews for {this.state.artistToShow.name}
-    //                             </React.Fragment>
-    //                         }
-    //                     </Modal.Title>
-    //                 </Modal.Header>
-    //                 <Modal.Body>
-    //                     {this.renderReviewModal()}
-    //                 </Modal.Body>
-    //             </Modal>
-    //         </>
-    //     );
-    // }
-
     RenderAddReview() {
         if (this.state.addReview) {
             return (
@@ -1142,7 +1153,8 @@ export default class ShowAllArtists extends React.Component {
                     </div>
                     <div>
                         <label>Rating: </label>
-                        <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} />
+                        {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
+                        {this.AddStarRating()}
                     </div>
                     <div>
                         <label>Comment: </label>
@@ -1163,145 +1175,43 @@ export default class ShowAllArtists extends React.Component {
         }
     }
 
-    // renderReviewModal() {
-    //     let contentToReturn = ""
-    //     if (this.state.editReview && !this.state.correctReviewEmail) {
-    //         contentToReturn =
-    //             <React.Fragment>
-    //                 <div>
-    //                     <label>Please enter your email to confirm your identity:</label>
-    //                     <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
-    //                 </div>
-    //                 <div>
-    //                     <button className="btn btn-primary" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
-    //                     <button className="btn btn-secondary" onClick={() => {
-    //                         this.setState({
-    //                             editReview: false
-    //                         })
-    //                     }}>Cancel</button>
-    //                 </div>
-    //             </React.Fragment>
-    //     }
-    //     // else if (this.state.editReview && this.state.correctReviewEmail) {
-    //     //     contentToReturn =
-    //     //         <React.Fragment>
-    //     //             <div className="list-group">
-    //     //                 <div className="list-group-item list-group-item-action">
-    //     //                     <div className="d-flex w-100 justify-content-between">
-    //     //                         <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
-    //     //                         <small className="text-muted">{this.state.reviewBeingEdited._id}</small>
-    //     //                     </div>
-    //     //                     <small className="text-muted">ratings: <input type="text" className="form-control"
-    //     //                         name="updatedRating" value={this.state.updatedRating}
-    //     //                         onChange={this.updateFormField} /> <i class="bi bi-star-fill"></i></small>
-    //     //                     <p className="mb-1"><textarea className="form-control" name="updatedComment" value={this.state.updatedComment} onChange={this.updateFormField}>
-    //     //                     </textarea></p>
-    //     //                     <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
-    //     //                     <button className="btn btn-secondary" onClick={() => {
-    //     //                         this.setState({
-    //     //                             editReview: false
-    //     //                         })
-    //     //                     }}>Cancel</button>
-    //     //                 </div>
-    //     //             </div>
+    AddStarRating = () => {
+        return (
+            <div className="star-rating">
+                {[...Array(5)].map((star, index) => {
+                    index += 1;
+                    return (
+                        <button type="button" className={index <= this.state.addReviewRating ? "on" : "off"}
+                            onClick={() => {
+                                this.setState({
+                                    addReviewRating: index
+                                })
+                            }}>
+                            <span className="star">&#9733;</span></button>
+                    );
+                })};
+            </div>
+        );
+    };
 
-    //     //         </React.Fragment>
-    //     // }
-    //     // else if (!this.state.editReview) {
-    //     //     contentToReturn =
-    //     //         <React.Fragment>
-    //     //             {this.state.artistToShow.reviews == undefined || this.state.artistToShow.reviews.length == 0 ?
-    //     //                 <div>
-    //     //                     <h1>no reviews available</h1>
-    //     //                     <button className="btn btn-primary" onClick={() => {
-    //     //                         this.setState({
-    //     //                             addReview: true
-    //     //                         })
-    //     //                     }}>Add a new review</button>
-    //     //                 </div>
-    //     //                 :
-    //     //                 <div>
-    //     //                     <div className="list-group">{this.state.artistToShow.reviews.map(
-    //     //                         each => (
-    //     //                             <div className="list-group-item list-group-item-action">
-    //     //                                 <div className="d-flex w-100 justify-content-between">
-    //     //                                     <h5 className="mb-1">{each.reviewer}</h5>
-    //     //                                     <small className="text-muted">{each._id}</small>
-    //     //                                 </div>
-    //     //                                 <small className="text-muted">ratings: {each.rating} <i class="bi bi-star-fill"></i></small>
-    //     //                                 <p className="mb-1">{each.comment}</p>
-    //     //                                 <button className="btn btn-warning" onClick={() => { this.setState({ reviewBeingEdited: each, editReview: true, updatedRating: each.rating, updatedComment: each.comment }) }}>Edit</button>
-    //     //                                 <button className="btn btn-danger" onClick={() => { this.setState({ reviewBeingDeleted: each, deleteReview: true }) }}>Delete</button>
-    //     //                             </div>
-    //     //                         ))}
-    //     //                     </div>
-    //     //                     <button className="btn btn-primary" onClick={() => {
-    //     //                         this.setState({
-    //     //                             addReview: true
-    //     //                         })
-    //     //                     }}>Add a new review</button>
-    //     //                 </div>}
-    //     //         </React.Fragment>
-    //     // }
-
-    //     if (this.state.deleteReview) {
-    //         contentToReturn =
-    //             <React.Fragment>
-    //                 Are you sure you want to delete this review?
-    //                 <div className="list-group">
-    //                     <div className="list-group-item list-group-item-action">
-    //                         <div className="d-flex w-100 justify-content-between">
-    //                             <h5 className="mb-1">{this.state.reviewBeingDeleted.reviewer}</h5>
-    //                             <small className="text-muted">{this.state.reviewBeingDeleted._id}</small>
-    //                         </div>
-    //                         <small className="text-muted">ratings: {this.state.reviewBeingDeleted.rating} <i class="bi bi-star-fill"></i></small>
-    //                         <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
-    //                     </div>
-    //                 </div>
-    //                 <div>
-    //                     <div>
-    //                         <label>Please enter your email to confirm deletion</label>
-    //                         <input type="email" name="deleteReviewEmail" onChange={this.updateFormField} />
-    //                     </div>
-    //                     <div>
-    //                         <button className='btn btn-danger' onClick={this.validateDeleteEmail}>Confirm</button>
-    //                         <button className='btn btn-secondary' onClick={() => {
-    //                             this.setState({
-    //                                 deleteReview: false
-    //                             })
-    //                         }}>Cancel</button>
-    //                     </div>
-    //                 </div>
-    //             </React.Fragment>
-    //     }
-
-    //     // if (this.state.addReview) {
-    //     //     contentToReturn =
-    //     //         <div className="container">
-    //     //             <div>
-    //     //                 <label>Name: </label>
-    //     //                 <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
-    //     //             </div>
-    //     //             <div>
-    //     //                 <label>Email: </label>
-    //     //                 <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
-    //     //             </div>
-    //     //             <div>
-    //     //                 <label>Rating: </label>
-    //     //                 <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} />
-    //     //             </div>
-    //     //             <div>
-    //     //                 <label>comment: </label>
-    //     //                 <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
-    //     //                 </textarea>
-    //     //             </div>
-    //     //             <button className="btn btn-primary" onClick={this.AddReviewToArtist}>add review</button>
-    //     //         </div>
-    //     // }
-
-    //     return contentToReturn
-    // }
-
+    EditStarRating = () => {
+        return (
+            <div className="star-rating">
+                {[...Array(5)].map((star, index) => {
+                    index += 1;
+                    return (
+                        <button type="button" className={index <= this.state.updatedRating ? "on" : "off"}
+                            onClick={() => {
+                                this.setState({
+                                    updatedRating: index
+                                })
+                            }}>
+                            <span className="star">&#9733;</span></button>
+                    );
+                })};
+            </div>
+        );
+    };
 
     updateReview = async () => {
         try {
@@ -1339,7 +1249,6 @@ export default class ShowAllArtists extends React.Component {
     }
 
     AddReviewToArtist = async () => {
-        console.log(this.state.artistToShow._id)
         this.setState({
             submittedReview: true,
         })
@@ -1353,7 +1262,11 @@ export default class ShowAllArtists extends React.Component {
             this.setState({
                 addReview: false,
                 showAddReviewButton: true,
-                submittedReview: false
+                submittedReview: false,
+                addReviewReviewer: "",
+                addReviewEmail: "",
+                addReviewRating: 1,
+                addReviewComment: ""
             })
             console.log(result)
         }
@@ -1366,22 +1279,24 @@ export default class ShowAllArtists extends React.Component {
         return (
             <React.Fragment>
                 <div className="container">
-                    <h1>search for an artist: </h1>
-                    <div class="row">
-                        <div class="col-8">
-                            <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
-                        </div>
-                        <div class="col-4">
-                            <button className="btn btn-primary me-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
-                            <button className="btn btn-primary ms-1" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}><i class="bi bi-funnel-fill"></i></button>
-                        </div>
-                    </div>
-                    {this.renderFilters()}
                     <div>
-                        {this.state.showOne? 
-                        null
-                        :
-                            <h1>results: </h1>}
+                        {this.state.showOne ?
+                            null
+                            :
+                            <React.Fragment>
+                                <h1>search for an artist: </h1>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
+                                    </div>
+                                    <div class="col-4">
+                                        <button className="btn btn-primary me-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
+                                        <button className="btn btn-primary ms-1" onClick={() => { this.setState({ showFilters: !this.state.showFilters }) }}><i class="bi bi-funnel-fill"></i></button>
+                                    </div>
+                                </div>
+                                {this.renderFilters()}
+                                <h1>results: </h1>
+                            </React.Fragment>}
                         {this.ShowOneOrAll()}
                     </div>
                 </div>
