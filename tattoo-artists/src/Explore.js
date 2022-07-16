@@ -77,7 +77,6 @@ export default class ShowAllArtists extends React.Component {
         otherServices: [],
         showAddReviewButton: true,
         submittedReview: false,
-        startEditReview: false,
     }
 
     async componentDidMount() {
@@ -91,17 +90,17 @@ export default class ShowAllArtists extends React.Component {
     ResetSearch = async () => {
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
-                search: '',
-                gender: [],
-                apprentice: [],
-                temporary: [],
-                method: [],
-                style: [],
-                ink: [],
-                private: [],
-                bookingsRequired: [],
-                otherServices: [],
-                data: response.data
+            search: '',
+            gender: [],
+            apprentice: [],
+            temporary: [],
+            method: [],
+            style: [],
+            ink: [],
+            private: [],
+            bookingsRequired: [],
+            otherServices: [],
+            data: response.data
         })
     }
 
@@ -838,7 +837,7 @@ export default class ShowAllArtists extends React.Component {
 
     RenderReviews() {
         let contentToReturn = "";
-        if (!this.state.startEditReview || !this.state.correctReviewEmail) {
+        if (!this.state.editReview || !this.state.correctReviewEmail) {
             contentToReturn =
                 <React.Fragment>
                     <h1>Reviews:</h1>
@@ -869,7 +868,7 @@ export default class ShowAllArtists extends React.Component {
                                             <div className="justify-content-end fs-6">
                                                 <button className="btn"
                                                     onClick={() => this.setState({
-                                                        startEditReview: true,
+                                                        editReview: true,
                                                         reviewBeingEdited: each,
                                                         updatedRating: each.rating,
                                                         updatedComment: each.comment
@@ -886,7 +885,7 @@ export default class ShowAllArtists extends React.Component {
                                             ratings: {each.rating} &#9733;
                                         </small>
                                         <p className="mb-1">{each.comment}</p>
-                                        {this.state.startEditReview && this.state.reviewBeingEdited === each ?
+                                        {this.state.editReview && this.state.reviewBeingEdited === each ?
                                             <div>
                                                 <div>
                                                     <label>Please enter your email to confirm your identity:</label>
@@ -896,7 +895,7 @@ export default class ShowAllArtists extends React.Component {
                                                     <button className="btn btn-primary" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
                                                     <button className="btn btn-secondary" onClick={() => {
                                                         this.setState({
-                                                            startEditReview: false
+                                                            editReview: false
                                                         })
                                                     }}>Cancel</button>
                                                 </div>
@@ -922,7 +921,7 @@ export default class ShowAllArtists extends React.Component {
                 </React.Fragment>
         }
 
-        if (this.state.startEditReview && this.state.correctReviewEmail) {
+        if (this.state.editReview && this.state.correctReviewEmail) {
             contentToReturn =
                 <React.Fragment>
                     <div className="list-group">
@@ -941,7 +940,7 @@ export default class ShowAllArtists extends React.Component {
                             <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
                             <button className="btn btn-secondary" onClick={() => {
                                 this.setState({
-                                    startEditReview: false
+                                    editReview: false
                                 })
                             }}>Cancel</button>
                         </div>
@@ -1118,16 +1117,18 @@ export default class ShowAllArtists extends React.Component {
         if (this.state.addReview) {
             return (
                 <div className="container">
-                    <div>
-                        <label>Name: </label>
-                        <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
-                        {this.ValidateFields(this.state.addReviewReviewer, 'name')}
-                    </div>
-                    <div>
-                        <label>Email: </label>
-                        <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
-                    </div>
-                    <div>
+                    <div className="row">
+                        <div className="col-6">
+                            <label>Name: </label>
+                            <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
+                            {this.ValidateFields(this.state.addReviewReviewer, 'name')}
+                        </div>
+                        <div className="col-6">
+                            <label>Email: </label>
+                            <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
+                        </div>
+                        <div>
+                        </div>
                         <label>Rating: </label>
                         {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
                         {this.AddStarRating()}
@@ -1137,7 +1138,7 @@ export default class ShowAllArtists extends React.Component {
                         <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
                         </textarea>
                     </div>
-                    <div>
+                    <div className="my-2">
                         <button className="btn btn-primary" onClick={this.AddReviewToArtist}>add review</button>
                         <button className="btn btn-secondary" onClick={() => {
                             this.setState({
@@ -1164,8 +1165,8 @@ export default class ShowAllArtists extends React.Component {
                                 })
                             }}>
                             <span className="star">&#9733;</span></button>
-                    );
-                })};
+                    )
+                })}
             </div>
         );
     };
@@ -1183,8 +1184,8 @@ export default class ShowAllArtists extends React.Component {
                                 })
                             }}>
                             <span className="star">&#9733;</span></button>
-                    );
-                })};
+                    )
+                })}
             </div>
         );
     };
@@ -1197,15 +1198,18 @@ export default class ShowAllArtists extends React.Component {
                 rating: this.state.updatedRating,
                 comment: this.state.updatedComment
             })
+            let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
             console.log(result)
+            this.setState({
+                editReview: false,
+                artistToShow: updatedResponse.data
+               
+            })
         }
         catch (e) {
             console.log(e)
             alert('error udpating')
         }
-        this.setState({
-            editReview: false
-        })
     }
 
     validateDeleteEmail = async () => {
@@ -1215,7 +1219,13 @@ export default class ShowAllArtists extends React.Component {
             })
             try {
                 let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`);
-                console.log(result)
+                let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
+                this.setState({
+                    deleteReviewEmail: "",
+                    correctDeleteEmail: false,
+                    artistToShow: updatedResponse.data,
+                    deleteReview: false
+                })
             }
             catch (e) {
                 console.log(e)
@@ -1235,6 +1245,7 @@ export default class ShowAllArtists extends React.Component {
                 rating: this.state.addReviewRating,
                 comment: this.state.addReviewComment
             })
+            let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
             this.setState({
                 addReview: false,
                 showAddReviewButton: true,
@@ -1242,7 +1253,8 @@ export default class ShowAllArtists extends React.Component {
                 addReviewReviewer: "",
                 addReviewEmail: "",
                 addReviewRating: 1,
-                addReviewComment: ""
+                addReviewComment: "",
+                artistToShow: updatedResponse.data
             })
             console.log(result)
         }
