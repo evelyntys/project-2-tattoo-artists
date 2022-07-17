@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal, Col, Row, Toast, CloseButton, Accordion } from 'react-bootstrap';
+import { Button, Modal, Accordion } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 
-export default class ShowAllArtists extends React.Component {
+export default class Explore extends React.Component {
     url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
 
     //have state for view-all (originally true) so that it will change to false whe nclick on artist
@@ -19,6 +19,7 @@ export default class ShowAllArtists extends React.Component {
         "pet/animals": "Pet/Animals",
         "floral": "Floral"
     }
+
     state = {
         data: [],
         showConfirmDelete: false,
@@ -47,7 +48,6 @@ export default class ShowAllArtists extends React.Component {
         modifiedOtherServices: [],
         submitted: false,
         showValidateEmail: false,
-        showCreateToast: false,
         showReviews: false,
         editReview: false,
         reviewBeingEdited: {},
@@ -67,6 +67,7 @@ export default class ShowAllArtists extends React.Component {
         showFilters: true,
         search: '',
         gender: [],
+        yearsOfExperience: [],
         apprentice: [],
         temporary: [],
         method: [],
@@ -78,6 +79,7 @@ export default class ShowAllArtists extends React.Component {
         showAddReviewButton: true,
         submittedReview: false,
     }
+
 
     async componentDidMount() {
         let response = await axios.get(this.url + 'show-artists');
@@ -105,9 +107,10 @@ export default class ShowAllArtists extends React.Component {
     }
 
     renderFilters() {
+        let filters = ""
         if (this.state.showFilters) {
-            return (
-                <div style={{ "border": "1px solid gray", "border-radius": "0.6px" }} className="mt-2">
+            filters =
+                <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="mt-2">
                     <div className="container">
                         <div>
                             <label className="form-label me-2">Gender:</label>
@@ -132,6 +135,29 @@ export default class ShowAllArtists extends React.Component {
                             </div>
                         </div>
                         {/* years of exp, ink, private, bookings required, other services */}
+
+                        <div>
+                            <label className="form-label me-2">Years of experience:</label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
+                                    value={1} onChange={this.updateCheckboxes}
+                                    checked={this.state.yearsOfExperience.includes("1")} />
+                                <label className="form-check-label">at least 1 year</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
+                                    value={3} onChange={this.updateCheckboxes}
+                                    checked={this.state.yearsOfExperience.includes("3")} />
+                                <label className="form-check-label">at least 3 years</label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
+                                    value={5} onChange={this.updateCheckboxes}
+                                    checked={this.state.yearsOfExperience.includes("5")} />
+                                <label className="form-check-label">at least 5 years</label>
+                            </div>
+                        </div>
 
                         <div>
                             <label className="form-label me-2">Apprentice:</label>
@@ -342,23 +368,48 @@ export default class ShowAllArtists extends React.Component {
                         </div>
 
                     </div>
-                    <button className="btn btn-light w-100" onClick={() => { this.setState({ showFilters: false }) }}><i class="bi bi-caret-up-fill"></i></button>
+                    <button className="btn btn-light w-100" onClick={() => { this.setState({ showFilters: false }) }}><i className="bi bi-caret-up-fill"></i></button>
                 </div>
-            )
         }
         else {
-            return (
+            filters =
                 <div style={{ "border": "1px solid black" }}>
                     no filters yet
                 </div>
-            )
         }
+        return (
+            <React.Fragment>
+                <h1>search for an artist: </h1>
+                <div className="row">
+                    <div className="col-6">
+                        <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormField} value={this.state.search} />
+                    </div>
+                    <div className="col-6">
+                        <button className="btn btn-primary mx-1" onClick={this.clickSearch}><i className="bi bi-search"></i></button>
+                        <button className="btn btn-primary mx-1"
+                            onClick={() => {
+                                this.setState({
+                                    showFilters: !this.state.showFilters
+                                })
+                            }}>
+                            <i className="bi bi-funnel-fill"></i>
+                        </button>
+                        <button className="btn btn-primary mx-1"
+                            onClick={this.ResetSearch}>
+                            <i className="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+                {filters}
+            </React.Fragment>
+        )
     }
 
     clickSearch = async () => {
         let response = await axios.get(this.url +
             'show-artists?search=' + this.state.search
             + '&gender=' + this.state.gender
+            + '&yearsOfExperience=' + this.state.yearsOfExperience
             + '&apprentice=' + this.state.apprentice
             + '&temporary=' + this.state.temporary
             + '&method=' + this.state.method
@@ -390,6 +441,17 @@ export default class ShowAllArtists extends React.Component {
     }
 
     showOneArtist = async (artist) => {
+        let multiSelectKeys = {
+            "surrealism": { value: "surrealism", label: "Surrealism" },
+            "traditional-americana": { value: "traditional-americana", label: "Traditional Americana" },
+            "traditional-japanese": { value: "traditional-japanese", label: "Traditional Japanese" },
+            "blackwork": { value: "blackwork", label: "Blackwork" },
+            "minimalist": { value: "minimalist", label: "Minimalist" },
+            "water-colour": { value: "water-colour", label: "Water colour" },
+            "pet/animals": { value: "pet/animals", label: "Pet/Animals" },
+            "floral": { value: "floral", label: "Floral" }
+        }
+        let updatedStyle = artist.style.map(style => multiSelectKeys[style]);
         this.setState({
             showOne: true,
             artistToShow: artist,
@@ -399,7 +461,7 @@ export default class ShowAllArtists extends React.Component {
             modifiedApprentice: artist.apprentice,
             modifiedMethod: artist.method,
             modifiedTemporary: artist.temporary,
-            modifiedStyle: artist.style,
+            modifiedStyle: updatedStyle,
             modifiedInk: artist.ink,
             modifiedContact: artist.contact,
             modifiedImage: artist.image,
@@ -529,34 +591,37 @@ export default class ShowAllArtists extends React.Component {
                                             this.setState({
                                                 showOne: false
                                             })
-                                        }}><i class="bi bi-arrow-90deg-left"></i></button>
+                                        }}><i className="bi bi-arrow-90deg-left"></i></button>
                                 </div>
-                                <div class="text-end">
+                                <div className="text-end">
                                     {this.ConfirmEdit()}
                                     {this.ConfirmDelete(this.state.artistToShow)}
                                 </div>
                             </div>
                             <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact, 'instagram')}</h1>
                             <div style={{ "width": "100%", "maxHeight": "300px" }}>
-                                <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "width": "100%", "maxHeight": "300px" }} />
+                                <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "width": "100%", "maxHeight": "300px" }} alt="artist's artwork" />
                             </div>
 
                             <Accordion defaultActiveKey="0" flush>
                                 <Accordion.Item eventKey="0">
-                                    <Accordion.Header>Artist's Details</Accordion.Header>
+                                    <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
                                     <Accordion.Body>
                                         <p>Name: {this.state.artistToShow.name}</p>
                                         <p>Gender: {this.state.artistToShow.gender}</p>
                                         <p>{this.state.artistToShow.yearsOfExperience} years of experience</p>
                                         <p>{this.state.artistToShow.apprentice}</p>
-                                        {/* <p>{this.state.artistToShow.style}</p> */}
+                                        <p>{this.state.artistToShow.style}</p>
                                         <p>{this.state.artistToShow.ink}</p>
                                         {/* have to map */}
-                                        <p>{this.state.artistToShow.contact.contactKey}: {this.state.artistToShow.contact.contactValue}</p>
+                                        {this.state.artistToShow.contact.map(a => (
+                                                        <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
+                                                            {a.contactValue}</div>
+                                                    ))}
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="1">
-                                    <Accordion.Header>Studio Details</Accordion.Header>
+                                    <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
                                     <Accordion.Body>
                                         <p>Name: {this.state.artistToShow.studio.name}</p>
                                         <p>{this.state.artistToShow.studio.private === "yes" ? "Private Studio" : "Shared Studio"}</p>
@@ -604,17 +669,17 @@ export default class ShowAllArtists extends React.Component {
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="female" name="modifiedGender"
-                                                checked={this.state.modifiedGender == "female"} onChange={this.updateFormField} />
+                                                checked={this.state.modifiedGender === "female"} onChange={this.updateFormField} />
                                             <label className="form-check-label">Female</label>
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="male" name="modifiedGender"
-                                                checked={this.state.modifiedGender == "male"} onChange={this.updateFormField} />
+                                                checked={this.state.modifiedGender === "male"} onChange={this.updateFormField} />
                                             <label className="form-check-label">Male</label>
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="others" name="modifiedGender"
-                                                checked={this.state.modifiedGender == "others"} onChange={this.updateFormField} />
+                                                checked={this.state.modifiedGender === "others"} onChange={this.updateFormField} />
                                             <label className="form-check-label">Others</label>
                                         </div>
 
@@ -630,12 +695,12 @@ export default class ShowAllArtists extends React.Component {
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="yes" name="modifiedApprentice"
-                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice == "yes"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice === "yes"} />
                                             <label className="form-check-label">Yes</label>
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="no" name="modifiedApprentice"
-                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice == "no"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice === "no"} />
                                             <label className="form-check-label">No</label>
                                         </div>
 
@@ -660,7 +725,7 @@ export default class ShowAllArtists extends React.Component {
 
                                         <div>
                                             <label className="form-label">Is it temporary? </label>
-                                            <select class="form-select" aria-label="Default select example"
+                                            <select className="form-select" aria-label="Default select example"
                                                 onChange={this.updateFormField} value={this.state.modifiedTemporary} name="modifiedTemporary">
                                                 <option value="no">No</option>
                                                 <option value="yes">Yes</option>
@@ -723,12 +788,12 @@ export default class ShowAllArtists extends React.Component {
                                             <label className="form-label">Is it a private studio? </label>
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="yes" name="modifiedPrivate"
-                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate == "yes"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate === "yes"} />
                                             <label className="form-check-label">Yes</label>
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="no" name="modifiedPrivate"
-                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate == "no"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate === "no"} />
                                             <label className="form-check-label">No</label>
                                         </div>
 
@@ -736,12 +801,12 @@ export default class ShowAllArtists extends React.Component {
                                             <label className="form-label">Are bookings required? </label>
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="yes" name="modifiedBookingsRequired"
-                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired == "yes"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "yes"} />
                                             <label className="form-check-label">Yes</label>
 
                                             <input type="radio" className="form-check-input mx-2"
                                                 value="no" name="modifiedBookingsRequired"
-                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired == "no"} />
+                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "no"} />
                                             <label className="form-check-label">No</label>
                                         </div>
 
@@ -768,6 +833,7 @@ export default class ShowAllArtists extends React.Component {
                                         </div>
 
                                         <button className="btn btn-primary mt-2" onClick={this.updateArtist}>Update artist</button>
+                                        <button className="btn btn-primary mt-2" onClick={() => { this.setState({ editMode: false, showConfirmEdit: false }) }}>Cancel</button>
                                     </div>
 
 
@@ -786,34 +852,34 @@ export default class ShowAllArtists extends React.Component {
                     {this.state.data.length ?
                         <div className="container d-flex flex-row flex-wrap justify-content-evenly">
                             {this.state.data.map(e => (
-                                <React.Fragment key={e._id}>
-                                    <div className="card mx-2 my-2" style={{ "width": "20rem" }}>
-                                        <img src={e.image} style={{ "height": "318px", "width": "318px", "objectFit": "cover" }} class="card-img-top" alt="..." />
+                                <React.Fragment key={"all" + e._id}>
+                                    <div className="card mx-2 my-2" style={{ "width": "18rem" }}>
+                                        <h4 className="card-title text-center">{this.findInstagram(e.contact, 'instagram')}</h4>
+                                        <img src={e.image} style={{ "height": "288px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
                                         <div className="card-body">
-                                            <h5 className="card-title">{this.findInstagram(e.contact, 'instagram')}</h5>
-                                            <p className="card-text">
-                                                Name: {e.name} <br />
-                                                Gender: {e.gender}<br />
-                                                Years of experience: {e.yearsOfExperience}<br />
-                                                Apprentice? {e.apprentice}<br />
+                                            <div className="card-text">
+                                                <h5> {e.name} </h5>
+                                                Gender: {e.gender}
+                                                Years of experience: {e.yearsOfExperience}
+                                                Apprentice? {e.apprentice}
                                                 Methods: {e.method.map(a => (
-                                                    <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                    <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
                                                 ))}<br />
-                                                Temporary? {e.temporary}<br />
+                                                Temporary? {e.temporary}
                                                 Style: {e.style.map(a => (
-                                                    <span class="badge rounded-pill bg-secondary">{this.styleKeys[a]}</span>
-                                                ))}<br />
+                                                    <span className="badge rounded-pill bg-secondary" key={a}>{this.styleKeys[a]}</span>
+                                                ))}
                                                 Ink: {e.ink.map(a => (
-                                                    <span class="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                                ))}<br />
-
-                                                <h6>Contact: </h6>
-                                                {e.contact.map(a => (
-                                                    <React.Fragment>
-                                                        <div><b>{a.contactKey}</b>: {a.contactValue}</div>
-                                                    </React.Fragment>
+                                                    <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
                                                 ))}
 
+                                                <div>
+                                                    <h6>Contact: </h6>
+                                                    {e.contact.map(a => (
+                                                        <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
+                                                            {a.contactValue}</div>
+                                                    ))}
+                                                </div>
                                                 <div>
                                                     studio name: {e.studio.name}<br />
                                                     private studio: {e.studio.private} <br />
@@ -821,7 +887,7 @@ export default class ShowAllArtists extends React.Component {
                                                     bookings required: {e.studio.bookingsRequired} <br />
                                                     other services: {e.studio.otherServices} <br />
                                                 </div>
-                                            </p>
+                                            </div>
                                             <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
                                         </div>
                                     </div>
@@ -840,8 +906,8 @@ export default class ShowAllArtists extends React.Component {
         if (!this.state.editReview || !this.state.correctReviewEmail) {
             contentToReturn =
                 <React.Fragment>
-                    <h1>Reviews:</h1>
-                    {this.state.artistToShow.reviews == undefined || this.state.artistToShow.reviews.length == 0 ?
+                    <h5>Reviews:</h5>
+                    {this.state.artistToShow.reviews === undefined || this.state.artistToShow.reviews.length === 0 ?
                         <div>
                             <h1>no reviews available</h1>
                             {this.RenderAddReview()}
@@ -858,53 +924,54 @@ export default class ShowAllArtists extends React.Component {
                         </div>
                         :
                         <div>
-                            <div className="list-group">{this.state.artistToShow.reviews.map(
-                                each => (
-                                    <div className="list-group-item my-1">
-                                        <div className="d-flex w-100 justify-content-between">
-                                            <div>
-                                                <h5 className="mb-1">{each.reviewer}</h5>
-                                            </div>
-                                            <div className="justify-content-end fs-6">
-                                                <button className="btn"
-                                                    onClick={() => this.setState({
-                                                        editReview: true,
-                                                        reviewBeingEdited: each,
-                                                        updatedRating: each.rating,
-                                                        updatedComment: each.comment
-                                                    })}><i class="bi bi-pencil-square"></i></button>
+                            <div className="list-group">
+                                {this.state.artistToShow.reviews.map(
+                                    each => (
+                                        <div className="list-group-item my-1" key={each._id + "one"}>
+                                            <div className="d-flex w-100 justify-content-between">
+                                                <div>
+                                                    <h5 className="mb-1">{each.reviewer}</h5>
+                                                </div>
+                                                <div className="justify-content-end fs-6">
+                                                    <button className="btn"
+                                                        onClick={() => this.setState({
+                                                            editReview: true,
+                                                            reviewBeingEdited: each,
+                                                            updatedRating: each.rating,
+                                                            updatedComment: each.comment
+                                                        })}><i className="bi bi-pencil-square"></i></button>
 
-                                                <button className="btn"
-                                                    onClick={() => this.setState({
-                                                        reviewBeingDeleted: each,
-                                                        deleteReview: true
-                                                    })}><i class="bi bi-trash"></i></button>
+                                                    <button className="btn"
+                                                        onClick={() => this.setState({
+                                                            reviewBeingDeleted: each,
+                                                            deleteReview: true
+                                                        })}><i className="bi bi-trash"></i></button>
+                                                </div>
                                             </div>
+                                            <small className="text-muted">
+                                                ratings: {each.rating} &#9733;
+                                            </small>
+                                            <p className="mb-1">{each.comment}</p>
+                                            {this.state.editReview && this.state.reviewBeingEdited === each ?
+                                                <div>
+                                                    <div>
+                                                        <label>Please enter your email to confirm your identity:</label>
+                                                        <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
+                                                    </div>
+                                                    <div>
+                                                        <button className="btn btn-primary" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
+                                                        <button className="btn btn-secondary" onClick={() => {
+                                                            this.setState({
+                                                                editReview: false
+                                                            })
+                                                        }}>Cancel</button>
+                                                    </div>
+                                                </div>
+                                                :
+                                                null
+                                            }
                                         </div>
-                                        <small className="text-muted">
-                                            ratings: {each.rating} &#9733;
-                                        </small>
-                                        <p className="mb-1">{each.comment}</p>
-                                        {this.state.editReview && this.state.reviewBeingEdited === each ?
-                                            <div>
-                                                <div>
-                                                    <label>Please enter your email to confirm your identity:</label>
-                                                    <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
-                                                </div>
-                                                <div>
-                                                    <button className="btn btn-primary" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
-                                                    <button className="btn btn-secondary" onClick={() => {
-                                                        this.setState({
-                                                            editReview: false
-                                                        })
-                                                    }}>Cancel</button>
-                                                </div>
-                                            </div>
-                                            :
-                                            null
-                                        }
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
@@ -958,7 +1025,7 @@ export default class ShowAllArtists extends React.Component {
                                 <h5 className="mb-1">{this.state.reviewBeingDeleted.reviewer}</h5>
                                 {/* <small className="text-muted">{this.state.reviewBeingDeleted._id}</small> */}
                             </div>
-                            <small className="text-muted">ratings: {this.state.reviewBeingDeleted.rating} <i class="bi bi-star-fill"></i></small>
+                            <small className="text-muted">ratings: {this.state.reviewBeingDeleted.rating} <i className="bi bi-star-fill"></i></small>
                             <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
                         </div>
                     </div>
@@ -992,7 +1059,7 @@ export default class ShowAllArtists extends React.Component {
 
     processDelete = async (id, confirmDeleteEmail) => {
         try {
-            let response = await axios.delete(this.url + `tattoo-artist/${id}` + '?email=' + this.state.confirmDeleteEmail);
+            let response = await axios.delete(this.url + `tattoo-artist/${id}?email=` + this.state.confirmDeleteEmail);
             const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
             const modifiedData = [...this.state.data.slice(0, index),
             ...this.state.data.slice(index + 1)]
@@ -1035,7 +1102,7 @@ export default class ShowAllArtists extends React.Component {
         return (
             <React.Fragment>
                 <button className="btn" onClick={handleShow}>
-                    <i class="bi bi-pencil-square"></i>
+                    <i className="bi bi-pencil-square"></i>
                 </button>
 
                 <Modal
@@ -1082,7 +1149,7 @@ export default class ShowAllArtists extends React.Component {
         return (
             <React.Fragment>
                 <button className="btn" onClick={handleShow}>
-                    <i class="bi bi-trash"></i>
+                    <i className="bi bi-trash"></i>
                 </button>
 
                 <Modal
@@ -1158,7 +1225,7 @@ export default class ShowAllArtists extends React.Component {
                 {[...Array(5)].map((star, index) => {
                     index += 1;
                     return (
-                        <button type="button" className={index <= this.state.addReviewRating ? "on" : "off"}
+                        <button type="button" key={index} className={index <= this.state.addReviewRating ? "on" : "off"}
                             onClick={() => {
                                 this.setState({
                                     addReviewRating: index
@@ -1203,12 +1270,12 @@ export default class ShowAllArtists extends React.Component {
             this.setState({
                 editReview: false,
                 artistToShow: updatedResponse.data
-               
+
             })
         }
         catch (e) {
             console.log(e)
-            alert('error udpating')
+            alert('error updating')
         }
     }
 
@@ -1218,7 +1285,7 @@ export default class ShowAllArtists extends React.Component {
                 correctDeleteEmail: true
             })
             try {
-                let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`);
+                let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`, { params: { email: this.state.deleteReviewEmail } });
                 let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
                 this.setState({
                     deleteReviewEmail: "",
@@ -1267,36 +1334,21 @@ export default class ShowAllArtists extends React.Component {
         return (
             <React.Fragment>
                 <div className="container">
-                    <div>
-                        {this.state.showOne ?
-                            null
-                            :
-                            <React.Fragment>
-                                <h1>search for an artist: </h1>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <input type="text" className="form-control" placeholder="search for anything..." name="search" onChange={this.updateFormFields} value={this.state.search} />
-                                    </div>
-                                    <div class="col-6">
-                                        <button className="btn btn-primary mx-1" onClick={this.clickSearch}><i class="bi bi-search"></i></button>
-                                        <button className="btn btn-primary mx-1"
-                                            onClick={() => {
-                                                this.setState({
-                                                    showFilters: !this.state.showFilters
-                                                })
-                                            }}>
-                                            <i class="bi bi-funnel-fill"></i>
-                                        </button>
-                                        <button className="btn btn-primary mx-1"
-                                            onClick={this.ResetSearch}>
-                                            <i class="bi bi-arrow-clockwise"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                    <div className="row">
+                        {!this.state.showOne ?
+                            <div className="col-12 col-md-4">
                                 {this.renderFilters()}
-                                <h1>results: </h1>
-                            </React.Fragment>}
-                        {this.ShowOneOrAll()}
+                            </div>
+                            :
+                            null
+                        }
+                        <div className={'col-12 ' + (this.state.showOne? '' : 'col-md-8')}>
+                        {!this.state.showOne? <h1>results: </h1>
+                        :
+                        null
+                        }
+                            {this.ShowOneOrAll()}
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
