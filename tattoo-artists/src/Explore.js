@@ -113,7 +113,9 @@ export default class Explore extends React.Component {
                 <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="mt-2">
                     <div className="container">
                         <div>
+
                             <label className="form-label me-2">Gender:</label>
+
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="gender"
@@ -137,7 +139,9 @@ export default class Explore extends React.Component {
                         {/* years of exp, ink, private, bookings required, other services */}
 
                         <div>
-                            <label className="form-label me-2">Years of experience:</label>
+                            <div>
+                                <label className="form-label me-2">Years of experience:</label>
+                            </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="yearsOfExperience"
@@ -160,6 +164,7 @@ export default class Explore extends React.Component {
                         </div>
 
                         <div>
+
                             <label className="form-label me-2">Apprentice:</label>
 
                             <div className="form-check form-check-inline">
@@ -194,7 +199,9 @@ export default class Explore extends React.Component {
                         </div>
 
                         <div>
-                            <label className="form-label me-2">Method(s):</label>
+                            <div>
+                                <label className="form-label me-2">Method(s):</label>
+                            </div>
 
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input"
@@ -220,8 +227,9 @@ export default class Explore extends React.Component {
 
                         <div>
                             <label className="form-label me-2">Style(s):</label>
-                            {/* <StyleMultiSelect value={this.state.style} onChange={this.handleSelect}/> */}
-                            <div className="form-check form-check-inline">
+                            <StyleMultiSelect style={this.state.style} handleSelect={this.handleSelectFilter} />
+
+                            {/* <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input" name="style"
                                     value='surrealism' onChange={this.updateCheckboxes}
                                     checked={this.state.style.includes('surrealism')} />
@@ -275,12 +283,15 @@ export default class Explore extends React.Component {
                                     value="floral" onChange={this.updateCheckboxes}
                                     checked={this.state.style.includes("floral")} />
                                 <label className="form-check-label"> Floral</label>
-                            </div>
+                            </div> */}
 
                         </div>
 
                         <div>
-                            <label className="form-label me-2">Ink(s):</label>
+                            <div>
+                                <label className="form-label">Ink(s):</label>
+                            </div>
+
                             <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input"
                                     value="black" name="ink"
@@ -406,6 +417,7 @@ export default class Explore extends React.Component {
     }
 
     clickSearch = async () => {
+        let styleQuery = this.state.style.map(value => value.value)
         let response = await axios.get(this.url +
             'show-artists?search=' + this.state.search
             + '&gender=' + this.state.gender
@@ -416,7 +428,7 @@ export default class Explore extends React.Component {
             + '&ink=' + this.state.ink
             + '&private=' + this.state.private
             + '&bookings=' + this.state.bookingsRequired
-            + '&otherServices=' + this.state.otherServices, { params: { style: this.state.style } });
+            + '&otherServices=' + this.state.otherServices, { params: { style: styleQuery } });
         this.setState({
             data: response.data,
             showFilters: false
@@ -424,9 +436,9 @@ export default class Explore extends React.Component {
         console.log(response.data)
     }
 
-    findInstagram(array, title) {
+    findInstagram(array) {
         let instagram = array.find((element) => {
-            return element.contactKey === title;
+            return element.contactKey === 'instagram';
         })
         if (instagram) {
             return instagram.contactValue;
@@ -476,9 +488,15 @@ export default class Explore extends React.Component {
         })
     }
 
-    handleSelect = (data) => {
+    handleSelectModified = (data) => {
         this.setState({
             modifiedStyle: data
+        })
+    }
+
+    handleSelectFilter = (data) => {
+        this.setState({
+            style: data
         })
     }
 
@@ -558,11 +576,11 @@ export default class Explore extends React.Component {
                 editMode: false,
                 showConfirmEdit: false,
                 data: updatedArtists,
-                artistToShow: updatedArtists[indexOfModified]
+                artistToShow: updatedArtists[indexOfModified],
+                submitted: false
             })
         }
         catch (e) {
-            alert('error updating')
             console.log(e)
         }
     }
@@ -572,6 +590,130 @@ export default class Explore extends React.Component {
             if (!state) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you fill in the {field}</div>
+                )
+            }
+        }
+    }
+
+    ValidateName(state, field) {
+        if (this.state.submitted) {
+            if (!state || state.length < 2) {
+                return (
+                    <div style={{ "color": "red" }}>Please ensure that the {field} is at least 2 characters long</div>
+                )
+            }
+        }
+    }
+
+    ValidateYearStarted() {
+        if (this.state.submitted) {
+            if (!this.state.modifiedYearStarted || isNaN(parseInt(this.state.modifiedYearStarted))) {
+                return (
+                    <div style={{ "color": "red" }}>Please ensure that you fill in a valid year</div>
+                )
+            }
+        }
+    }
+
+    ValidateMethod() {
+        if (this.state.submitted) {
+            if (this.state.modifiedMethod === [] || this.state.modifiedMethod.length === 0) {
+                return (
+                    <div style={{ "color": "red" }}>Please ensure that you select at least one method</div>
+                )
+            }
+        }
+    }
+
+    ValidateStyle() {
+        if (this.state.submitted) {
+            if (this.state.modifiedStyle.length === 0 || !this.state.modifiedStyle || this.state.modifiedStyle === null || this.state.modifiedStyle.length > 3) {
+                return (
+                    <div style={{ "color": "red" }}>Please ensure that you select at least one and at most 3 styles</div>
+                )
+            }
+        }
+    }
+
+    ValidateInk() {
+        if (this.state.submitted) {
+            if (this.state.modifiedInk === [] || this.state.modifiedInk.length === 0) {
+                return (
+                    <div style={{ "color": "red" }}>Please ensure that you select at least one type of ink</div>
+                )
+            }
+        }
+    }
+
+    ValidateContact() {
+        if (this.state.submitted) {
+            let message = "";
+            let instagram = this.state.modifiedContact.find((element) => {
+                return element.contactKey === 'instagram';
+            })
+            if (instagram) {
+                if (!instagram.contactValue.includes('@'))
+                    message = " and include the '@' on your instagram handle"
+                else {
+                    message = ""
+                }
+            }
+            else {message = " and ensure that you include your instagram"}
+    
+            if (!this.state.modifiedContact[0].contactKey || !this.state.modifiedContact[0].contactValue || !instagram || !instagram.contactValue.includes('@')) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter at least one contact information
+                        {message}</div>
+                )
+            }
+        }
+    }
+
+    ValidateImage() {
+        if (this.state.submitted) {
+            if (!this.state.modifiedImage) {
+                return (
+                    <div style={{ "color": "red" }}>Please provide a reference image link</div>
+                )
+            }
+        }
+    }
+
+    ValidateStudio(state, field) {
+        if (this.state.submitted) {
+            if (!state || state.length === 0) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter the {field}</div>
+                )
+            }
+        }
+    }
+
+    ValidateUnit(state) {
+        if (this.state.submitted) {
+            if (!state || !state.includes('#') || !state.includes('-')) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter the unit number and ensure that it contains a '#' and '-'</div>
+                )
+            }
+        }
+    }
+
+    ValidatePostal() {
+        if (this.state.submitted) {
+            if (!this.state.modifiedPostal || this.state.modifiedPostal.length !== 6 || isNaN(parseInt(this.state.modifiedPostal))) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter a valid postal code</div>
+                )
+            }
+        }
+    }
+
+    ValidateEmail() {
+        if (this.state.submitted) {
+            if (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') || !this.state.ownerEmail.includes('.com')) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter a valid email</div>
                 )
             }
         }
@@ -598,7 +740,7 @@ export default class Explore extends React.Component {
                                     {this.ConfirmDelete(this.state.artistToShow)}
                                 </div>
                             </div>
-                            <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact, 'instagram')}</h1>
+                            <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact)}</h1>
                             <div style={{ "width": "100%", "maxHeight": "300px" }}>
                                 <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "width": "100%", "maxHeight": "300px" }} alt="artist's artwork" />
                             </div>
@@ -615,9 +757,9 @@ export default class Explore extends React.Component {
                                         <p>{this.state.artistToShow.ink}</p>
                                         {/* have to map */}
                                         {this.state.artistToShow.contact.map(a => (
-                                                        <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
-                                                            {a.contactValue}</div>
-                                                    ))}
+                                            <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
+                                                {a.contactValue}</div>
+                                        ))}
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="1">
@@ -661,26 +803,32 @@ export default class Explore extends React.Component {
                                                 name="modifiedArtistName"
                                                 value={this.state.modifiedArtistName}
                                                 onChange={this.updateFormField} />
-                                            {this.ValidateFields(this.state.modifiedArtistName, "artist name")}
+                                            {this.ValidateName(this.state.modifiedArtistName, "artist name")}
                                         </div>
 
                                         <div>
                                             <label className="form-label">Gender: </label>
 
-                                            <input type="radio" className="form-check-input mx-2"
-                                                value="female" name="modifiedGender"
-                                                checked={this.state.modifiedGender === "female"} onChange={this.updateFormField} />
-                                            <label className="form-check-label">Female</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="radio" className="form-check-input"
+                                                    value="female" name="modifiedGender"
+                                                    checked={this.state.modifiedGender === "female"} onChange={this.updateFormField} />
+                                                <label className="form-check-label">Female</label>
+                                            </div>
 
-                                            <input type="radio" className="form-check-input mx-2"
-                                                value="male" name="modifiedGender"
-                                                checked={this.state.modifiedGender === "male"} onChange={this.updateFormField} />
-                                            <label className="form-check-label">Male</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="radio" className="form-check-input"
+                                                    value="male" name="modifiedGender"
+                                                    checked={this.state.modifiedGender === "male"} onChange={this.updateFormField} />
+                                                <label className="form-check-label">Male</label>
+                                            </div>
 
-                                            <input type="radio" className="form-check-input mx-2"
-                                                value="others" name="modifiedGender"
-                                                checked={this.state.modifiedGender === "others"} onChange={this.updateFormField} />
-                                            <label className="form-check-label">Others</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="radio" className="form-check-input"
+                                                    value="others" name="modifiedGender"
+                                                    checked={this.state.modifiedGender === "others"} onChange={this.updateFormField} />
+                                                <label className="form-check-label">Others</label>
+                                            </div>
                                         </div>
 
                                         <div>
@@ -688,39 +836,51 @@ export default class Explore extends React.Component {
                                             <input type="text" className="form-control"
                                                 placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
                                                 onChange={this.updateFormField} />
+                                            {this.ValidateYearStarted()}
                                         </div>
 
                                         <div>
                                             <label className="form-label">Are you an apprentice? </label>
 
-                                            <input type="radio" className="form-check-input mx-2"
-                                                value="yes" name="modifiedApprentice"
-                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice === "yes"} />
-                                            <label className="form-check-label">Yes</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="radio" className="form-check-input"
+                                                    value="yes" name="modifiedApprentice"
+                                                    onChange={this.updateFormField} checked={this.state.modifiedApprentice === "yes"} />
+                                                <label className="form-check-label">Yes</label>
+                                            </div>
 
-                                            <input type="radio" className="form-check-input mx-2"
-                                                value="no" name="modifiedApprentice"
-                                                onChange={this.updateFormField} checked={this.state.modifiedApprentice === "no"} />
-                                            <label className="form-check-label">No</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="radio" className="form-check-input"
+                                                    value="no" name="modifiedApprentice"
+                                                    onChange={this.updateFormField} checked={this.state.modifiedApprentice === "no"} />
+                                                <label className="form-check-label">No</label>
+                                            </div>
                                         </div>
 
                                         <div>
                                             <label className="form-label">Please select your method(s) of tattooing:</label>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="handpoke" name="modifiedMethod"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('handpoke')} />
-                                            <label className="form-check-label">Handpoke</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="handpoke" name="modifiedMethod"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('handpoke')} />
+                                                <label className="form-check-label">Handpoke</label>
+                                            </div>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="machine" name="modifiedMethod"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('machine')} />
-                                            <label className="form-check-label">Machine</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="machine" name="modifiedMethod"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('machine')} />
+                                                <label className="form-check-label">Machine</label>
+                                            </div>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="jagua" name="modifiedMethod"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('jagua')} />
-                                            <label className="form-check-label">Jagua</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="jagua" name="modifiedMethod"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('jagua')} />
+                                                <label className="form-check-label">Jagua</label>
+                                            </div>
+                                            {this.ValidateMethod()}
                                         </div>
 
                                         <div>
@@ -734,42 +894,54 @@ export default class Explore extends React.Component {
 
                                         <div>
                                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                            <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.modifiedStyle} />
+                                            <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
+                                            {this.ValidateStyle()}
                                         </div>
 
 
                                         <div>
                                             <label className="form-label">Please select your ink(s):</label>
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="black" name="modifiedInk"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('black')} />
-                                            <label className="form-check-label">Black</label>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="colours" name="modifiedInk"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('colours')} />
-                                            <label className="form-check-label">Colours</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="black" name="modifiedInk"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('black')} />
+                                                <label className="form-check-label">Black</label>
+                                            </div>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="jagua" name="modifiedInk"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('jagua')} />
-                                            <label className="form-check-label">Jagua</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="colours" name="modifiedInk"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('colours')} />
+                                                <label className="form-check-label">Colours</label>
+                                            </div>
 
-                                            <input type="checkbox" className="form-check-input mx-2"
-                                                value="uv" name="modifiedInk"
-                                                onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('uv')} />
-                                            <label className="form-check-label">UV</label>
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="jagua" name="modifiedInk"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('jagua')} />
+                                                <label className="form-check-label">Jagua</label>
+                                            </div>
+
+                                            <div className="form-check form-check-inline">
+                                                <input type="checkbox" className="form-check-input"
+                                                    value="uv" name="modifiedInk"
+                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('uv')} />
+                                                <label className="form-check-label">UV</label>
+                                            </div>
+                                            {this.ValidateInk()}
                                         </div>
 
                                         <label className="form-label">Please enter the artist's contact details: </label>
                                         <ContactFields handleAddClick={this.handleAddClick}
                                             inputList={this.state.modifiedContact}
                                             setInputList={this.updateData} />
-
+                                        {this.ValidateContact()}
                                         <div>
                                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
                                             <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
                                                 onChange={this.updateFormField} value={this.state.modifiedImage} />
+                                            {this.ValidateImage()}
                                         </div>
 
                                     </div>
@@ -782,6 +954,7 @@ export default class Explore extends React.Component {
                                                 placeholder="studio name" name="modifiedStudioName"
                                                 value={this.state.modifiedStudioName}
                                                 onChange={this.updateFormField} />
+                                            {this.ValidateStudio(this.state.modifiedStudioName, 'studio name')}
                                         </div>
 
                                         <div>
@@ -816,20 +989,24 @@ export default class Explore extends React.Component {
                                             <label className="form-label">Street: (please enter "nil" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
                                                 value={this.state.modifiedStreet} onChange={this.updateFormField} />
+                                            {this.ValidateStudio(this.state.modifiedStreet, 'street')}
 
                                             <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
                                                 value={this.state.modifiedUnit} onChange={this.updateFormField} />
+                                            {this.ValidateUnit(this.state.modifiedUnit)}
 
                                             <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
                                                 value={this.state.modifiedPostal} onChange={this.updateFormField} />
+                                            {this.ValidatePostal()}
                                         </div>
 
                                         <div>
                                             <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
                                             <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
                                                 value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
+                                            {this.ValidateStudio(this.state.modifiedOtherServices, 'services provided')}
                                         </div>
 
                                         <button className="btn btn-primary mt-2" onClick={this.updateArtist}>Update artist</button>
@@ -854,36 +1031,41 @@ export default class Explore extends React.Component {
                             {this.state.data.map(e => (
                                 <React.Fragment key={"all" + e._id}>
                                     <div className="card mx-2 my-2" style={{ "width": "18rem" }}>
-                                        <h4 className="card-title text-center">{this.findInstagram(e.contact, 'instagram')}</h4>
+                                        <h4 className="card-title text-center">{this.findInstagram(e.contact)}</h4>
                                         <img src={e.image} style={{ "height": "288px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
                                         <div className="card-body">
                                             <div className="card-text">
                                                 <h5> {e.name} </h5>
-                                                Gender: {e.gender}
-                                                Years of experience: {e.yearsOfExperience}
-                                                Apprentice? {e.apprentice}
+                                                <p> {e.gender} </p>
+                                                <p> tattooing since {e.yearStarted}</p>
+                                                {/* Apprentice? {e.apprentice} */}
                                                 Methods: {e.method.map(a => (
                                                     <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
                                                 ))}<br />
-                                                Temporary? {e.temporary}
-                                                Style: {e.style.map(a => (
+                                                {/* Temporary? {e.temporary} */}
+                                                Style:
+                                                <div>{e.style.map(a => (
                                                     <span className="badge rounded-pill bg-secondary" key={a}>{this.styleKeys[a]}</span>
                                                 ))}
-                                                Ink: {e.ink.map(a => (
-                                                    <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                                ))}
-
+                                                </div>
+                                                Ink:
                                                 <div>
-                                                    <h6>Contact: </h6>
-                                                    {e.contact.map(a => (
-                                                        <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
-                                                            {a.contactValue}</div>
+                                                    {e.ink.map(a => (
+                                                        <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
                                                     ))}
                                                 </div>
-                                                <div>
+
+                                                <div style={{ "border": "1px solid black" }}>
+                                                    <h6>Contact: </h6>
+                                                    {e.contact.map(a => (
+                                                        <div key={"contact" + a.contactKey}>
+                                                            <b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                    ))}
+                                                </div>
+                                                <div style={{ "border": "1px solid black" }}>
                                                     studio name: {e.studio.name}<br />
                                                     private studio: {e.studio.private} <br />
-                                                    address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br />
+                                                    {/* address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br /> */}
                                                     bookings required: {e.studio.bookingsRequired} <br />
                                                     other services: {e.studio.otherServices} <br />
                                                 </div>
@@ -1342,11 +1524,11 @@ export default class Explore extends React.Component {
                             :
                             null
                         }
-                        <div className={'col-12 ' + (this.state.showOne? '' : 'col-md-8')}>
-                        {!this.state.showOne? <h1>results: </h1>
-                        :
-                        null
-                        }
+                        <div className={'col-12 ' + (this.state.showOne ? '' : 'col-md-8')}>
+                            {!this.state.showOne ? <h1>Showing {this.state.data.length} result(s): </h1>
+                                :
+                                null
+                            }
                             {this.ShowOneOrAll()}
                         </div>
                     </div>
