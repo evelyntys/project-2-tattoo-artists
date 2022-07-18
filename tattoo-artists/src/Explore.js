@@ -78,6 +78,7 @@ export default class Explore extends React.Component {
         otherServices: [],
         showAddReviewButton: true,
         submittedReview: false,
+        submittedEditReview: false
     }
 
 
@@ -586,7 +587,7 @@ export default class Explore extends React.Component {
     }
 
     ValidateFields(state, field) {
-        if (this.state.submitted) {
+        if (this.state.submittedReview) {
             if (!state) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you fill in the {field}</div>
@@ -1184,12 +1185,18 @@ export default class Explore extends React.Component {
                                 {this.EditStarRating()}
                             </small>
 
-                            <p className="mb-1"><textarea className="form-control" name="updatedComment" value={this.state.updatedComment} onChange={this.updateFormField}>
-                            </textarea></p>
+                           <textarea className="form-control" name="updatedComment" value={this.state.updatedComment} 
+                           onChange={this.updateFormField}>
+                            </textarea>
+                            {this.state.submittedEditReview && this.state.updatedComment.length ===0? 
+                            <div style={{"color": "red"}}>Please enter your review</div>
+                            :
+                            null}
                             <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
                             <button className="btn btn-secondary" onClick={() => {
                                 this.setState({
-                                    editReview: false
+                                    editReview: false,
+                                    correctReviewEmail: false
                                 })
                             }}>Cancel</button>
                         </div>
@@ -1375,17 +1382,25 @@ export default class Explore extends React.Component {
                         <div className="col-6">
                             <label>Email: </label>
                             <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
+                            {this.ValidateEmail()}
                         </div>
                         <div>
                         </div>
                         <label>Rating: </label>
                         {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
                         {this.AddStarRating()}
+                        {this.state.submittedReview && this.state.addReviewRating == 0?
+                        <div style={{"color": "red"}}>
+                            Please ensure that you select a rating
+                        </div>
+                    :
+                    null}
                     </div>
                     <div>
                         <label>Comment: </label>
                         <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
                         </textarea>
+                        {this.ValidateFields(this.state.addReviewComment, 'review')}
                     </div>
                     <div className="my-2">
                         <button className="btn btn-primary" onClick={this.AddReviewToArtist}>add review</button>
@@ -1440,6 +1455,9 @@ export default class Explore extends React.Component {
     };
 
     updateReview = async () => {
+        this.setState({
+            submittedEditReview: true
+        })
         try {
             let result = await axios.post(this.url + `reviews/${this.state.reviewBeingEdited._id}/edit`, {
                 reviewer: this.state.reviewBeingEdited.reviewer,
@@ -1457,7 +1475,6 @@ export default class Explore extends React.Component {
         }
         catch (e) {
             console.log(e)
-            alert('error updating')
         }
     }
 
@@ -1509,6 +1526,16 @@ export default class Explore extends React.Component {
         }
         catch (e) {
             console.log(e)
+        }
+    }
+
+    ValidateEmail() {
+        if (this.state.submittedReview) {
+            if (!this.state.addReviewEmail || !this.state.addReviewEmail.includes('@') || !this.state.addReviewEmail.includes('.com')) {
+                return (
+                    <div style={{ "color": "red" }}>Please enter a valid email</div>
+                )
+            }
         }
     }
 
