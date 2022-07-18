@@ -1,10 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContactFields from './ContactFields';
-import Select from 'react-select';
 import StyleMultiSelect from './StyleMultiSelect';
 import axios from 'axios';
-import { Col, Row, Toast, Button, ToastContainer } from 'react-bootstrap'
+import { Toast, Button, ToastContainer, ProgressBar } from 'react-bootstrap';
+import StepProgressBar from './TestProgressBar';
 
 
 export default class AddNewArtist extends React.Component {
@@ -68,7 +68,7 @@ export default class AddNewArtist extends React.Component {
                 <ToastContainer position="top-end">
                     <Toast onClose={() => this.setState({
                         showCreateToast: false
-                    })} show={this.state.showCreateToast} autohide>
+                    })} show={this.state.showCreateToast} delay={3000} autohide>
                         <Toast.Header>
                             <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
                                 :
@@ -78,9 +78,9 @@ export default class AddNewArtist extends React.Component {
                         <Toast.Body>{this.renderToastContent()}</Toast.Body>
                     </Toast>
                 </ToastContainer>
-                <div className="progress my-2">
+                {/* <div className="progress my-2">
                     <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                </div> */}
                 <h1>your information</h1>
                 <label className="form-label">Your name: </label>
                 <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
@@ -216,17 +216,18 @@ export default class AddNewArtist extends React.Component {
                 secondPage: false,
                 thirdPage: false,
                 submitted: false,
-                showCreateToast: false,
-                addSuccess: false
             })
             { this.props.ChangePages('explore') }
         }
         catch (e) {
             this.setState({
-                addSuccess: false
+                addSuccess: false,
             })
             console.log(e)
         }
+        // this.setState({
+        //     showCreateToast: false
+        // })
     }
 
     ValidateName(state, field) {
@@ -241,7 +242,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidateYearStarted() {
         if (this.state.submitted) {
-            if (!this.state.yearStarted || parseInt(this.state.yearStarted) === NaN) {
+            if (!this.state.yearStarted || isNaN(parseInt(this.state.yearStarted))) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you fill in a valid year</div>
                 )
@@ -251,7 +252,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidateMethod() {
         if (this.state.submitted) {
-            if (this.state.method == [] || this.state.method.length == 0) {
+            if (this.state.method === [] || this.state.method.length === 0) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one method</div>
                 )
@@ -261,7 +262,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidateStyle() {
         if (this.state.submitted) {
-            if (this.state.style.length == 0 || !this.state.style || this.state.style == null || this.state.style.length > 3) {
+            if (this.state.style.length === 0 || !this.state.style || this.state.style === null || this.state.style.length > 3) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one and at most 3 styles</div>
                 )
@@ -271,7 +272,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidateInk() {
         if (this.state.submitted) {
-            if (this.state.ink == [] || this.state.ink.length == 0) {
+            if (this.state.ink === [] || this.state.ink.length === 0) {
                 return (
                     <div style={{ "color": "red" }}>Please ensure that you select at least one type of ink</div>
                 )
@@ -283,7 +284,8 @@ export default class AddNewArtist extends React.Component {
         if (this.state.submitted) {
             if (!this.state.contact[0].contactKey || !this.state.contact[0].contactValue) {
                 return (
-                    <div style={{ "color": "red" }}>Please enter at least one contact information</div>
+                    <div style={{ "color": "red" }}>Please enter at least one contact information
+                    {this.findInstagram(this.state.contact)}</div>
                 )
             }
         }
@@ -301,7 +303,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidateStudio(state, field) {
         if (this.state.submitted) {
-            if (!state || state.length == 0) {
+            if (!state || state.length === 0) {
                 return (
                     <div style={{ "color": "red" }}>Please enter the {field}</div>
                 )
@@ -311,7 +313,7 @@ export default class AddNewArtist extends React.Component {
 
     ValidatePostal() {
         if (this.state.submitted) {
-            if (!this.state.postal || this.state.postal.length != 6 || parseInt(this.state.postal) == NaN) {
+            if (!this.state.postal || this.state.postal.length !== 6 || isNaN(parseInt(this.state.postal))) {
                 return (
                     <div style={{ "color": "red" }}>Please enter a valid postal code</div>
                 )
@@ -329,6 +331,21 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
+    findInstagram(array) {
+        let message = "";
+        let instagram = array.find((element) => {
+            return element.contactKey === 'instagram';
+        })
+        if (instagram) {
+            if (!instagram.contactValue.includes('@'))
+            message = "please include the '@' on your instagram handle"
+            else{
+                message = ""
+            }
+        }
+        message = " and ensure that you include your instagram"
+        return message
+    }
 
 
     renderSection() {
@@ -338,9 +355,10 @@ export default class AddNewArtist extends React.Component {
         if (this.state.firstPage) {
             contentToRender =
                 <div className="container">
-                    <div className="progress my-2">
+                    {/* <div className="progress my-2">
                         <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "33%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    </div> */}
+                    {/* <StepProgressBar/> */}
                     <h1>Information about the artist</h1>
                     <div>
                         <label className="form-label">Name of tattoo artist: </label>
@@ -358,24 +376,24 @@ export default class AddNewArtist extends React.Component {
 
                         <input type="radio" className="form-check-input mx-2"
                             value="female" name="gender"
-                            checked={this.state.gender == "female"} onChange={this.updateFormField} />
+                            checked={this.state.gender === "female"} onChange={this.updateFormField} />
                         <label className="form-check-label">Female</label>
 
                         <input type="radio" className="form-check-input mx-2"
                             value="male" name="gender"
-                            checked={this.state.gender == "male"} onChange={this.updateFormField} />
+                            checked={this.state.gender === "male"} onChange={this.updateFormField} />
                         <label className="form-check-label">Male</label>
 
                         <input type="radio" className="form-check-input mx-2"
                             value="others" name="gender"
-                            checked={this.state.gender == "others"} onChange={this.updateFormField} />
+                            checked={this.state.gender === "others"} onChange={this.updateFormField} />
                         <label className="form-check-label">Others</label>
                     </div>
 
                     <div>
                         <label className="form-label">Year started tattooing: </label>
                         <input type="text" className="form-control"
-                            placeholder="year started tattooing" name="yearStarted"
+                            placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
                             onChange={this.updateFormField} />
                         {this.ValidateYearStarted()}
                     </div>
@@ -385,38 +403,44 @@ export default class AddNewArtist extends React.Component {
 
                         <input type="radio" className="form-check-input mx-2"
                             value="yes" name="apprentice"
-                            onChange={this.updateFormField} checked={this.state.apprentice == "yes"} />
+                            onChange={this.updateFormField} checked={this.state.apprentice === "yes"} />
                         <label className="form-check-label">Yes</label>
 
                         <input type="radio" className="form-check-input mx-2"
                             value="no" name="apprentice"
-                            onChange={this.updateFormField} checked={this.state.apprentice == "no"} />
+                            onChange={this.updateFormField} checked={this.state.apprentice === "no"} />
                         <label className="form-check-label">No</label>
                     </div>
 
                     <div>
                         <label className="form-label">Please select your method(s) of tattooing:</label>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="handpoke" name="method"
-                            onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
-                        <label className="form-check-label">Handpoke</label>
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="handpoke" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
+                            <label className="form-check-label">Handpoke</label>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="machine" name="method"
-                            onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
-                        <label className="form-check-label">Machine</label>
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="machine" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
+                            <label className="form-check-label">Machine</label>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="jagua" name="method"
-                            onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
-                        <label className="form-check-label">Jagua</label>
-                        {this.ValidateMethod()}
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="jagua" name="method"
+                                onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
+                            <label className="form-check-label">Jagua</label>
+                            {this.ValidateMethod()}
+                        </div>
                     </div>
 
                     <div>
                         <label className="form-label">Is it temporary? </label>
-                        <select class="form-select" aria-label="Default select example"
+                        <select className="form-select" aria-label="Default select example"
                             onChange={this.updateFormField} value={this.state.temporary} name="temporary">
                             <option value="no">No</option>
                             <option value="yes">Yes</option>
@@ -431,26 +455,37 @@ export default class AddNewArtist extends React.Component {
 
 
                     <div>
+                        <div>
                         <label className="form-label">Please select your ink(s):</label>
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="black" name="ink"
-                            onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
-                        <label className="form-check-label">Black</label>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="colours" name="ink"
-                            onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
-                        <label className="form-check-label">Colours</label>
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="black" name="ink"
+                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
+                            <label className="form-check-label">Black</label>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="jagua" name="ink"
-                            onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
-                        <label className="form-check-label">Jagua</label>
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="colours" name="ink"
+                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
+                            <label className="form-check-label">Colours</label>
+                        </div>
 
-                        <input type="checkbox" className="form-check-input mx-2"
-                            value="uv" name="ink"
-                            onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
-                        <label className="form-check-label">UV</label>
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="jagua" name="ink"
+                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
+                            <label className="form-check-label">Jagua</label>
+                        </div>
+
+                        <div className="form-check form-check-inline">
+                            <input type="checkbox" className="form-check-input"
+                                value="uv" name="ink"
+                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
+                            <label className="form-check-label">UV</label>
+                        </div>
                         {this.ValidateInk()}
                     </div>
 
@@ -481,9 +516,9 @@ export default class AddNewArtist extends React.Component {
 
         else if (this.state.secondPage) {
             contentToRender = <div className="container">
-                <div className="progress my-2">
+                {/* <div className="progress my-2">
                     <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "66%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                </div> */}
                 <h1>Information about the studio</h1>
                 <div>
                     <label className="form-label">Name of studio: </label>
@@ -498,12 +533,12 @@ export default class AddNewArtist extends React.Component {
                     <label className="form-label">Is it a private studio? </label>
                     <input type="radio" className="form-check-input mx-2"
                         value="yes" name="private"
-                        onChange={this.updateFormField} checked={this.state.private == "yes"} />
+                        onChange={this.updateFormField} checked={this.state.private === "yes"} />
                     <label className="form-check-label">Yes</label>
 
                     <input type="radio" className="form-check-input mx-2"
                         value="no" name="private"
-                        onChange={this.updateFormField} checked={this.state.private == "no"} />
+                        onChange={this.updateFormField} checked={this.state.private === "no"} />
                     <label className="form-check-label">No</label>
                 </div>
 
@@ -511,12 +546,12 @@ export default class AddNewArtist extends React.Component {
                     <label className="form-label">Are bookings required? </label>
                     <input type="radio" className="form-check-input mx-2"
                         value="yes" name="bookingsRequired"
-                        onChange={this.updateFormField} checked={this.state.bookingsRequired == "yes"} />
+                        onChange={this.updateFormField} checked={this.state.bookingsRequired === "yes"} />
                     <label className="form-check-label">Yes</label>
 
                     <input type="radio" className="form-check-input mx-2"
                         value="no" name="bookingsRequired"
-                        onChange={this.updateFormField} checked={this.state.bookingsRequired == "no"} />
+                        onChange={this.updateFormField} checked={this.state.bookingsRequired === "no"} />
                     <label className="form-check-label">No</label>
                 </div>
 
@@ -540,7 +575,7 @@ export default class AddNewArtist extends React.Component {
                 </div>
 
                 <div>
-                    <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
+                    <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
                     <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
                         value={this.state.otherServices} onChange={this.updateFormField} />
                     {this.ValidateStudio(this.state.otherServices, 'services provided')}
