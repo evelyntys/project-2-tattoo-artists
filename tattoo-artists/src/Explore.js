@@ -750,32 +750,54 @@ export default class Explore extends React.Component {
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
                                     <Accordion.Body>
-                                        <p>Name: {this.state.artistToShow.name}</p>
-                                        <p>Gender: {this.state.artistToShow.gender}</p>
-                                        <p>{this.state.artistToShow.yearsOfExperience} years of experience</p>
-                                        <p>{this.state.artistToShow.apprentice}</p>
-                                        <p>{this.state.artistToShow.style}</p>
-                                        <p>{this.state.artistToShow.ink}</p>
-                                        {/* have to map */}
-                                        {this.state.artistToShow.contact.map(a => (
-                                            <div key={"contact" + a.contactKey}><b>{a.contactKey}</b>:
-                                                {a.contactValue}</div>
-                                        ))}
+                                        <div className="text-center">
+                                            <p>{this.state.artistToShow.name}</p>
+                                            <p>{this.state.artistToShow.gender}</p>
+                                            <p>{this.state.artistToShow.yearsOfExperience} year(s) of experience</p>
+                                            <p>{"currently " + (this.state.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
+                                            <div className="text-center">
+                                                <div className="card-box-title">Method(s)</div>
+                                                <div>{this.state.artistToShow.method.map(a => (
+                                                    <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                ))}
+                                                </div>
+                                                {/* Temporary? {e.temporary} */}
+                                                <div className="card-box-title">Style(s)</div>
+                                                <div>{this.state.artistToShow.style.map(a => (
+                                                    <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                ))}
+                                                </div>
+                                                <div className="card-box-title">Ink(s)</div>
+                                                <div>
+                                                    {this.state.artistToShow.ink.map(a => (
+                                                        <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                    <div className="card-box-title"><i className="bi bi-person-hearts"></i> Contact </div>
+                                                    <div className="card-box">
+                                                    {this.state.artistToShow.contact.map(a => (
+                                                        <div key={"contact" + a.contactKey}>
+                                                            <b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                    ))}
+                                                    </div>
+                                                </div>
+                                        </div>
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
                                     <Accordion.Body>
-                                        <p>Name: {this.state.artistToShow.studio.name}</p>
-                                        <p>{this.state.artistToShow.studio.private === "yes" ? "Private Studio" : "Shared Studio"}</p>
                                         <div>
-                                            <h4>ADDRESS</h4>
-                                            <p>Street: {this.state.artistToShow.studio.address.street}</p>
-                                            <p>Unit: {this.state.artistToShow.studio.address.unit}</p>
-                                            <p>Postal code: {this.state.artistToShow.studio.address.postal}</p>
+                                            <div className="card-box">
+                                                <p>{this.state.artistToShow.studio.name}</p>
+                                                <p>{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </p>
+                                                address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
+                                                <p>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
+                                                {this.state.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + this.state.artistToShow.studio.otherServices}
+                                            </div>
                                         </div>
-                                        <p>{this.state.artistToShow.studio.bookingsRequired === "yes" ? "BOOKINGS REQUIRED" : "NO BOOKINGS REQUIRED"}</p>
-                                        <p>{this.state.artistToShow.studio.otherServices}</p>
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
@@ -1041,23 +1063,23 @@ export default class Explore extends React.Component {
                                                 <p className="text-center card-year"> tattooing since {e.yearStarted}</p>
                                                 {/* Apprentice? {e.apprentice} */}
                                                 <div className="text-center">
-                                                <div className="card-box-title">Method(s)</div>
-                                                <div>{e.method.map(a => (
-                                                    <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                ))}
-                                                </div>
-                                                {/* Temporary? {e.temporary} */}
-                                                <div className="card-box-title">Style(s)</div>
-                                                <div>{e.style.map(a => (
-                                                    <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
-                                                ))}
-                                                </div>
-                                                <div className="card-box-title">Ink(s)</div>
-                                                <div>
-                                                    {e.ink.map(a => (
+                                                    <div className="card-box-title">Method(s)</div>
+                                                    <div>{e.method.map(a => (
                                                         <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
                                                     ))}
-                                                </div>
+                                                    </div>
+                                                    {/* Temporary? {e.temporary} */}
+                                                    <div className="card-box-title">Style(s)</div>
+                                                    <div>{e.style.map(a => (
+                                                        <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                    ))}
+                                                    </div>
+                                                    <div className="card-box-title">Ink(s)</div>
+                                                    <div>
+                                                        {e.ink.map(a => (
+                                                            <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                        ))}
+                                                    </div>
                                                 </div>
 
                                                 {/* <div>
@@ -1074,14 +1096,14 @@ export default class Explore extends React.Component {
                                                     <div className="card-box">
                                                     <p>{e.studio.name}</p>
                                                     <p>{e.studio.private.includes('no') ? "shared studio" : "private studio"} </p> */}
-                                                    {/* address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br /> */}
-                                                    {/* <p>{e.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
+                                                {/* address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br /> */}
+                                                {/* <p>{e.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
                                                    {e.studio.otherServices.includes("nil") ? null : 'services available: ' + e.studio.otherServices}
                                                    </div>
                                                 </div> */}
                                             </div>
                                         </div>
-                                        <button className="btn w-100" style={{"borderRadius": "0px", "backgroundColor": "black", "color": "white", "fontSize": "13px"}} onClick={() => this.showOneArtist(e)}>View</button>
+                                        <button className="btn w-100 card-btn" onClick={() => this.showOneArtist(e)}>View</button>
                                     </div>
                                 </React.Fragment>
                             ))}
