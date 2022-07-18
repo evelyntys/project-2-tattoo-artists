@@ -659,8 +659,8 @@ export default class Explore extends React.Component {
                     message = ""
                 }
             }
-            else {message = " and ensure that you include your instagram"}
-    
+            else { message = " and ensure that you include your instagram" }
+
             if (!this.state.modifiedContact[0].contactKey || !this.state.modifiedContact[0].contactValue || !instagram || !instagram.contactValue.includes('@')) {
                 return (
                     <div style={{ "color": "red" }}>Please enter at least one contact information
@@ -1033,46 +1033,55 @@ export default class Explore extends React.Component {
                                 <React.Fragment key={"all" + e._id}>
                                     <div className="card mx-2 my-2" style={{ "width": "18rem" }}>
                                         <h4 className="card-title text-center">{this.findInstagram(e.contact)}</h4>
-                                        <img src={e.image} style={{ "height": "288px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
+                                        <img src={e.image} style={{ "height": "180px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
                                         <div className="card-body">
                                             <div className="card-text">
-                                                <h5> {e.name} </h5>
-                                                <p> {e.gender} </p>
-                                                <p> tattooing since {e.yearStarted}</p>
+                                                <h5 className="text-center"> {e.name} </h5>
+                                                <p className="text-center card-gender"> {e.gender} </p>
+                                                <p className="text-center card-year"> tattooing since {e.yearStarted}</p>
                                                 {/* Apprentice? {e.apprentice} */}
-                                                Methods: {e.method.map(a => (
-                                                    <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
-                                                ))}<br />
-                                                {/* Temporary? {e.temporary} */}
-                                                Style:
-                                                <div>{e.style.map(a => (
-                                                    <span className="badge rounded-pill bg-secondary" key={a}>{this.styleKeys[a]}</span>
+                                                <div className="text-center">
+                                                <div className="card-box-title">Method(s)</div>
+                                                <div>{e.method.map(a => (
+                                                    <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
                                                 ))}
                                                 </div>
-                                                Ink:
+                                                {/* Temporary? {e.temporary} */}
+                                                <div className="card-box-title">Style(s)</div>
+                                                <div>{e.style.map(a => (
+                                                    <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                ))}
+                                                </div>
+                                                <div className="card-box-title">Ink(s)</div>
                                                 <div>
                                                     {e.ink.map(a => (
-                                                        <span className="badge rounded-pill bg-secondary" key={a}>{a}</span>
+                                                        <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
                                                     ))}
                                                 </div>
+                                                </div>
 
-                                                <div style={{ "border": "1px solid black" }}>
-                                                    <h6>Contact: </h6>
+                                                {/* <div>
+                                                    <div className="card-box-title"><i className="bi bi-person-hearts"></i> Contact </div>
+                                                    <div className="card-box">
                                                     {e.contact.map(a => (
                                                         <div key={"contact" + a.contactKey}>
                                                             <b>{a.contactKey}</b>: {a.contactValue}</div>
                                                     ))}
+                                                    </div>
                                                 </div>
-                                                <div style={{ "border": "1px solid black" }}>
-                                                    studio name: {e.studio.name}<br />
-                                                    private studio: {e.studio.private} <br />
+                                                <div>
+                                                    <div className="card-box-title"><i className="bi bi-house-fill"></i> Studio </div>
+                                                    <div className="card-box">
+                                                    <p>{e.studio.name}</p>
+                                                    <p>{e.studio.private.includes('no') ? "shared studio" : "private studio"} </p> */}
                                                     {/* address: {e.studio.address.street}, {e.studio.address.unit}, {e.studio.address.postal} <br /> */}
-                                                    bookings required: {e.studio.bookingsRequired} <br />
-                                                    other services: {e.studio.otherServices} <br />
-                                                </div>
+                                                    {/* <p>{e.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
+                                                   {e.studio.otherServices.includes("nil") ? null : 'services available: ' + e.studio.otherServices}
+                                                   </div>
+                                                </div> */}
                                             </div>
-                                            <button className="btn btn-primary" onClick={() => this.showOneArtist(e)}>View</button>
                                         </div>
+                                        <button className="btn w-100" style={{"borderRadius": "0px", "backgroundColor": "black", "color": "white", "fontSize": "13px"}} onClick={() => this.showOneArtist(e)}>View</button>
                                     </div>
                                 </React.Fragment>
                             ))}
@@ -1185,13 +1194,13 @@ export default class Explore extends React.Component {
                                 {this.EditStarRating()}
                             </small>
 
-                           <textarea className="form-control" name="updatedComment" value={this.state.updatedComment} 
-                           onChange={this.updateFormField}>
+                            <textarea className="form-control" name="updatedComment" value={this.state.updatedComment}
+                                onChange={this.updateFormField}>
                             </textarea>
-                            {this.state.submittedEditReview && this.state.updatedComment.length ===0? 
-                            <div style={{"color": "red"}}>Please enter your review</div>
-                            :
-                            null}
+                            {this.state.submittedEditReview && this.state.updatedComment.length === 0 ?
+                                <div style={{ "color": "red" }}>Please enter your review</div>
+                                :
+                                null}
                             <button className="btn btn-warning" onClick={this.updateReview}>Edit</button>
                             <button className="btn btn-secondary" onClick={() => {
                                 this.setState({
@@ -1389,12 +1398,12 @@ export default class Explore extends React.Component {
                         <label>Rating: </label>
                         {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
                         {this.AddStarRating()}
-                        {this.state.submittedReview && this.state.addReviewRating == 0?
-                        <div style={{"color": "red"}}>
-                            Please ensure that you select a rating
-                        </div>
-                    :
-                    null}
+                        {this.state.submittedReview && this.state.addReviewRating == 0 ?
+                            <div style={{ "color": "red" }}>
+                                Please ensure that you select a rating
+                            </div>
+                            :
+                            null}
                     </div>
                     <div>
                         <label>Comment: </label>
