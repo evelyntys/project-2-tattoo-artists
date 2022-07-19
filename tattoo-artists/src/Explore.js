@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { Button, Modal, Accordion } from 'react-bootstrap';
+import { Modal, Accordion } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
+import ValidateFields from './Validation';
 
 export default class Explore extends React.Component {
     url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
@@ -56,7 +57,7 @@ export default class Explore extends React.Component {
         deleteReview: false,
         reviewBeingDeleted: {},
         deleteReviewEmail: "",
-        correctDeleteEmail: false,
+        correctDeleteReviewEmail: false,
         updatedRating: 0,
         updatedComment: "",
         addReview: false,
@@ -591,130 +592,6 @@ export default class Explore extends React.Component {
         }
     }
 
-    ValidateFields(state, field) {
-        if (this.state.submittedReview) {
-            if (!state) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you fill in the {field}</div>
-                )
-            }
-        }
-    }
-
-    ValidateName(state, field) {
-        if (this.state.submitted) {
-            if (!state || state.length < 2) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that the {field} is at least 2 characters long</div>
-                )
-            }
-        }
-    }
-
-    ValidateYearStarted() {
-        if (this.state.submitted) {
-            if (!this.state.modifiedYearStarted || isNaN(parseInt(this.state.modifiedYearStarted))) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you fill in a valid year</div>
-                )
-            }
-        }
-    }
-
-    ValidateMethod() {
-        if (this.state.submitted) {
-            if (this.state.modifiedMethod === [] || this.state.modifiedMethod.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one method</div>
-                )
-            }
-        }
-    }
-
-    ValidateStyle() {
-        if (this.state.submitted) {
-            if (this.state.modifiedStyle.length === 0 || !this.state.modifiedStyle || this.state.modifiedStyle === null || this.state.modifiedStyle.length > 3) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one and at most 3 styles</div>
-                )
-            }
-        }
-    }
-
-    ValidateInk() {
-        if (this.state.submitted) {
-            if (this.state.modifiedInk === [] || this.state.modifiedInk.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one type of ink</div>
-                )
-            }
-        }
-    }
-
-    ValidateContact() {
-        if (this.state.submitted) {
-            let message = "";
-            let instagram = this.state.modifiedContact.find((element) => {
-                return element.contactKey === 'instagram';
-            })
-            if (instagram) {
-                if (!instagram.contactValue.includes('@'))
-                    message = " and include the '@' on your instagram handle"
-                else {
-                    message = ""
-                }
-            }
-            else { message = " and ensure that you include your instagram" }
-
-            if (!this.state.modifiedContact[0].contactKey || !this.state.modifiedContact[0].contactValue || !instagram || !instagram.contactValue.includes('@')) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter at least one contact information
-                        {message}</div>
-                )
-            }
-        }
-    }
-
-    ValidateImage() {
-        if (this.state.submitted) {
-            if (!this.state.modifiedImage) {
-                return (
-                    <div style={{ "color": "red" }}>Please provide a reference image link</div>
-                )
-            }
-        }
-    }
-
-    ValidateStudio(state, field) {
-        if (this.state.submitted) {
-            if (!state || state.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter the {field}</div>
-                )
-            }
-        }
-    }
-
-    ValidateUnit(state) {
-        if (this.state.submitted) {
-            if (!state || !state.includes('#') || !state.includes('-')) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter the unit number and ensure that it contains a '#' and '-'</div>
-                )
-            }
-        }
-    }
-
-    ValidatePostal() {
-        if (this.state.submitted) {
-            if (!this.state.modifiedPostal || this.state.modifiedPostal.length !== 6 || isNaN(parseInt(this.state.modifiedPostal))) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter a valid postal code</div>
-                )
-            }
-        }
-    }
-
     ShowOneOrAll() {
         if (this.state.showOne) {
             // showing one artist, not editing
@@ -819,7 +696,8 @@ export default class Explore extends React.Component {
                                 <div>
                                     <div className="container">
                                         <h1>Information about the artist</h1>
-                                        <div>
+                                        <div className="row">
+                                        <div className="col-12 col-md-6">
                                             <label className="form-label">Name of tattoo artist: </label>
                                             <input type="text"
                                                 className="form-control"
@@ -827,11 +705,19 @@ export default class Explore extends React.Component {
                                                 name="modifiedArtistName"
                                                 value={this.state.modifiedArtistName}
                                                 onChange={this.updateFormField} />
-                                            {this.ValidateName(this.state.modifiedArtistName, "artist name")}
+                                            {this.state.submitted? <ValidateFields field="artist name" state={this.state.artistName}/> : null}
                                         </div>
 
-                                        <div>
-                                            <label className="form-label">Gender: </label>
+                                        <div className="col-12 col-md-6">
+                                            <label className="form-label">Year started tattooing: </label>
+                                            <input type="text" className="form-control"
+                                                placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
+                                                onChange={this.updateFormField} />
+                                            {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
+                                        </div>
+
+                                        <div className="col-12 col-md-6 mt-md-2">
+                                            <label className="form-label form-check-inline">Gender: </label>
 
                                             <div className="form-check form-check-inline">
                                                 <input type="radio" className="form-check-input"
@@ -855,16 +741,9 @@ export default class Explore extends React.Component {
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label className="form-label">Year started tattooing: </label>
-                                            <input type="text" className="form-control"
-                                                placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
-                                                onChange={this.updateFormField} />
-                                            {this.ValidateYearStarted()}
-                                        </div>
 
-                                        <div>
-                                            <label className="form-label">Are you an apprentice? </label>
+                                        <div className="col-12 col-md-6 mt-md-2">
+                                            <label className="form-label form-check-inline">Are you an apprentice? </label>
 
                                             <div className="form-check form-check-inline">
                                                 <input type="radio" className="form-check-input"
@@ -881,7 +760,7 @@ export default class Explore extends React.Component {
                                             </div>
                                         </div>
 
-                                        <div>
+                                        <div className="col-12 col-md-6">
                                             <label className="form-label">Please select your method(s) of tattooing:</label>
 
                                             <div className="form-check form-check-inline">
@@ -905,9 +784,9 @@ export default class Explore extends React.Component {
                                                 <label className="form-check-label">Jagua</label>
                                             </div>
                                         </div>
-                                        {this.ValidateMethod()}
+                                        {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedMethod} message={"method"}/> : null}
 
-                                        <div>
+                                        <div className="col-12 col-md-6">
                                             <label className="form-label">Is it temporary? </label>
                                             <select className="form-select" aria-label="Default select example"
                                                 onChange={this.updateFormField} value={this.state.modifiedTemporary} name="modifiedTemporary">
@@ -916,15 +795,10 @@ export default class Explore extends React.Component {
                                             </select>
                                         </div>
 
-                                        <div>
-                                            <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                            <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
-                                            {this.ValidateStyle()}
-                                        </div>
-
-
-                                        <div>
+                                        <div className="col-12 col-md-6">
+                                            <div>
                                             <label className="form-label">Please select your ink(s):</label>
+                                            </div>
 
                                             <div className="form-check form-check-inline">
                                                 <input type="checkbox" className="form-check-input"
@@ -953,88 +827,112 @@ export default class Explore extends React.Component {
                                                     onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('uv')} />
                                                 <label className="form-check-label">UV</label>
                                             </div>
-                                            {this.ValidateInk()}
+                                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"}/> : null}
+                                        </div>
+
+                                        <div className="col-12 col-md-6">
+                                            <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
+                                            <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
+                                            {this.state.submitted ? <ValidateFields field="style" state={this.state.modifiedStyle}/> : null}
                                         </div>
 
                                         <label className="form-label">Please enter the artist's contact details: </label>
                                         <ContactFields handleAddClick={this.handleAddClick}
                                             inputList={this.state.modifiedContact}
                                             setInputList={this.updateData} />
-                                        {this.ValidateContact()}
+                                        {this.state.submitted ? <ValidateFields field="contact" state={this.state.modifiedContact}/> : null}
                                         <div>
                                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
                                             <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
                                                 onChange={this.updateFormField} value={this.state.modifiedImage} />
-                                            {this.ValidateImage()}
+                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedImage} message={"a reference image link"}/> : null}
                                         </div>
-
+                                        </div>
                                     </div>
 
                                     <div className="container">
                                         <h1>Information about the studio</h1>
-                                        <div>
+                                        <div className="row">
+                                        <div className="col-12">
                                             <label className="form-label">Name of studio: </label>
                                             <input type="text" className="form-control"
                                                 placeholder="studio name" name="modifiedStudioName"
                                                 value={this.state.modifiedStudioName}
                                                 onChange={this.updateFormField} />
-                                            {this.ValidateStudio(this.state.modifiedStudioName, 'studio name')}
+                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStudioName} message={"the studio name"}/> : null}
                                         </div>
 
-                                        <div>
-                                            <label className="form-label">Is it a private studio? </label>
-                                            <input type="radio" className="form-check-input mx-2"
+                                        <div className="col-12 col-md-6">
+                                            <label className="form-label form-check-inline">Is it a private studio? </label>
+
+                                            <div className="form-check form-check-inline">
+                                            <input type="radio" className="form-check-input"
                                                 value="yes" name="modifiedPrivate"
                                                 onChange={this.updateFormField} checked={this.state.modifiedPrivate === "yes"} />
                                             <label className="form-check-label">Yes</label>
+                                            </div>
 
-                                            <input type="radio" className="form-check-input mx-2"
+                                            <div className="form-check form-check-inline">
+                                            <input type="radio" className="form-check-input"
                                                 value="no" name="modifiedPrivate"
                                                 onChange={this.updateFormField} checked={this.state.modifiedPrivate === "no"} />
                                             <label className="form-check-label">No</label>
+                                            </div>
                                         </div>
 
-                                        <div>
-                                            <label className="form-label">Are bookings required? </label>
-                                            <input type="radio" className="form-check-input mx-2"
+                                        <div className="col-12 col-md-6">
+                                            <label className="form-label form-check-inline">Are bookings required? </label>
+
+                                            <div className="form-check form-check-inline">
+                                            <input type="radio" className="form-check-input"
                                                 value="yes" name="modifiedBookingsRequired"
                                                 onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "yes"} />
                                             <label className="form-check-label">Yes</label>
+                                            </div>
 
-                                            <input type="radio" className="form-check-input mx-2"
+                                            <div className="form-check form-check-inline">
+                                            <input type="radio" className="form-check-input"
                                                 value="no" name="modifiedBookingsRequired"
                                                 onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "no"} />
                                             <label className="form-check-label">No</label>
+                                            </div>
                                         </div>
 
-                                        <div>
+                                        <div className="row">
                                             <h6>Address</h6>
 
+                                            <div className="col-12">
                                             <label className="form-label">Street: (please enter "nil" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
                                                 value={this.state.modifiedStreet} onChange={this.updateFormField} />
-                                            {this.ValidateStudio(this.state.modifiedStreet, 'street')}
+                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStreet} message={"the street"}/> : null}
+                                            </div>
 
+                                            <div className="col-12 col-md-6">
                                             <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
                                                 value={this.state.modifiedUnit} onChange={this.updateFormField} />
-                                            {this.ValidateUnit(this.state.modifiedUnit)}
+                                            {this.state.submitted ? <ValidateFields field="unit" state={this.state.modifiedUnit}/> : null}
+                                            </div>
 
+                                            <div className="col-12 col-md-6">
                                             <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                                             <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
                                                 value={this.state.modifiedPostal} onChange={this.updateFormField} />
-                                            {this.ValidatePostal()}
+                                            {this.state.submitted ? <ValidateFields field="postal" state={this.state.modifiedPostal}/> : null}
+                                            </div>
                                         </div>
 
                                         <div>
                                             <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
                                             <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
                                                 value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
-                                            {this.ValidateStudio(this.state.modifiedOtherServices, 'services provided')}
+                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedOtherServices} message={"the services available"}/> : null}
+                                        </div>
                                         </div>
 
-                                        <button className="btn black-button mt-2" onClick={this.updateArtist}>Update artist</button>
-                                        <button className="btn black-button mt-2" onClick={() => { this.setState({ editMode: false, showConfirmEdit: false }) }}>Cancel</button>
+                                        <button className="btn delete-button my-2 mx-1" onClick={this.updateArtist}>Update artist</button>
+                                        <button className="btn cancel-button my-2 mx-1" onClick={() => { this.setState({ editMode: false, showConfirmEdit: false }) }}>Cancel</button>
                                     </div>
 
 
@@ -1256,7 +1154,7 @@ export default class Explore extends React.Component {
                             <input type="email" name="deleteReviewEmail" className="form-control" onChange={this.updateFormField} />
                         </div>
                         <div className="my-1">
-                            <button className='btn delete-button mx-1' onClick={this.validateDeleteEmail}>Confirm</button>
+                            <button className='btn delete-button mx-1' onClick={this.validateDeleteReviewEmail}>Confirm</button>
                             <button className='btn cancel-button mx-1' onClick={() => {
                                 this.setState({
                                     deleteReview: false
@@ -1287,12 +1185,12 @@ export default class Explore extends React.Component {
             this.setState({
                 showConfirmDelete: false,
                 showOne: false,
-                data: modifiedData
+                data: modifiedData,
+                confirmDeleteEmail: ""
             })
             console.log(response.data)
         }
         catch (e) {
-            alert(404)
             console.log(e)
         }
 
@@ -1315,6 +1213,7 @@ export default class Explore extends React.Component {
 
         const handleClose = () => this.setState({
             showConfirmEdit: false,
+            confirmEditEmail: ""
         });
         const handleShow = () => this.setState({
             showConfirmEdit: true
@@ -1362,6 +1261,7 @@ export default class Explore extends React.Component {
 
         const handleClose = () => this.setState({
             showConfirmDelete: false,
+            confirmDeleteEmail: ""
         });
         const handleShow = () => this.setState({
             showConfirmDelete: true
@@ -1409,19 +1309,19 @@ export default class Explore extends React.Component {
                         <div className="col-6">
                             <label>Name: </label>
                             <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
-                            {this.ValidateFields(this.state.addReviewReviewer, 'name')}
+                            {this.state.submittedReview ? <ValidateFields field="reviewer name" state={this.state.addReviewReviewer}/> : null}
                         </div>
                         <div className="col-6">
                             <label>Email: </label>
                             <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
-                            {this.ValidateEmailReview()}
+                            {this.state.submittedReview? <ValidateFields field="email" state={this.state.addReviewEmail}/> : null}
                         </div>
                         <div>
                         </div>
                         <label>Rating: </label>
                         {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
                         {this.AddStarRating()}
-                        {this.state.submittedReview && this.state.addReviewRating == 0 ?
+                        {this.state.submittedReview && this.state.addReviewRating === 0 ?
                             <div style={{ "color": "red" }}>
                                 Please ensure that you select a rating
                             </div>
@@ -1432,7 +1332,7 @@ export default class Explore extends React.Component {
                         <label>Comment: </label>
                         <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
                         </textarea>
-                        {this.ValidateFields(this.state.addReviewComment, 'review')}
+                        {this.state.submittedReview ? <ValidateFields field="general" state={this.state.addReviewComment} message={"the review"}/> : null}
                     </div>
                     <div className="my-2">
                         <button className="btn black-button mx-1" onClick={this.AddReviewToArtist}>add review</button>
@@ -1510,17 +1410,17 @@ export default class Explore extends React.Component {
         }
     }
 
-    validateDeleteEmail = async () => {
+    validateDeleteReviewEmail = async () => {
         if (this.state.deleteReviewEmail === this.state.reviewBeingDeleted.email) {
             this.setState({
-                correctDeleteEmail: true
+                correctDeleteReviewEmail: true
             })
             try {
                 let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`, { params: { email: this.state.deleteReviewEmail } });
                 let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
                 this.setState({
                     deleteReviewEmail: "",
-                    correctDeleteEmail: false,
+                    correctDeleteReviewEmail: false,
                     artistToShow: updatedResponse.data,
                     deleteReview: false
                 })
