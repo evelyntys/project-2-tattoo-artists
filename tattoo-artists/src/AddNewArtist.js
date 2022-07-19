@@ -3,8 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 import axios from 'axios';
-import { Toast, Button, ToastContainer, ProgressBar } from 'react-bootstrap';
+import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
 import StepProgressBar from './TestProgressBar';
+import ValidateFields from './Validation';
 
 
 export default class AddNewArtist extends React.Component {
@@ -59,12 +60,6 @@ export default class AddNewArtist extends React.Component {
     AutoHideToast() {
         return (
             <React.Fragment>
-                {/* have to find margin and adjust by className */}
-                {/* bs-prefix in react-bootstrap toast container */}
-                {/* change position */}
-                {/* don't use toast can try modal also */}
-                {/* toast should not sit for too long - autohide */}
-                {/* delayed props */}
                 <ToastContainer position="top-end">
                     <Toast onClose={() => this.setState({
                         showCreateToast: false
@@ -85,22 +80,22 @@ export default class AddNewArtist extends React.Component {
                 <label className="form-label">Your name: </label>
                 <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
                     value={this.state.ownerName} onChange={this.updateFormField} />
-                {this.ValidateName(this.state.ownerName, 'name')}
+                {this.state.submitted? <ValidateFields field="name" state={this.state.ownerName}/> : " null"}
 
                 <label className="form-label">Your email: </label>
                 <input type="text" className="form-control" placeholder="e.g. johndoe@email.com" name="ownerEmail"
                     value={this.state.ownerEmail} onChange={this.updateFormField} />
-                {this.ValidateEmail()}
+                {this.state.submitted? <ValidateFields field="email" state={this.state.ownerEmail} /> : null}
 
                 <div>
-                    <button className="btn btn-primary" onClick={() => {
+                    <button className="btn black-button my-1 mx-1" onClick={() => {
                         this.setState({
                             firstPage: false,
                             secondPage: true,
                             thirdPage: false
                         })
                     }}>previous</button>
-                    <Button onClick={this.addData}>Add new artist</Button>
+                    <button className="btn delete-button" onClick={this.addData}>Add new artist</button>
                 </div>
             </React.Fragment>
         );
@@ -151,7 +146,7 @@ export default class AddNewArtist extends React.Component {
     addData = async () => {
         this.setState({
             submitted: true,
-            showCreateToast: true
+            // showCreateToast: true
         })
         try {
             let response = await axios.post(this.url + "add-new-artist", {
@@ -217,7 +212,7 @@ export default class AddNewArtist extends React.Component {
                 thirdPage: false,
                 submitted: false,
             })
-            { this.props.ChangePages('explore') }
+            //  {this.props.ChangePages('explore')}
         }
         catch (e) {
             this.setState({
@@ -225,128 +220,7 @@ export default class AddNewArtist extends React.Component {
             })
             console.log(e)
         }
-        // this.setState({
-        //     showCreateToast: false
-        // })
     }
-
-    ValidateName(state, field) {
-        if (this.state.submitted) {
-            if (!state || state.length < 2) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that the {field} is at least 2 characters long</div>
-                )
-            }
-        }
-    }
-
-    ValidateYearStarted() {
-        if (this.state.submitted) {
-            if (!this.state.yearStarted || isNaN(parseInt(this.state.yearStarted))) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you fill in a valid year</div>
-                )
-            }
-        }
-    }
-
-    ValidateMethod() {
-        if (this.state.submitted) {
-            if (this.state.method === [] || this.state.method.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one method</div>
-                )
-            }
-        }
-    }
-
-    ValidateStyle() {
-        if (this.state.submitted) {
-            if (this.state.style.length === 0 || !this.state.style || this.state.style === null || this.state.style.length > 3) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one and at most 3 styles</div>
-                )
-            }
-        }
-    }
-
-    ValidateInk() {
-        if (this.state.submitted) {
-            if (this.state.ink === [] || this.state.ink.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please ensure that you select at least one type of ink</div>
-                )
-            }
-        }
-    }
-
-    ValidateContact() {
-        if (this.state.submitted) {
-            if (!this.state.contact[0].contactKey || !this.state.contact[0].contactValue) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter at least one contact information
-                    {this.findInstagram(this.state.contact)}</div>
-                )
-            }
-        }
-    }
-
-    ValidateImage() {
-        if (this.state.submitted) {
-            if (!this.state.image) {
-                return (
-                    <div style={{ "color": "red" }}>Please provide a reference image link</div>
-                )
-            }
-        }
-    }
-
-    ValidateStudio(state, field) {
-        if (this.state.submitted) {
-            if (!state || state.length === 0) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter the {field}</div>
-                )
-            }
-        }
-    }
-
-    ValidatePostal() {
-        if (this.state.submitted) {
-            if (!this.state.postal || this.state.postal.length !== 6 || isNaN(parseInt(this.state.postal))) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter a valid postal code</div>
-                )
-            }
-        }
-    }
-
-    ValidateEmail() {
-        if (this.state.submitted) {
-            if (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') || !this.state.ownerEmail.includes('.com')) {
-                return (
-                    <div style={{ "color": "red" }}>Please enter a valid email</div>
-                )
-            }
-        }
-    }
-
-    findInstagram(array) {
-        let message = "";
-        let instagram = array.find((element) => {
-            return element.contactKey === 'instagram';
-        })
-        if (instagram) {
-            if (!instagram.contactValue.includes('@'))
-            message = "please include the '@' on your instagram handle"
-            else{
-                message = ""
-            }
-        }
-        message = " and ensure that you include your instagram"
-        return message
-    }
-
 
     renderSection() {
 
@@ -360,150 +234,164 @@ export default class AddNewArtist extends React.Component {
                     </div> */}
                     {/* <StepProgressBar/> */}
                     <h1>Information about the artist</h1>
-                    <div>
-                        <label className="form-label">Name of tattoo artist: </label>
-                        <input type="text"
-                            className="form-control"
-                            placeholder="artist name"
-                            name="artistName"
-                            value={this.state.artistName}
-                            onChange={this.updateFormField} />
-                        {this.ValidateName(this.state.artistName, 'artist name')}
-                    </div>
-
-                    <div>
-                        <label className="form-label">Gender: </label>
-
-                        <input type="radio" className="form-check-input mx-2"
-                            value="female" name="gender"
-                            checked={this.state.gender === "female"} onChange={this.updateFormField} />
-                        <label className="form-check-label">Female</label>
-
-                        <input type="radio" className="form-check-input mx-2"
-                            value="male" name="gender"
-                            checked={this.state.gender === "male"} onChange={this.updateFormField} />
-                        <label className="form-check-label">Male</label>
-
-                        <input type="radio" className="form-check-input mx-2"
-                            value="others" name="gender"
-                            checked={this.state.gender === "others"} onChange={this.updateFormField} />
-                        <label className="form-check-label">Others</label>
-                    </div>
-
-                    <div>
-                        <label className="form-label">Year started tattooing: </label>
-                        <input type="text" className="form-control"
-                            placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
-                            onChange={this.updateFormField} />
-                        {this.ValidateYearStarted()}
-                    </div>
-
-                    <div>
-                        <label className="form-label">Are you an apprentice? </label>
-
-                        <input type="radio" className="form-check-input mx-2"
-                            value="yes" name="apprentice"
-                            onChange={this.updateFormField} checked={this.state.apprentice === "yes"} />
-                        <label className="form-check-label">Yes</label>
-
-                        <input type="radio" className="form-check-input mx-2"
-                            value="no" name="apprentice"
-                            onChange={this.updateFormField} checked={this.state.apprentice === "no"} />
-                        <label className="form-check-label">No</label>
-                    </div>
-
-                    <div>
-                        <label className="form-label">Please select your method(s) of tattooing:</label>
-
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="handpoke" name="method"
-                                onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
-                            <label className="form-check-label">Handpoke</label>
+                    <div className="row">
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Name of tattoo artist: </label>
+                            <input type="text"
+                                className="form-control"
+                                placeholder="artist name"
+                                name="artistName"
+                                value={this.state.artistName}
+                                onChange={this.updateFormField} />
+                            {this.state.submitted?
+                            <ValidateFields field="artist name" state={this.state.artistName}/> : null}
                         </div>
 
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="machine" name="method"
-                                onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
-                            <label className="form-check-label">Machine</label>
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Year started tattooing: </label>
+                            <input type="text" className="form-control"
+                                placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
+                                onChange={this.updateFormField} />
+                            {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
                         </div>
 
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="jagua" name="method"
-                                onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
-                            <label className="form-check-label">Jagua</label>
-                            {this.ValidateMethod()}
+                        <div className="col-12 col-md-6 mt-md-2">
+                            <label className="form-label form-check-inline">Gender: </label>
+
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input"
+                                    value="female" name="gender"
+                                    checked={this.state.gender === "female"} onChange={this.updateFormField} />
+                                <label className="form-check-label">Female</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input"
+                                    value="male" name="gender"
+                                    checked={this.state.gender === "male"} onChange={this.updateFormField} />
+                                <label className="form-check-label">Male</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input"
+                                    value="others" name="gender"
+                                    checked={this.state.gender === "others"} onChange={this.updateFormField} />
+                                <label className="form-check-label">Others</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="form-label">Is it temporary? </label>
-                        <select className="form-select" aria-label="Default select example"
-                            onChange={this.updateFormField} value={this.state.temporary} name="temporary">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </div>
+                        <div className="col-12 col-md-6 mt-md-2">
+                            <label className="form-label form-check-inline">Are you an apprentice? </label>
 
-                    <div>
-                        <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                        <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} />
-                        {this.ValidateStyle()}
-                    </div>
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input"
+                                    value="yes" name="apprentice"
+                                    onChange={this.updateFormField} checked={this.state.apprentice === "yes"} />
+                                <label className="form-check-label">Yes</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input"
+                                    value="no" name="apprentice"
+                                    onChange={this.updateFormField} checked={this.state.apprentice === "no"} />
+                                <label className="form-check-label">No</label>
+                            </div>
+                        </div>
 
 
-                    <div>
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Please select your method(s) of tattooing: </label>
+                            <div>
+                                <div className="form-check form-check-inline">
+                                    <input type="checkbox" className="form-check-input"
+                                        value="handpoke" name="method"
+                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
+                                    <label className="form-check-label">Handpoke</label>
+                                </div>
+
+                                <div className="form-check form-check-inline">
+                                    <input type="checkbox" className="form-check-input"
+                                        value="machine" name="method"
+                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
+                                    <label className="form-check-label">Machine</label>
+                                </div>
+
+                                <div className="form-check form-check-inline">
+                                    <input type="checkbox" className="form-check-input"
+                                        value="jagua" name="method"
+                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
+                                    <label className="form-check-label">Jagua</label>
+                                </div>
+                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"}/> : null}
+                            </div>
+                        </div>
+
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Is it temporary? </label>
+                            <select className="form-select" aria-label="Default select example"
+                                onChange={this.updateFormField} value={this.state.temporary} name="temporary">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div className="col-12 col-md-6">
+                            <div>
+                                <label className="form-label">Please select your ink(s):</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="black" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
+                                <label className="form-check-label">Black</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="colours" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
+                                <label className="form-check-label">Colours</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="jagua" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
+                                <label className="form-check-label">Jagua</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="checkbox" className="form-check-input"
+                                    value="uv" name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
+                                <label className="form-check-label">UV</label>
+                            </div>
+                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
+                        </div>
+
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
+                            <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} />
+                            {this.state.submitted ? <ValidateFields field="style" state={this.state.style} /> : null}
+                        </div>
+
+                        <label className="form-label">Please enter the artist's contact details: </label>
+                        <ContactFields handleAddClick={this.handleAddClick}
+                            inputList={this.state.contact}
+                            setInputList={this.updateData} />
+                        {this.state.submitted ? <ValidateFields field="contact" state={this.state.contact} /> : null}
+
                         <div>
-                        <label className="form-label">Please select your ink(s):</label>
+                            <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
+                            <input type="text" className="form-control" placeholder="image link" name="image"
+                                onChange={this.updateFormField} value={this.state.image} />
+                            {this.state.submitted ? <ValidateFields field="general" state={this.state.image} message={"a reference image link"} /> : null}
                         </div>
-
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="black" name="ink"
-                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
-                            <label className="form-check-label">Black</label>
-                        </div>
-
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="colours" name="ink"
-                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
-                            <label className="form-check-label">Colours</label>
-                        </div>
-
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="jagua" name="ink"
-                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
-                            <label className="form-check-label">Jagua</label>
-                        </div>
-
-                        <div className="form-check form-check-inline">
-                            <input type="checkbox" className="form-check-input"
-                                value="uv" name="ink"
-                                onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
-                            <label className="form-check-label">UV</label>
-                        </div>
-                        {this.ValidateInk()}
-                    </div>
-
-                    <label className="form-label">Please enter the artist's contact details: </label>
-                    <ContactFields handleAddClick={this.handleAddClick}
-                        inputList={this.state.contact}
-                        setInputList={this.updateData} />
-                    {this.ValidateContact()}
-
-                    <div>
-                        <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
-                        <input type="text" className="form-control" placeholder="image link" name="image"
-                            onChange={this.updateFormField} value={this.state.image} />
-                        {this.ValidateImage()}
                     </div>
 
                     <div>
-                        <button className="btn btn-primary" onClick={() => {
+                        <button className="btn black-button my-1" onClick={() => {
                             this.setState({
                                 firstPage: false,
                                 secondPage: true
@@ -520,75 +408,94 @@ export default class AddNewArtist extends React.Component {
                     <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "66%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div> */}
                 <h1>Information about the studio</h1>
-                <div>
-                    <label className="form-label">Name of studio: </label>
-                    <input type="text" className="form-control"
-                        placeholder="studio name" name="studioName"
-                        value={this.state.studioName}
-                        onChange={this.updateFormField} />
-                    {this.ValidateStudio(this.state.studioName, 'studio name')}
+                <div className="row">
+                    <div className="col-12">
+                        <label className="form-label">Name of studio: </label>
+                        <input type="text" className="form-control"
+                            placeholder="studio name" name="studioName"
+                            value={this.state.studioName}
+                            onChange={this.updateFormField} />
+                        {this.state.submitted ? <ValidateFields field="general" state={this.state.studioName} message={"the studio name"} /> : null}
+                    </div>
+
+                    <div className="col-12 col-md-6">
+                        <label className="form-label form-check-inline">Is it a private studio? </label>
+
+                        <div className="form-check form-check-inline">
+                            <input type="radio" className="form-check-input"
+                                value="yes" name="private"
+                                onChange={this.updateFormField} checked={this.state.private === "yes"} />
+                            <label className="form-check-label">Yes</label>
+                        </div>
+
+                        <div className="form-check form-check-inline">
+                            <input type="radio" className="form-check-input"
+                                value="no" name="private"
+                                onChange={this.updateFormField} checked={this.state.private === "no"} />
+                            <label className="form-check-label">No</label>
+                        </div>
+                    </div>
+
+                    <div className="col-12 col-md-6">
+                        
+                        <label className="form-label form-check-inline">Are bookings required? </label>
+
+                        <div className="form-check form-check-inline">
+                        <input type="radio" className="form-check-input"
+                            value="yes" name="bookingsRequired"
+                            onChange={this.updateFormField} checked={this.state.bookingsRequired === "yes"} />
+                        <label className="form-check-label">Yes</label>
+                        </div>
+
+                        <div className="form-check form-check-inline">
+                        <input type="radio" className="form-check-input"
+                            value="no" name="bookingsRequired"
+                            onChange={this.updateFormField} checked={this.state.bookingsRequired === "no"} />
+                        <label className="form-check-label">No</label>
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <h6>Address</h6>
+
+                        <div className="col-12">
+                        <label className="form-label">Street: (please enter "nil" if not applicable)</label>
+                        <input type="text" className="form-control" placeholder="street" name="street"
+                            value={this.state.street} onChange={this.updateFormField} />
+                        {this.state.submitted ? <ValidateFields field="general" state={this.state.street} message={"the street"} /> : null}
+                        </div>
+
+                        <div className="col-12 col-md-6">
+                        <label className="form-label">Unit: (please enter "#00-00" if not applicable)</label>
+                        <input type="text" className="form-control" placeholder="unit" name="unit"
+                            value={this.state.unit} onChange={this.updateFormField} />
+                        {this.state.submitted ? <ValidateFields field={"unit"} state={this.state.unit} />: null}
+                        </div>
+
+                        <div className="col-12 col-md-6">
+                        <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
+                        <input type="text" className="form-control" placeholder="postal code" name="postal"
+                            value={this.state.postal} onChange={this.updateFormField} />
+                        {this.state.submitted ? <ValidateFields field={"postal"} state={this.state.postal}/> : null}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
+                        <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
+                            value={this.state.otherServices} onChange={this.updateFormField} />
+                        {this.state.submitted? <ValidateFields field="general" state={this.state.otherServices} message={"the services available"} /> : null}
+                    </div>
                 </div>
-
                 <div>
-                    <label className="form-label">Is it a private studio? </label>
-                    <input type="radio" className="form-check-input mx-2"
-                        value="yes" name="private"
-                        onChange={this.updateFormField} checked={this.state.private === "yes"} />
-                    <label className="form-check-label">Yes</label>
-
-                    <input type="radio" className="form-check-input mx-2"
-                        value="no" name="private"
-                        onChange={this.updateFormField} checked={this.state.private === "no"} />
-                    <label className="form-check-label">No</label>
-                </div>
-
-                <div>
-                    <label className="form-label">Are bookings required? </label>
-                    <input type="radio" className="form-check-input mx-2"
-                        value="yes" name="bookingsRequired"
-                        onChange={this.updateFormField} checked={this.state.bookingsRequired === "yes"} />
-                    <label className="form-check-label">Yes</label>
-
-                    <input type="radio" className="form-check-input mx-2"
-                        value="no" name="bookingsRequired"
-                        onChange={this.updateFormField} checked={this.state.bookingsRequired === "no"} />
-                    <label className="form-check-label">No</label>
-                </div>
-
-                <div>
-                    <h6>Address</h6>
-
-                    <label className="form-label">Street: (please enter "nil" if not applicable)</label>
-                    <input type="text" className="form-control" placeholder="street" name="street"
-                        value={this.state.street} onChange={this.updateFormField} />
-                    {this.ValidateStudio(this.state.street, 'street')}
-
-                    <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
-                    <input type="text" className="form-control" placeholder="unit" name="unit"
-                        value={this.state.unit} onChange={this.updateFormField} />
-                    {this.ValidateStudio(this.state.unit, 'unit')}
-
-                    <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
-                    <input type="text" className="form-control" placeholder="postal code" name="postal"
-                        value={this.state.postal} onChange={this.updateFormField} />
-                    {this.ValidatePostal()}
-                </div>
-
-                <div>
-                    <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
-                    <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
-                        value={this.state.otherServices} onChange={this.updateFormField} />
-                    {this.ValidateStudio(this.state.otherServices, 'services provided')}
-                </div>
-                <div>
-                    <button className="btn btn-primary" onClick={() => {
+                    <button className="btn black-button my-1 mx-1" onClick={() => {
                         this.setState({
                             firstPage: true,
                             secondPage: false,
                             thirdPage: false
                         })
                     }}>previous</button>
-                    <button className="btn btn-primary" onClick={() => {
+                    <button className="btn black-button my-1 mx-1" onClick={() => {
                         this.setState({
                             firstPage: false,
                             secondPage: false,
