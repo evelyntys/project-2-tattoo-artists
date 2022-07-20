@@ -79,7 +79,7 @@ h6{
 
 .card-box{
   text-align: center;
-  font-size: 13px;
+  font-size: 16px;
 }
 .card-box-title{
   background-color: black;
@@ -88,20 +88,129 @@ h6{
   font-weight: '200';
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 20px;
   text-align: center;
   margin-top: 2px;
   margin-bottom: 2px;
 }
 
-.card-gender, .card-year, .span-body{
-  font-size: 12px;
+.span-body{
+  font-size: 16px;
+  display: inline-block;
+
 }
 
 .card{
   border: 1px solid black;
 }
 
-.span-body{
+.card-box-all{
+  text-align: center;
+  font-size: 13px;
+}
+.card-box-title-all{
+  background-color: black;
+  color: white;
+  font-family: 'Raleway';
+  font-weight: '200';
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.card-gender-all, .card-year-all, .span-body-all{
+  font-size: 13px;
+}
+
+.span-body-all{
   display: inline-block;
+}
+
+.card-btn{
+  border-radius: 0px;
+  background-color: white; 
+  border-color: black;
+  color: black;
+  font-size: 13px;
+}
+
+.card-btn:hover{
+  background-color: black;
+  color: white;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: black;
+  color: white;
+}
+.accordion-button:focus{
+  border-color:rgba(0, 0, 0, 0.404)
+}
+
+.accordion-body{
+  border: 1px solid black;
+}
+
+.accordion-button{
+  border: 1px solid black;
+}
+
+.black-button{
+  background-color: black;
+  color: white;
+}
+
+.accordion-header{
+  text-align: center;
+}
+
+.black-button:hover{
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.cancel-button{
+  background-color: #5C636A;
+  color: white;
+}
+
+.cancel-button:hover{
+  background-color: white;
+  border: 1px solid #5C636A;
+  color: #5C636A
+}
+
+.delete-button{
+  background-color: #78011A;
+  color: white;
+}
+
+.delete-button:hover{
+  border-color: #78011A;
+  background-color: white;
+  color: #78011A
+}
+
+.form-check-input:checked{
+  background-color: black;
+}
+
+.single-artist-image{
+  height: auto
+}
+
+
+/* screen size responsiveness */
+@media screen and (max-width: 767px){
+  .single-artist-image{
+    max-height: 300px;
+  }
+}
+
+.accordion-button:not(.collapsed)::after{
+  background-image: url('./tattoo.png')
 }

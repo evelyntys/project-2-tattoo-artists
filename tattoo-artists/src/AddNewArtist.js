@@ -146,7 +146,7 @@ export default class AddNewArtist extends React.Component {
     addData = async () => {
         this.setState({
             submitted: true,
-            // showCreateToast: true
+            showCreateToast: true
         })
         try {
             let response = await axios.post(this.url + "add-new-artist", {
@@ -212,7 +212,7 @@ export default class AddNewArtist extends React.Component {
                 thirdPage: false,
                 submitted: false,
             })
-            //  {this.props.ChangePages('explore')}
+             {this.props.ChangePages('explore')}
         }
         catch (e) {
             this.setState({
@@ -243,8 +243,7 @@ export default class AddNewArtist extends React.Component {
                                 name="artistName"
                                 value={this.state.artistName}
                                 onChange={this.updateFormField} />
-                            {this.state.submitted?
-                            <ValidateFields field="artist name" state={this.state.artistName}/> : null}
+                            {this.state.submitted? <ValidateFields field="artist name" state={this.state.artistName}/> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
@@ -391,7 +390,7 @@ export default class AddNewArtist extends React.Component {
                     </div>
 
                     <div>
-                        <button className="btn black-button my-1" onClick={() => {
+                        <button className="btn delete-button my-1" onClick={() => {
                             this.setState({
                                 firstPage: false,
                                 secondPage: true
@@ -495,7 +494,7 @@ export default class AddNewArtist extends React.Component {
                             thirdPage: false
                         })
                     }}>previous</button>
-                    <button className="btn black-button my-1 mx-1" onClick={() => {
+                    <button className="btn delete-button my-1 mx-1" onClick={() => {
                         this.setState({
                             firstPage: false,
                             secondPage: false,

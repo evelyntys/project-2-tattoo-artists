@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function ContactFields(props) {
 
@@ -19,32 +19,34 @@ export default function ContactFields(props) {
         <div className="contacts">
             {props.inputList.map((x, i) => {
                 return (
-                    <div className="row">
-                        <div className="col">
-                            <input type="text"
-                                className="form-control"
-                                name="contactKey"
-                                value={x.contactKey}
-                                placeholder="platform e.g. instagram"
-                                onChange={e => handleInputChange(e, i)} />
-                        </div>
+                    <React.Fragment key={i}>
+                        <div className="row my-2">
+                            <div className="col col-md-5">
+                                <input type="text"
+                                    className="form-control"
+                                    name="contactKey"
+                                    value={x.contactKey}
+                                    placeholder="platform e.g. instagram"
+                                    onChange={e => handleInputChange(e, i)} />
+                            </div>
 
-                        <div className="col">
-                            <input type="text"
-                                className="form-control"
-                                name="contactValue"
-                                value={x.contactValue}
-                                placeholder="platform e.g. @todayi.poke"
-                                onChange={e => handleInputChange(e, i)} />
-                        </div>
+                            <div className="col col-md-5">
+                                <input type="text"
+                                    className="form-control"
+                                    name="contactValue"
+                                    value={x.contactValue}
+                                    placeholder="platform e.g. @todayi.poke"
+                                    onChange={e => handleInputChange(e, i)} />
+                            </div>
 
-                        <div className="btn-box">
-                            {props.inputList.length !== 1 && <button
-                                className="btn btn-danger my-2"
-                                onClick={() => handleRemoveClick(i)}>Remove</button>}
-                            {props.inputList.length - 1 === i && <button className="btn btn-primary my-2" onClick={props.handleAddClick}>Add</button>}
+                            <div className="col-3 col-md-2">
+                                {props.inputList.length !== 1 && <button
+                                    className="btn delete-button me-1 me-md-2"
+                                    onClick={() => handleRemoveClick(i)}>-</button>}
+                                {props.inputList.length - 1 === i && <button className="btn black-button" onClick={props.handleAddClick}>+</button>}
+                            </div>
                         </div>
-                    </div>
+                    </React.Fragment>
                 );
             })}
         </div>
