@@ -6,7 +6,7 @@ import StyleMultiSelect from './StyleMultiSelect';
 import ValidateFields from './Validation';
 
 export default class Explore extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
+    url = "https://etys-tattoo-artists.herokuapp.com/";
 
     //have state for view-all (originally true) so that it will change to false whe nclick on artist
     //when click on view-all navbar, check if view-all is false => then change to true 

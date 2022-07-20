@@ -9,7 +9,7 @@ import ValidateFields from './Validation';
 
 
 export default class AddNewArtist extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/"
+    url = "https://etys-tattoo-artists.herokuapp.com/"
 
     state = {
         artistName: "",
