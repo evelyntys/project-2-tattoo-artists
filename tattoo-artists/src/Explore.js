@@ -21,6 +21,25 @@ export default class Explore extends React.Component {
         "floral": "Floral"
     }
 
+    generalRadio = [
+        {label: "Yes", value: "yes"},
+        {label: "No", value: "no"},
+        {label: "Any", value: "any"}
+    ]
+
+    methodsCheckbox = [
+        {label: "Handpoke", value:"handpoke"},
+        {label: "Machine", value: "machine"},
+        {label: "Jagua", value: "jagua"}
+    ]
+
+    inkCheckbox = [
+        {label: "Black", value:"black"},
+        {label: "Colours", value: "colours"},
+        {label: "UV", value: "uv"},
+        {label: "Jagua", value: "jagua"}
+    ]
+
     state = {
         data: [],
         showConfirmDelete: false,
@@ -67,19 +86,20 @@ export default class Explore extends React.Component {
         addReviewComment: "",
         showFilters: true,
         search: '',
-        gender: [],
-        yearsOfExperience: [],
-        apprentice: [],
-        temporary: [],
+        gender: "any",
+        yearsOfExperience: "0",
+        apprentice: "any",
+        temporary: "any",
         method: [],
         style: [],
         ink: [],
-        private: [],
-        bookingsRequired: [],
+        private: "any",
+        bookingsRequired: "any",
         otherServices: [],
         showAddReviewButton: true,
         submittedReview: false,
-        submittedEditReview: false
+        submittedEditReview: false,
+        checkReviewEmail: false
     }
 
 
@@ -95,14 +115,14 @@ export default class Explore extends React.Component {
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
             search: '',
-            gender: [],
-            apprentice: [],
-            temporary: [],
+            gender: 'any',
+            apprentice: 'any',
+            temporary: 'any',
             method: [],
             style: [],
             ink: [],
-            private: [],
-            bookingsRequired: [],
+            private: 'any',
+            bookingsRequired: 'any',
             otherServices: [],
             data: response.data
         })
@@ -114,282 +134,146 @@ export default class Explore extends React.Component {
             filters =
                 <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="mt-2">
                     <div className="container">
+                        <h4>filters: </h4>
+                        {/* GENDER FILTER */}
                         <div>
-
-                            <label className="form-label me-2">Gender:</label>
-
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="gender"
-                                    value="female" onChange={this.updateCheckboxes}
-                                    checked={this.state.gender.includes("female")} />
-                                <label className="form-check-label">Female</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="gender"
-                                    value="male" onChange={this.updateCheckboxes}
-                                    checked={this.state.gender.includes("male")} />
-                                <label className="form-check-label">Male</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="gender"
-                                    value="others" onChange={this.updateCheckboxes}
-                                    checked={this.state.gender.includes("others")} />
-                                <label className="form-check-label">Others</label>
-                            </div>
+                            <label className="form-label">Gender: </label>
+                            <select className="form-select" aria-label="Default select example"
+                                onChange={this.updateFormField} value={this.state.gender} name="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="others">Others</option>
+                                <option value="any">Any</option>
+                            </select>
                         </div>
-                        {/* years of exp, ink, private, bookings required, other services */}
 
+                        {/* YEARS OF EXPERIENCE FILTER */}
                         <div>
                             <div>
                                 <label className="form-label me-2">Years of experience:</label>
                             </div>
 
                             <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
-                                    value={1} onChange={this.updateCheckboxes}
-                                    checked={this.state.yearsOfExperience.includes("1")} />
+                                <input type="radio" className="form-check-input" name="yearsOfExperience"
+                                    value={0} onChange={this.updateFormField}
+                                    checked={this.state.yearsOfExperience === "0"} />
+                                <label className="form-check-label">newly started this year</label>
+                            </div>
+
+                            <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input" name="yearsOfExperience"
+                                    value={1} onChange={this.updateFormField}
+                                    checked={this.state.yearsOfExperience === "1"} />
                                 <label className="form-check-label">at least 1 year</label>
                             </div>
                             <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
-                                    value={3} onChange={this.updateCheckboxes}
-                                    checked={this.state.yearsOfExperience.includes("3")} />
+                                <input type="radio" className="form-check-input" name="yearsOfExperience"
+                                    value={3} onChange={this.updateFormField}
+                                    checked={this.state.yearsOfExperience === "3"} />
                                 <label className="form-check-label">at least 3 years</label>
                             </div>
                             <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="yearsOfExperience"
-                                    value={5} onChange={this.updateCheckboxes}
-                                    checked={this.state.yearsOfExperience.includes("5")} />
+                                <input type="radio" className="form-check-input" name="yearsOfExperience"
+                                    value={5} onChange={this.updateFormField}
+                                    checked={this.state.yearsOfExperience === "5"} />
                                 <label className="form-check-label">at least 5 years</label>
                             </div>
                         </div>
 
+                        {/* APPRENTICE FILTER */}
                         <div>
-
-                            <label className="form-label me-2">Apprentice:</label>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="apprentice"
-                                    value="yes" onChange={this.updateCheckboxes}
-                                    checked={this.state.apprentice.includes("yes")} />
-                                <label className="form-check-label">Yes</label>
+                            <div><label className="form-label me-2">Apprentice:</label></div>
+                            {this.generalRadio.map(each => (
+                                <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input" name="apprentice"
+                                    value={each.value} onChange={this.updateFormField}
+                                    checked={this.state.apprentice === (each.value)} />
+                                <label className="form-check-label">{each.label}</label>
                             </div>
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="apprentice"
-                                    value="no" onChange={this.updateCheckboxes}
-                                    checked={this.state.apprentice.includes("no")} />
-                                <label className="form-check-label">No</label>
-                            </div>
+                            ))}
+                            
                         </div>
 
-                        <div>
-                            <label className="form-label me-2">Temporary:</label>
+                        {/* TEMPORARY FILTER */}
 
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="temporary"
-                                    value="yes" onChange={this.updateCheckboxes}
-                                    checked={this.state.temporary.includes("yes")} />
-                                <label className="form-check-label">Yes</label>
+                        <div>
+                            <div>
+                                <label className="form-label">Temporary:</label>
+                                </div>
+                            {this.generalRadio.map(each => (
+                                <div className="form-check form-check-inline">
+                                <input type="radio" className="form-check-input" name="temporary"
+                                    value={each.value} onChange={this.updateFormField}
+                                    checked={this.state.temporary === (each.value)} />
+                                <label className="form-check-label">{each.label}</label>
                             </div>
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="temporary"
-                                    value="no" onChange={this.updateCheckboxes}
-                                    checked={this.state.temporary.includes("no")} />
-                                <label className="form-check-label">No</label>
-                            </div>
+                            ))}
+
                         </div>
 
+                        {/* METHOD FILTER */}
                         <div>
                             <div>
                                 <label className="form-label me-2">Method(s):</label>
                             </div>
-
-                            <div className="form-check form-check-inline">
+                            {this.methodsCheckbox.map(each => (
+                                <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input"
-                                    value="handpoke" name="method"
-                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
-                                <label className="form-check-label">Handpoke</label>
+                                    value={each.value} name="method"
+                                    onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
+                                <label className="form-check-label">{each.label}</label>
                             </div>
+                            ))}
 
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="machine" name="method"
-                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
-                                <label className="form-check-label">Machine</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="jagua" name="method"
-                                    onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
-                                <label className="form-check-label">Jagua</label>
-                            </div>
                         </div>
 
+                        {/* STYLE FILTER */}
                         <div>
                             <label className="form-label me-2">Style(s):</label>
                             <StyleMultiSelect style={this.state.style} handleSelect={this.handleSelectFilter} />
-
-                            {/* <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value='surrealism' onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes('surrealism')} />
-                                <label className="form-check-label">Surrealism</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="traditional-americana" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("traditional-americana")} />
-                                <label className="form-check-label">Traditional Americana</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="traditional-japanese" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("traditional-japanese")} />
-                                <label className="form-check-label">Traditional Japanese</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="blackwork" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("blackwork")} />
-                                <label className="form-check-label"> Blackwork</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="minimalist" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("minimalist")} />
-                                <label className="form-check-label"> Minimalist</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="water-colour" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("water-colour")} />
-                                <label className="form-check-label"> Water Colour</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="pet/animals" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("pet/animals")} />
-                                <label className="form-check-label"> Pet/Animals</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input" name="style"
-                                    value="floral" onChange={this.updateCheckboxes}
-                                    checked={this.state.style.includes("floral")} />
-                                <label className="form-check-label"> Floral</label>
-                            </div> */}
-
                         </div>
 
+                        {/* INK FILTER */}
                         <div>
                             <div>
                                 <label className="form-label">Ink(s):</label>
                             </div>
-
-                            <div className="form-check form-check-inline">
+                            {this.inkCheckbox.map(each => (
+                                <div className="form-check form-check-inline">
                                 <input type="checkbox" className="form-check-input"
-                                    value="black" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
-                                <label className="form-check-label">Black</label>
+                                    value={each.value} name="ink"
+                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
+                                <label className="form-check-label">{each.label}</label>
                             </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="colours" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
-                                <label className="form-check-label">Colours</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="jagua" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
-                                <label className="form-check-label">Jagua</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="uv" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
-                                <label className="form-check-label">UV</label>
-                            </div>
+                            ))}
                         </div>
 
                         {/* private */}
-
                         <div>
-                            <label className="form-label me-2">Private Studio: </label>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="yes" name="private"
-                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("yes")} />
-                                <label className="form-check-label">Yes</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="no" name="private"
-                                    onChange={this.updateCheckboxes} checked={this.state.private.includes("no")} />
-                                <label className="form-check-label">No</label>
-                            </div>
+                            <label className="form-label">Private studio: </label>
+                            <select className="form-select" aria-label="Default select example"
+                                onChange={this.updateFormField} value={this.state.private} name="private">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="any">Any</option>
+                            </select>
                         </div>
 
                         <div>
-                            <label className="form-label me-2">Bookings required: </label>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="yes" name="bookingsRequired"
-                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("yes")} />
-                                <label className="form-check-label">Yes</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="no" name="bookingsRequired"
-                                    onChange={this.updateCheckboxes} checked={this.state.bookingsRequired.includes("no")} />
-                                <label className="form-check-label">No</label>
-                            </div>
-                        </div>
-
-                        {/* other services */}
-
-                        <div>
-                            <label className="form-label me-2">Other services: </label>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="yes" name="otherServices"
-                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("yes")} />
-                                <label className="form-check-label">Yes</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value="no" name="otherServices"
-                                    onChange={this.updateCheckboxes} checked={this.state.otherServices.includes("no")} />
-                                <label className="form-check-label">No</label>
-                            </div>
+                            <label className="form-label">Bookings required: </label>
+                            <select className="form-select" aria-label="Default select example"
+                                onChange={this.updateFormField} value={this.state.bookingsRequired} name="bookingsRequired">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="any">Any</option>
+                            </select>
                         </div>
 
                     </div>
-                    <button className="btn black-button w-100" onClick={() => { this.setState({ showFilters: false }) }}><i className="bi bi-caret-up-fill"></i></button>
+                    <button className="btn black-button w-100 mt-2" onClick={() => { this.setState({ showFilters: false }) }}><i className="bi bi-caret-up-fill"></i></button>
                 </div>
         }
-        // else {
-        //     filters =
-        //         <div style={{ "border": "1px solid black" }}>
-        //             no filters yet
-        //         </div>
-        // }
+        
         return (
             <React.Fragment>
                 <h3>search for artist(s): </h3>
@@ -614,70 +498,70 @@ export default class Explore extends React.Component {
                                 </div>
                             </div>
                             <div className="row">
-                            <div className="col-12 col-md-4">
-                            <h1 className="text-center d-block d-md-none">{this.findInstagram(this.state.artistToShow.contact)}</h1>
-                            <div className="single-artist-image" style={{ "width": "100%"}}>
-                                <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
-                            </div>
-                            </div>
-                            <div className="col-12 col-md-8">
-                            <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1>
-                            <Accordion defaultActiveKey="0" flush>
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
-                                    <Accordion.Body>
-                                        <div className="text-center card-box">
-                                            <p>{this.state.artistToShow.name}</p>
-                                            <p>{this.state.artistToShow.gender}</p>
-                                            <p>{this.state.artistToShow.yearsOfExperience} year(s) of experience</p>
-                                            <p>{"currently " + (this.state.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
-                                            <div className="text-center">
-                                                <div className="card-box-title">Method(s)</div>
-                                                <div>{this.state.artistToShow.method.map(a => (
-                                                    <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                ))}
-                                                </div>
-                                                {/* Temporary? {e.temporary} */}
-                                                <div className="card-box-title">Style(s)</div>
-                                                <div>{this.state.artistToShow.style.map(a => (
-                                                    <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
-                                                ))}
-                                                </div>
-                                                <div className="card-box-title">Ink(s)</div>
-                                                <div>
-                                                    {this.state.artistToShow.ink.map(a => (
-                                                        <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                    <div className="card-box-title"><i className="bi bi-person-hearts"></i> Contact </div>
-                                                    <div className="card-box">
-                                                    {this.state.artistToShow.contact.map(a => (
-                                                        <div key={"contact" + a.contactKey}>
-                                                            <b>{a.contactKey}</b>: {a.contactValue}</div>
-                                                    ))}
+                                <div className="col-12 col-md-4">
+                                    <h1 className="text-center d-block d-md-none">{this.findInstagram(this.state.artistToShow.contact)}</h1>
+                                    <div className="single-artist-image" style={{ "width": "100%" }}>
+                                        <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-8">
+                                    <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1>
+                                    <Accordion defaultActiveKey="0" flush>
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
+                                            <Accordion.Body>
+                                                <div className="text-center card-box">
+                                                    <p>{this.state.artistToShow.name}</p>
+                                                    <p>{this.state.artistToShow.gender}</p>
+                                                    <p>{this.state.artistToShow.yearsOfExperience} year(s) of experience</p>
+                                                    <p>{"currently " + (this.state.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
+                                                    <div className="text-center">
+                                                        <div className="card-box-title">Method(s)</div>
+                                                        <div>{this.state.artistToShow.method.map(a => (
+                                                            <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                        ))}
+                                                        </div>
+                                                        {/* Temporary? {e.temporary} */}
+                                                        <div className="card-box-title">Style(s)</div>
+                                                        <div>{this.state.artistToShow.style.map(a => (
+                                                            <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                        ))}
+                                                        </div>
+                                                        <div className="card-box-title">Ink(s)</div>
+                                                        <div>
+                                                            {this.state.artistToShow.ink.map(a => (
+                                                                <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="card-box-title"><i className="bi bi-person-hearts"></i> Contact </div>
+                                                        <div className="card-box">
+                                                            {this.state.artistToShow.contact.map(a => (
+                                                                <div key={"contact" + a.contactKey}>
+                                                                    <b>{a.contactKey}</b>: {a.contactValue}</div>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                        </div>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                                <Accordion.Item eventKey="1">
-                                    <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
-                                    <Accordion.Body>
-                                        <div>
-                                            <div className="card-box">
-                                                <p>{this.state.artistToShow.studio.name}</p>
-                                                <p>{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </p>
-                                                address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
-                                                <p>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
-                                                {this.state.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + this.state.artistToShow.studio.otherServices}
-                                            </div>
-                                        </div>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
-                            </div>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                        <Accordion.Item eventKey="1">
+                                            <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
+                                            <Accordion.Body>
+                                                <div>
+                                                    <div className="card-box">
+                                                        <p>{this.state.artistToShow.studio.name}</p>
+                                                        <p>{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </p>
+                                                        address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
+                                                        <p>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
+                                                        {this.state.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + this.state.artistToShow.studio.otherServices}
+                                                    </div>
+                                                </div>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>
+                                </div>
                             </div>
 
                             <div className="mt-2">
@@ -697,238 +581,238 @@ export default class Explore extends React.Component {
                                     <div className="container">
                                         <h1>Information about the artist</h1>
                                         <div className="row">
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label">Name of tattoo artist: </label>
-                                            <input type="text"
-                                                className="form-control"
-                                                placeholder="artist name"
-                                                name="modifiedArtistName"
-                                                value={this.state.modifiedArtistName}
-                                                onChange={this.updateFormField} />
-                                            {this.state.submitted? <ValidateFields field="artist name" state={this.state.artistName}/> : null}
-                                        </div>
-
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label">Year started tattooing: </label>
-                                            <input type="text" className="form-control"
-                                                placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
-                                                onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
-                                        </div>
-
-                                        <div className="col-12 col-md-6 mt-md-2">
-                                            <label className="form-label form-check-inline">Gender: </label>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input"
-                                                    value="female" name="modifiedGender"
-                                                    checked={this.state.modifiedGender === "female"} onChange={this.updateFormField} />
-                                                <label className="form-check-label">Female</label>
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label">Name of tattoo artist: </label>
+                                                <input type="text"
+                                                    className="form-control"
+                                                    placeholder="artist name"
+                                                    name="modifiedArtistName"
+                                                    value={this.state.modifiedArtistName}
+                                                    onChange={this.updateFormField} />
+                                                {this.state.submitted ? <ValidateFields field="artist name" state={this.state.artistName} /> : null}
                                             </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input"
-                                                    value="male" name="modifiedGender"
-                                                    checked={this.state.modifiedGender === "male"} onChange={this.updateFormField} />
-                                                <label className="form-check-label">Male</label>
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label">Year started tattooing: </label>
+                                                <input type="text" className="form-control"
+                                                    placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
+                                                    onChange={this.updateFormField} />
+                                                {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted} /> : null}
                                             </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input"
-                                                    value="others" name="modifiedGender"
-                                                    checked={this.state.modifiedGender === "others"} onChange={this.updateFormField} />
-                                                <label className="form-check-label">Others</label>
-                                            </div>
-                                        </div>
+                                            <div className="col-12 col-md-6 mt-md-2">
+                                                <label className="form-label form-check-inline">Gender: </label>
 
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="female" name="modifiedGender"
+                                                        checked={this.state.modifiedGender === "female"} onChange={this.updateFormField} />
+                                                    <label className="form-check-label">Female</label>
+                                                </div>
 
-                                        <div className="col-12 col-md-6 mt-md-2">
-                                            <label className="form-label form-check-inline">Are you an apprentice? </label>
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="male" name="modifiedGender"
+                                                        checked={this.state.modifiedGender === "male"} onChange={this.updateFormField} />
+                                                    <label className="form-check-label">Male</label>
+                                                </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input"
-                                                    value="yes" name="modifiedApprentice"
-                                                    onChange={this.updateFormField} checked={this.state.modifiedApprentice === "yes"} />
-                                                <label className="form-check-label">Yes</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="radio" className="form-check-input"
-                                                    value="no" name="modifiedApprentice"
-                                                    onChange={this.updateFormField} checked={this.state.modifiedApprentice === "no"} />
-                                                <label className="form-check-label">No</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label">Please select your method(s) of tattooing:</label>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="handpoke" name="modifiedMethod"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('handpoke')} />
-                                                <label className="form-check-label">Handpoke</label>
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="others" name="modifiedGender"
+                                                        checked={this.state.modifiedGender === "others"} onChange={this.updateFormField} />
+                                                    <label className="form-check-label">Others</label>
+                                                </div>
                                             </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="machine" name="modifiedMethod"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('machine')} />
-                                                <label className="form-check-label">Machine</label>
+
+                                            <div className="col-12 col-md-6 mt-md-2">
+                                                <label className="form-label form-check-inline">Are you an apprentice? </label>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="yes" name="modifiedApprentice"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedApprentice === "yes"} />
+                                                    <label className="form-check-label">Yes</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="no" name="modifiedApprentice"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedApprentice === "no"} />
+                                                    <label className="form-check-label">No</label>
+                                                </div>
                                             </div>
 
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="jagua" name="modifiedMethod"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('jagua')} />
-                                                <label className="form-check-label">Jagua</label>
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label">Please select your method(s) of tattooing:</label>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="handpoke" name="modifiedMethod"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('handpoke')} />
+                                                    <label className="form-check-label">Handpoke</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="machine" name="modifiedMethod"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('machine')} />
+                                                    <label className="form-check-label">Machine</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="jagua" name="modifiedMethod"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes('jagua')} />
+                                                    <label className="form-check-label">Jagua</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedMethod} message={"method"}/> : null}
+                                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedMethod} message={"method"} /> : null}
 
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label">Is it temporary? </label>
-                                            <select className="form-select" aria-label="Default select example"
-                                                onChange={this.updateFormField} value={this.state.modifiedTemporary} name="modifiedTemporary">
-                                                <option value="no">No</option>
-                                                <option value="yes">Yes</option>
-                                            </select>
-                                        </div>
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label">Is it temporary? </label>
+                                                <select className="form-select" aria-label="Default select example"
+                                                    onChange={this.updateFormField} value={this.state.modifiedTemporary} name="modifiedTemporary">
+                                                    <option value="no">No</option>
+                                                    <option value="yes">Yes</option>
+                                                </select>
+                                            </div>
 
-                                        <div className="col-12 col-md-6">
+                                            <div className="col-12 col-md-6">
+                                                <div>
+                                                    <label className="form-label">Please select your ink(s):</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="black" name="modifiedInk"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('black')} />
+                                                    <label className="form-check-label">Black</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="colours" name="modifiedInk"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('colours')} />
+                                                    <label className="form-check-label">Colours</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="jagua" name="modifiedInk"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('jagua')} />
+                                                    <label className="form-check-label">Jagua</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="checkbox" className="form-check-input"
+                                                        value="uv" name="modifiedInk"
+                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('uv')} />
+                                                    <label className="form-check-label">UV</label>
+                                                </div>
+                                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"} /> : null}
+                                            </div>
+
+                                            <div className="col-12 col-md-6">
+                                                <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
+                                                <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
+                                                {this.state.submitted ? <ValidateFields field="style" state={this.state.modifiedStyle} /> : null}
+                                            </div>
+
+                                            <label className="form-label">Please enter the artist's contact details: </label>
+                                            <ContactFields handleAddClick={this.handleAddClick}
+                                                inputList={this.state.modifiedContact}
+                                                setInputList={this.updateData} />
+                                            {this.state.submitted ? <ValidateFields field="contact" state={this.state.modifiedContact} /> : null}
                                             <div>
-                                            <label className="form-label">Please select your ink(s):</label>
+                                                <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
+                                                <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
+                                                    onChange={this.updateFormField} value={this.state.modifiedImage} />
+                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedImage} message={"a reference image link"} /> : null}
                                             </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="black" name="modifiedInk"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('black')} />
-                                                <label className="form-check-label">Black</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="colours" name="modifiedInk"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('colours')} />
-                                                <label className="form-check-label">Colours</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="jagua" name="modifiedInk"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('jagua')} />
-                                                <label className="form-check-label">Jagua</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                                <input type="checkbox" className="form-check-input"
-                                                    value="uv" name="modifiedInk"
-                                                    onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes('uv')} />
-                                                <label className="form-check-label">UV</label>
-                                            </div>
-                                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"}/> : null}
-                                        </div>
-
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                            <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
-                                            {this.state.submitted ? <ValidateFields field="style" state={this.state.modifiedStyle}/> : null}
-                                        </div>
-
-                                        <label className="form-label">Please enter the artist's contact details: </label>
-                                        <ContactFields handleAddClick={this.handleAddClick}
-                                            inputList={this.state.modifiedContact}
-                                            setInputList={this.updateData} />
-                                        {this.state.submitted ? <ValidateFields field="contact" state={this.state.modifiedContact}/> : null}
-                                        <div>
-                                            <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
-                                            <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
-                                                onChange={this.updateFormField} value={this.state.modifiedImage} />
-                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedImage} message={"a reference image link"}/> : null}
-                                        </div>
                                         </div>
                                     </div>
 
                                     <div className="container">
                                         <h1>Information about the studio</h1>
                                         <div className="row">
-                                        <div className="col-12">
-                                            <label className="form-label">Name of studio: </label>
-                                            <input type="text" className="form-control"
-                                                placeholder="studio name" name="modifiedStudioName"
-                                                value={this.state.modifiedStudioName}
-                                                onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStudioName} message={"the studio name"}/> : null}
-                                        </div>
-
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label form-check-inline">Is it a private studio? </label>
-
-                                            <div className="form-check form-check-inline">
-                                            <input type="radio" className="form-check-input"
-                                                value="yes" name="modifiedPrivate"
-                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate === "yes"} />
-                                            <label className="form-check-label">Yes</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                            <input type="radio" className="form-check-input"
-                                                value="no" name="modifiedPrivate"
-                                                onChange={this.updateFormField} checked={this.state.modifiedPrivate === "no"} />
-                                            <label className="form-check-label">No</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label form-check-inline">Are bookings required? </label>
-
-                                            <div className="form-check form-check-inline">
-                                            <input type="radio" className="form-check-input"
-                                                value="yes" name="modifiedBookingsRequired"
-                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "yes"} />
-                                            <label className="form-check-label">Yes</label>
-                                            </div>
-
-                                            <div className="form-check form-check-inline">
-                                            <input type="radio" className="form-check-input"
-                                                value="no" name="modifiedBookingsRequired"
-                                                onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "no"} />
-                                            <label className="form-check-label">No</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <h6>Address</h6>
-
                                             <div className="col-12">
-                                            <label className="form-label">Street: (please enter "nil" if not applicable)</label>
-                                            <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
-                                                value={this.state.modifiedStreet} onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStreet} message={"the street"}/> : null}
+                                                <label className="form-label">Name of studio: </label>
+                                                <input type="text" className="form-control"
+                                                    placeholder="studio name" name="modifiedStudioName"
+                                                    value={this.state.modifiedStudioName}
+                                                    onChange={this.updateFormField} />
+                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStudioName} message={"the studio name"} /> : null}
                                             </div>
 
                                             <div className="col-12 col-md-6">
-                                            <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
-                                            <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
-                                                value={this.state.modifiedUnit} onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="unit" state={this.state.modifiedUnit}/> : null}
+                                                <label className="form-label form-check-inline">Is it a private studio? </label>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="yes" name="modifiedPrivate"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedPrivate === "yes"} />
+                                                    <label className="form-check-label">Yes</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="no" name="modifiedPrivate"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedPrivate === "no"} />
+                                                    <label className="form-check-label">No</label>
+                                                </div>
                                             </div>
 
                                             <div className="col-12 col-md-6">
-                                            <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
-                                            <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
-                                                value={this.state.modifiedPostal} onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="postal" state={this.state.modifiedPostal}/> : null}
-                                            </div>
-                                        </div>
+                                                <label className="form-label form-check-inline">Are bookings required? </label>
 
-                                        <div>
-                                            <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
-                                            <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
-                                                value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
-                                            {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedOtherServices} message={"the services available"}/> : null}
-                                        </div>
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="yes" name="modifiedBookingsRequired"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "yes"} />
+                                                    <label className="form-check-label">Yes</label>
+                                                </div>
+
+                                                <div className="form-check form-check-inline">
+                                                    <input type="radio" className="form-check-input"
+                                                        value="no" name="modifiedBookingsRequired"
+                                                        onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === "no"} />
+                                                    <label className="form-check-label">No</label>
+                                                </div>
+                                            </div>
+
+                                            <div className="row">
+                                                <h6>Address</h6>
+
+                                                <div className="col-12">
+                                                    <label className="form-label">Street: (please enter "nil" if not applicable)</label>
+                                                    <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
+                                                        value={this.state.modifiedStreet} onChange={this.updateFormField} />
+                                                    {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStreet} message={"the street"} /> : null}
+                                                </div>
+
+                                                <div className="col-12 col-md-6">
+                                                    <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
+                                                    <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
+                                                        value={this.state.modifiedUnit} onChange={this.updateFormField} />
+                                                    {this.state.submitted ? <ValidateFields field="unit" state={this.state.modifiedUnit} /> : null}
+                                                </div>
+
+                                                <div className="col-12 col-md-6">
+                                                    <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
+                                                    <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
+                                                        value={this.state.modifiedPostal} onChange={this.updateFormField} />
+                                                    {this.state.submitted ? <ValidateFields field="postal" state={this.state.modifiedPostal} /> : null}
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
+                                                <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
+                                                    value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
+                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedOtherServices} message={"the services available"} /> : null}
+                                            </div>
                                         </div>
 
                                         <button className="btn delete-button my-2 mx-1" onClick={this.updateArtist}>Update artist</button>
@@ -1071,11 +955,15 @@ export default class Explore extends React.Component {
                                                         <label>Please enter your email to confirm your identity to edit this review:</label>
                                                         <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
                                                     </div>
+                                                    {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
                                                     <div className="my-1">
                                                         <button className="btn black-button mx-1" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
                                                         <button className="btn cancel-button mx-1" onClick={() => {
                                                             this.setState({
-                                                                editReview: false
+                                                                editReview: false,
+                                                                checkReviewEmail: false,
+                                                                correctReviewEmail: false,
+                                                                editReviewEmail: "",
                                                             })
                                                         }}>Cancel</button>
                                                     </div>
@@ -1122,13 +1010,16 @@ export default class Explore extends React.Component {
                                 <div style={{ "color": "red" }}>Please enter your review</div>
                                 :
                                 null}
-                            <button className="btn black-button mx-1" onClick={this.updateReview}>Edit</button>
-                            <button className="btn cancel-button mx-1" onClick={() => {
-                                this.setState({
-                                    editReview: false,
-                                    correctReviewEmail: false
-                                })
-                            }}>Cancel</button>
+                            <div className="my-2">
+                                <button className="btn black-button mx-1" onClick={this.updateReview}>Edit</button>
+                                <button className="btn cancel-button mx-1" onClick={() => {
+                                    this.setState({
+                                        editReview: false,
+                                        correctReviewEmail: false,
+                                        editReviewEmail: ""
+                                    })
+                                }}>Cancel</button>
+                            </div>
                         </div>
                     </div>
 
@@ -1168,6 +1059,9 @@ export default class Explore extends React.Component {
     }
 
     validateEditEmail(review) {
+        this.setState({
+            checkReviewEmail: true
+        })
         if (this.state.editReviewEmail === review.email) {
             this.setState({
                 correctReviewEmail: true
@@ -1249,7 +1143,7 @@ export default class Explore extends React.Component {
                         <button className="btn cancel-button" onClick={handleClose}>
                             Cancel
                         </button>
-                        <button className="btn black-button" onClick={() => { this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email) }}>Confirm identity</button>
+                        <button className="btn delete-button" onClick={() => { this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email) }}>Confirm identity</button>
                     </Modal.Footer>
                 </Modal>
             </React.Fragment>
@@ -1309,12 +1203,12 @@ export default class Explore extends React.Component {
                         <div className="col-6">
                             <label>Name: </label>
                             <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
-                            {this.state.submittedReview ? <ValidateFields field="reviewer name" state={this.state.addReviewReviewer}/> : null}
+                            {this.state.submittedReview ? <ValidateFields field="reviewer name" state={this.state.addReviewReviewer} /> : null}
                         </div>
                         <div className="col-6">
                             <label>Email: </label>
                             <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
-                            {this.state.submittedReview? <ValidateFields field="email" state={this.state.addReviewEmail}/> : null}
+                            {this.state.submittedReview ? <ValidateFields field="email" state={this.state.addReviewEmail} /> : null}
                         </div>
                         <div>
                         </div>
@@ -1332,7 +1226,7 @@ export default class Explore extends React.Component {
                         <label>Comment: </label>
                         <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
                         </textarea>
-                        {this.state.submittedReview ? <ValidateFields field="general" state={this.state.addReviewComment} message={"the review"}/> : null}
+                        {this.state.submittedReview ? <ValidateFields field="general" state={this.state.addReviewComment} message={"the review"} /> : null}
                     </div>
                     <div className="my-2">
                         <button className="btn black-button mx-1" onClick={this.AddReviewToArtist}>add review</button>
@@ -1401,7 +1295,10 @@ export default class Explore extends React.Component {
             console.log(result)
             this.setState({
                 editReview: false,
-                artistToShow: updatedResponse.data
+                artistToShow: updatedResponse.data,
+                correctReviewEmail: false,
+                editReviewEmail: "",
+                checkReviewEmail: false
 
             })
         }
