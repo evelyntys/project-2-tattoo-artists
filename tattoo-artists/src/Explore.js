@@ -4,47 +4,23 @@ import { Modal, Accordion } from 'react-bootstrap';
 import ContactFields from './ContactFields';
 import StyleMultiSelect from './StyleMultiSelect';
 import ValidateFields from './Validation';
+import RenderFilters from './RenderFilters';
+import ShowOneArtist from './ShowOneArtist';
 
 export default class Explore extends React.Component {
     url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
 
     //have state for view-all (originally true) so that it will change to false whe nclick on artist
     //when click on view-all navbar, check if view-all is false => then change to true 
-    styleKeys = {
-        "surrealism": "Surrealism",
-        "traditional-americana": "Traditional Americana",
-        "traditional-japanese": "Traditional Japanese",
-        "blackwork": "Blackwork",
-        "minimalist": "Minimalist",
-        "water-colour": "Water colour",
-        "pet/animals": "Pet/Animals",
-        "floral": "Floral"
-    }
+    styleKeys = this.props.styleKeys;
 
-    generalRadio = [
-        { label: "Yes", value: "yes" },
-        { label: "No", value: "no" },
-        { label: "Any", value: "any" }
-    ]
+    generalRadio = this.props.generalRadio;
 
-    methodsCheckbox = [
-        { label: "Handpoke", value: "handpoke" },
-        { label: "Machine", value: "machine" },
-        { label: "Jagua", value: "jagua" }
-    ]
+    methodsCheckbox = this.props.methodsCheckbox;
 
-    inkCheckbox = [
-        { label: "Black", value: "black" },
-        { label: "Colours", value: "colours" },
-        { label: "UV", value: "uv" },
-        { label: "Jagua", value: "jagua" }
-    ]
+    inkCheckbox = this.props.inkCheckbox;
 
-    genderRadio = [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
-        { label: "Others", value: "others" }
-    ]
+    genderRadio = this.props.genderRadio;
 
     state = {
         data: [],
@@ -108,6 +84,12 @@ export default class Explore extends React.Component {
         checkReviewEmail: false
     }
 
+    showFilters = () => {
+        this.setState({
+            showFilters: !this.state.showFilters
+        })
+    }
+
 
     async componentDidMount() {
         let response = await axios.get(this.url + 'show-artists');
@@ -122,6 +104,7 @@ export default class Explore extends React.Component {
         this.setState({
             search: '',
             gender: 'any',
+            yearsOfExperience: "0",
             apprentice: 'any',
             temporary: 'any',
             method: [],
@@ -134,183 +117,10 @@ export default class Explore extends React.Component {
         })
     }
 
-    renderFilters() {
-        let filters = ""
-        if (this.state.showFilters) {
-            filters =
-                <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="mt-2">
-                    <div className="container">
-                        <h4>filters: </h4>
-                        {/* GENDER FILTER */}
-                        <div>
-                            <label className="form-label">Gender: </label>
-                            <select className="form-select" aria-label="Default select example"
-                                onChange={this.updateFormField} value={this.state.gender} name="gender">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="others">Others</option>
-                                <option value="any">Any</option>
-                            </select>
-                        </div>
-
-                        {/* YEARS OF EXPERIENCE FILTER */}
-                        <div>
-                            <div>
-                                <label className="form-label me-2">Years of experience:</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={0} onChange={this.updateFormField}
-                                    checked={this.state.yearsOfExperience === "0"} />
-                                <label className="form-check-label">newly started this year</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={1} onChange={this.updateFormField}
-                                    checked={this.state.yearsOfExperience === "1"} />
-                                <label className="form-check-label">at least 1 year</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={3} onChange={this.updateFormField}
-                                    checked={this.state.yearsOfExperience === "3"} />
-                                <label className="form-check-label">at least 3 years</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={5} onChange={this.updateFormField}
-                                    checked={this.state.yearsOfExperience === "5"} />
-                                <label className="form-check-label">at least 5 years</label>
-                            </div>
-                        </div>
-
-                        {/* APPRENTICE FILTER */}
-                        <div>
-                            <div><label className="form-label me-2">Apprentice:</label></div>
-                            {this.generalRadio.map(each => (
-                                <div className="form-check form-check-inline">
-                                    <input type="radio" className="form-check-input" name="apprentice"
-                                        value={each.value} onChange={this.updateFormField}
-                                        checked={this.state.apprentice === (each.value)} />
-                                    <label className="form-check-label">{each.label}</label>
-                                </div>
-                            ))}
-
-                        </div>
-
-                        {/* TEMPORARY FILTER */}
-
-                        <div>
-                            <div>
-                                <label className="form-label">Temporary:</label>
-                            </div>
-                            {this.generalRadio.map(each => (
-                                <div className="form-check form-check-inline">
-                                    <input type="radio" className="form-check-input" name="temporary"
-                                        value={each.value} onChange={this.updateFormField}
-                                        checked={this.state.temporary === (each.value)} />
-                                    <label className="form-check-label">{each.label}</label>
-                                </div>
-                            ))}
-
-                        </div>
-
-                        {/* METHOD FILTER */}
-                        <div>
-                            <div>
-                                <label className="form-label me-2">Method(s):</label>
-                            </div>
-                            {this.methodsCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
-                                    <input type="checkbox" className="form-check-input"
-                                        value={each.value} name="method"
-                                        onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
-                                    <label className="form-check-label">{each.label}</label>
-                                </div>
-                            ))}
-
-                        </div>
-
-                        {/* STYLE FILTER */}
-                        <div>
-                            <label className="form-label me-2">Style(s):</label>
-                            <StyleMultiSelect style={this.state.style} handleSelect={this.handleSelectFilter} />
-                        </div>
-
-                        {/* INK FILTER */}
-                        <div>
-                            <div>
-                                <label className="form-label">Ink(s):</label>
-                            </div>
-                            {this.inkCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
-                                    <input type="checkbox" className="form-check-input"
-                                        value={each.value} name="ink"
-                                        onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
-                                    <label className="form-check-label">{each.label}</label>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* private */}
-                        <div>
-                            <label className="form-label">Private studio: </label>
-                            <select className="form-select" aria-label="Default select example"
-                                onChange={this.updateFormField} value={this.state.private} name="private">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                <option value="any">Any</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label className="form-label">Bookings required: </label>
-                            <select className="form-select" aria-label="Default select example"
-                                onChange={this.updateFormField} value={this.state.bookingsRequired} name="bookingsRequired">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                <option value="any">Any</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <button className="btn black-button w-100 mt-2" onClick={() => { this.setState({ showFilters: false }) }}><i className="bi bi-caret-up-fill"></i></button>
-                </div>
-        }
-
-        return (
-            <React.Fragment>
-                <h3 className="mt-4">search for artist(s): </h3>
-                <div className="row">
-                    <div className="col-6 col-md-12 d-md-flex">
-                        <input type="text" className="form-control me-md-1" placeholder="search for artist name, ig or studio..." name="search" onChange={this.updateFormField} value={this.state.search} />
-                        <button className="btn black-button d-none d-md-block" onClick={this.clickSearch}><i className="bi bi-search"></i></button>
-                    </div>
-                    <div className="col-6 col-md-12 d-md-flex my-md-1">
-                        <button className="btn black-button mx-1 d-md-none" onClick={this.clickSearch}><i className="bi bi-search"></i></button>
-                        <button className="btn black-button mx-1 d-none d-md-block"
-                            onClick={this.ResetSearch}>
-                            Reset
-                        </button>
-                        <button className="btn black-button mx-1"
-                            onClick={() => {
-                                this.setState({
-                                    showFilters: !this.state.showFilters
-                                })
-                            }}>
-                            <i className="bi bi-funnel-fill"></i>
-                        </button>
-                        <button className="btn black-button mx-1 d-md-none"
-                            onClick={this.ResetSearch}>
-                            <i className="bi bi-arrow-clockwise"></i>
-                        </button>
-                    </div>
-                </div>
-                {filters}
-            </React.Fragment>
-        )
+    setShowAll = () => {
+        this.setState({
+            showOne: false
+        })
     }
 
     clickSearch = async () => {
@@ -350,17 +160,7 @@ export default class Explore extends React.Component {
     }
 
     showOneArtist = async (artist) => {
-        let multiSelectKeys = {
-            "surrealism": { value: "surrealism", label: "Surrealism" },
-            "traditional-americana": { value: "traditional-americana", label: "Traditional Americana" },
-            "traditional-japanese": { value: "traditional-japanese", label: "Traditional Japanese" },
-            "blackwork": { value: "blackwork", label: "Blackwork" },
-            "minimalist": { value: "minimalist", label: "Minimalist" },
-            "water-colour": { value: "water-colour", label: "Water colour" },
-            "pet/animals": { value: "pet/animals", label: "Pet/Animals" },
-            "floral": { value: "floral", label: "Floral" }
-        }
-        let updatedStyle = artist.style.map(style => multiSelectKeys[style]);
+        let updatedStyle = artist.style.map(style => this.styleKeys[style]);
         this.setState({
             showOne: true,
             artistToShow: artist,
@@ -488,113 +288,10 @@ export default class Explore extends React.Component {
             if (!this.state.editMode) {
                 return (
                     <React.Fragment>
-                        <div className="container">
-                            <div>
-                                <div>
-                                    <button className="btn"
-                                        onClick={() => {
-                                            this.setState({
-                                                showOne: false
-                                            })
-                                        }}><i className="bi bi-arrow-90deg-left"></i></button>
-                                </div>
-                                <div className="text-end">
-                                    {this.ConfirmEdit()}
-                                    {this.ConfirmDelete(this.state.artistToShow)}
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="row">
-                                    <div className="d-none d-md-block col-12 col-md-4" style={{ "height": "100%" }}></div>
-                                    <div className="d-none d-md-block col-12 col-md-8">
-                                        <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact)}</h1>
-                                    </div>
-                                </div>
-                                <div className="col-12 col-md-4">
-                                    <h1 className="text-center d-block d-md-none">{this.findInstagram(this.state.artistToShow.contact)}</h1>
-                                    <div className="single-artist-image" style={{ "width": "100%" }}>
-                                        <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
-                                    </div>
-                                </div>
-                                <div className="col-12 col-md-8">
-                                    {/* <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1> */}
-                                    <Accordion defaultActiveKey="0" flush>
-                                        <Accordion.Item eventKey="0">
-                                            <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
-                                            <Accordion.Body>
-                                                <div className="text-center card-box">
-                                                    <h4 className="artist-name">{this.state.artistToShow.name}</h4>
-                                                    <p>{this.state.artistToShow.gender}</p>
-                                                    <p>{this.state.artistToShow.yearsOfExperience} year(s) of experience</p>
-                                                    <p>{"currently " + (this.state.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
-                                                    <div className="row">
-                                                        <div className="col-12 col-md-3">
-                                                        <div className="card-box-title">Method(s)</div>
-                                                                {this.state.artistToShow.method.map(a => (
-                                                                    <React.Fragment>
-                                                            <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                            {/* <ul className="d-none d-md-block">
-                                                            <li className="text-start">{a}</li>
-                                                            </ul> */}
-                                                            </React.Fragment>
-                                                        ))}
-                                                        </div>
-                                                        {/* Temporary? {e.temporary} */}
-                                                        <div className="col-12 col-md-6">
-                                                        <div className="card-box-title">Style(s)</div>
-                                                        {this.state.artistToShow.style.map(a => (
-                                                            <React.Fragment>
-                                                            <span className="span-body text-md-start" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</span>
-                                                            {/* <ul className="d-none d-md-block">
-                                                            <li className="text-center">{a}</li>
-                                                            </ul> */}
-                                                            </React.Fragment>
-                                                        ))}
-                                                        
-                                                        </div>
-                                                        <div className="col-12 col-md-3">
-                                                        <div className="card-box-title">Ink(s)</div>
-                                                        
-                                                            {this.state.artistToShow.ink.map(a => (
-                                                                <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                            ))}
-                                                        
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <div className="card-box-title"><i className="bi bi-person-hearts"></i> Contact </div>
-                                                        <div className="card-box">
-                                                            {this.state.artistToShow.contact.map(a => (
-                                                                <div key={"contact" + a.contactKey}>
-                                                                    <b>{a.contactKey}</b>: {a.contactValue}</div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                        <Accordion.Item eventKey="1">
-                                            <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
-                                            <Accordion.Body>
-                                                <div>
-                                                    <div className="card-box">
-                                                        <h4 className="artist-name">{this.state.artistToShow.studio.name}</h4>
-                                                        <h6 className="disclaimer">{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </h6>
-                                                        {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
-                                                        <p className='bold-text'>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
-                                                        {this.state.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + this.state.artistToShow.studio.otherServices}
-                                                    </div>
-                                                </div>
-                                            </Accordion.Body>
-                                        </Accordion.Item>
-                                    </Accordion>
-                                </div>
-                            </div>
-
-                            <div className="mt-2">
-                                {this.RenderReviews()}
-                            </div>
-                        </div>
+                        <ShowOneArtist showOne={this.setShowAll} artistToShow={this.state.artistToShow}
+                        styleKeys={this.styleKeys}
+                        confirmEdit={this.confirmEdit} confirmDelete={this.confirmDelete} 
+                        findInstagram={this.findInstagram} RenderReviews={this.RenderReviews()} />
                     </React.Fragment>
                 )
             }
@@ -631,10 +328,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Gender: </label>
                                                 {this.genderRadio.map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="radio" className="form-check-input"
                                                             value={each.value} name="modifiedGender"
                                                             checked={this.state.modifiedGender === (each.value)} onChange={this.updateFormField} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
 
@@ -645,10 +343,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Are you an apprentice? </label>
                                                 {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="radio" className="form-check-input"
                                                             value={each.value} name="modifiedApprentice"
                                                             onChange={this.updateFormField} checked={this.state.modifiedApprentice === (each.value)} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
                                             </div>
@@ -657,10 +356,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label">Please select your method(s) of tattooing:</label>
                                                 {this.methodsCheckbox.map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="checkbox" className="form-check-input"
                                                             value={each.value} name="modifiedMethod"
                                                             onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes(each.value)} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
 
@@ -682,10 +382,11 @@ export default class Explore extends React.Component {
                                                 </div>
                                                 {this.inkCheckbox.map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="checkbox" className="form-check-input"
                                                             value={each.value} name="modifiedInk"
                                                             onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes(each.value)} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
                                                 {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"} /> : null}
@@ -727,10 +428,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Is it a private studio? </label>
                                                 {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="radio" className="form-check-input"
                                                             value={each.value} name="modifiedPrivate"
                                                             onChange={this.updateFormField} checked={this.state.modifiedPrivate === (each.value)} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
                                             </div>
@@ -739,10 +441,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Are bookings required? </label>
                                                 {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
+                                                        <label className="form-check-label">
                                                         <input type="radio" className="form-check-input"
                                                             value={each.value} name="modifiedBookingsRequired"
                                                             onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === (each.value)} />
-                                                        <label className="form-check-label">{each.label}</label>
+                                                        {each.label}</label>
                                                     </div>
                                                 ))}
                                             </div>
@@ -819,7 +522,7 @@ export default class Explore extends React.Component {
                                                     {/* Temporary? {e.temporary} */}
                                                     <div className="card-box-title-all">Style(s)</div>
                                                     <div>{e.style.map(a => (
-                                                        <div className="span-body-all" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                        <div className="span-body-all" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a]['label'].toLowerCase()}</div>
                                                     ))}
                                                     </div>
                                                     <div className="card-box-title-all">Ink(s)</div>
@@ -1310,7 +1013,16 @@ export default class Explore extends React.Component {
                     <div className="row">
                         {!this.state.showOne ?
                             <div className="col-12 col-md-3">
-                                {this.renderFilters()}
+                                {/* {this.renderFilters()} */}
+                                <RenderFilters showFiltersState={this.state.showFilters}
+                                updateFormField={this.updateFormField} gender={this.state.gender}
+                                yearsOfExperience={this.state.yearsOfExperience} generalRadio={this.generalRadio}
+                                apprentice={this.state.apprentice} temporary={this.state.temporary}
+                                methodsCheckbox={this.methodsCheckbox} updateCheckboxes={this.updateCheckboxes}
+                                method={this.state.method} style={this.state.style} handleSelectFilter={this.handleSelectFilter}
+                                inkCheckbox={this.inkCheckbox} ink={this.state.ink} private={this.state.private}
+                                bookingsRequired={this.state.bookingsRequired} showFilters={this.showFilters}
+                                clickSearch={this.clickSearch} ResetSearch={this.ResetSearch} />
                             </div>
                             :
                             null
