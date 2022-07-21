@@ -81,11 +81,11 @@ h6{
   text-align: center;
   font-size: 16px;
 }
+
 .card-box-title{
-  background-color: black;
-  color: white;
+  border: 1px solid black;
   font-family: 'Raleway';
-  font-weight: '200';
+  font-weight: 200;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-size: 20px;
@@ -109,20 +109,24 @@ h6{
   font-size: 13px;
 }
 .card-box-title-all{
-  background-color: black;
-  color: white;
+  /* border: 1px solid black; */
   font-family: 'Raleway';
-  font-weight: '200';
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 2px;
+  /* font-style: italic; */
+  text-transform: lowercase;
   font-size: 15px;
   text-align: center;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
 }
 
 .card-gender-all, .card-year-all, .span-body-all{
   font-size: 13px;
+  font-style: italic;
+  margin: 0px;
+  padding: 0px;
 }
 
 .span-body-all{
@@ -131,15 +135,21 @@ h6{
 
 .card-btn{
   border-radius: 0px;
-  background-color: white; 
+  /* background-color: white; 
   border-color: black;
-  color: black;
+  color: black; */
   font-size: 13px;
+  background-color: black;
+  /* border: 1px solid black; */
+  color: white;
 }
 
 .card-btn:hover{
-  background-color: black;
-  color: white;
+  /* background-color: black;
+  color: white; */
+  background-color: white;
+  border: 1px solid black;
+  color: black;
 }
 
 .accordion-button:not(.collapsed) {
@@ -204,13 +214,50 @@ h6{
 }
 
 
+.accordion-button:not(.collapsed)::after{
+  background-image: url('./tattoo.png')
+}
+
+.header-image{
+  height: 300px;
+  width: 100vw;
+  object-fit: cover;
+  position: absolute;
+}
+
+.overlay{
+  background-color: rgba(0,0,0,0.5);
+  position: relative;
+  height: 300px;
+  width: 100vw;
+}
+
+.overlay h1{
+  text-align: center;
+  color: white;
+  font-style: italic;
+  font-size: 60px;
+}
+
+.bold-text{
+  font-weight: 700;
+}
+
+.disclaimer{
+  font-style: italic;
+}
+
+
+
 /* screen size responsiveness */
 @media screen and (max-width: 767px){
   .single-artist-image{
     max-height: 300px;
   }
-}
-
-.accordion-button:not(.collapsed)::after{
-  background-image: url('./tattoo.png')
+  .header-image, .overlay{
+    height: 200px;
+  }
+  .overlay h1{
+    font-size: 50px;
+  }
 }
