@@ -9,7 +9,7 @@ import ValidateFields from './Validation';
 
 
 export default class AddNewArtist extends React.Component {
-    url = "https://etys-tattoo-artists.herokuapp.com/"
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/"
 
     state = {
         artistName: "",
@@ -258,24 +258,27 @@ export default class AddNewArtist extends React.Component {
                             <label className="form-label form-check-inline">Gender: </label>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="radio" className="form-check-input"
                                     value="female" name="gender"
                                     checked={this.state.gender === "female"} onChange={this.updateFormField} />
-                                <label className="form-check-label">Female</label>
+                                Female</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="radio" className="form-check-input"
                                     value="male" name="gender"
                                     checked={this.state.gender === "male"} onChange={this.updateFormField} />
-                                <label className="form-check-label">Male</label>
+                                Male</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="radio" className="form-check-input"
                                     value="others" name="gender"
                                     checked={this.state.gender === "others"} onChange={this.updateFormField} />
-                                <label className="form-check-label">Others</label>
+                                Others</label>
                             </div>
                         </div>
 
@@ -283,17 +286,19 @@ export default class AddNewArtist extends React.Component {
                             <label className="form-label form-check-inline">Are you an apprentice? </label>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="radio" className="form-check-input"
                                     value="yes" name="apprentice"
                                     onChange={this.updateFormField} checked={this.state.apprentice === "yes"} />
-                                <label className="form-check-label">Yes</label>
+                                Yes</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="radio" className="form-check-input"
                                     value="no" name="apprentice"
                                     onChange={this.updateFormField} checked={this.state.apprentice === "no"} />
-                                <label className="form-check-label">No</label>
+                                No</label>
                             </div>
                         </div>
 
@@ -302,24 +307,27 @@ export default class AddNewArtist extends React.Component {
                             <label className="form-label">Please select your method(s) of tattooing: </label>
                             <div>
                                 <div className="form-check form-check-inline">
+                                <label className="form-check-label">
                                     <input type="checkbox" className="form-check-input"
                                         value="handpoke" name="method"
                                         onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
-                                    <label className="form-check-label">Handpoke</label>
+                                    Handpoke</label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
+                                <label className="form-check-label">
                                     <input type="checkbox" className="form-check-input"
                                         value="machine" name="method"
                                         onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
-                                    <label className="form-check-label">Machine</label>
+                                    Machine</label>
                                 </div>
 
                                 <div className="form-check form-check-inline">
+                                <label className="form-check-label">
                                     <input type="checkbox" className="form-check-input"
                                         value="jagua" name="method"
                                         onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
-                                    <label className="form-check-label">Jagua</label>
+                                    Jagua</label>
                                 </div>
                                 {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"}/> : null}
                             </div>
@@ -340,31 +348,35 @@ export default class AddNewArtist extends React.Component {
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="checkbox" className="form-check-input"
                                     value="black" name="ink"
                                     onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
-                                <label className="form-check-label">Black</label>
+                                Black</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="checkbox" className="form-check-input"
                                     value="colours" name="ink"
                                     onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
-                                <label className="form-check-label">Colours</label>
+                                Colours</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="checkbox" className="form-check-input"
                                     value="jagua" name="ink"
                                     onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
-                                <label className="form-check-label">Jagua</label>
+                                Jagua</label>
                             </div>
 
                             <div className="form-check form-check-inline">
+                            <label className="form-check-label">
                                 <input type="checkbox" className="form-check-input"
                                     value="uv" name="ink"
                                     onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
-                                <label className="form-check-label">UV</label>
+                                UV</label>
                             </div>
                             {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
                         </div>
@@ -421,17 +433,19 @@ export default class AddNewArtist extends React.Component {
                         <label className="form-label form-check-inline">Is it a private studio? </label>
 
                         <div className="form-check form-check-inline">
+                        <label className="form-check-label">
                             <input type="radio" className="form-check-input"
                                 value="yes" name="private"
                                 onChange={this.updateFormField} checked={this.state.private === "yes"} />
-                            <label className="form-check-label">Yes</label>
+                            Yes</label>
                         </div>
 
                         <div className="form-check form-check-inline">
+                        <label className="form-check-label">
                             <input type="radio" className="form-check-input"
                                 value="no" name="private"
                                 onChange={this.updateFormField} checked={this.state.private === "no"} />
-                            <label className="form-check-label">No</label>
+                            No</label>
                         </div>
                     </div>
 
@@ -440,17 +454,19 @@ export default class AddNewArtist extends React.Component {
                         <label className="form-label form-check-inline">Are bookings required? </label>
 
                         <div className="form-check form-check-inline">
+                        <label className="form-check-label">
                         <input type="radio" className="form-check-input"
                             value="yes" name="bookingsRequired"
                             onChange={this.updateFormField} checked={this.state.bookingsRequired === "yes"} />
-                        <label className="form-check-label">Yes</label>
+                        Yes</label>
                         </div>
 
                         <div className="form-check form-check-inline">
+                        <label className="form-check-label">
                         <input type="radio" className="form-check-input"
                             value="no" name="bookingsRequired"
                             onChange={this.updateFormField} checked={this.state.bookingsRequired === "no"} />
-                        <label className="form-check-label">No</label>
+                        No</label>
                         </div>
                     </div>
 
