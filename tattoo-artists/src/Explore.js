@@ -6,7 +6,7 @@ import StyleMultiSelect from './StyleMultiSelect';
 import ValidateFields from './Validation';
 
 export default class Explore extends React.Component {
-    url = "https://etys-tattoo-artists.herokuapp.com/";
+    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
 
     //have state for view-all (originally true) so that it will change to false whe nclick on artist
     //when click on view-all navbar, check if view-all is false => then change to true 
@@ -22,28 +22,28 @@ export default class Explore extends React.Component {
     }
 
     generalRadio = [
-        {label: "Yes", value: "yes"},
-        {label: "No", value: "no"},
-        {label: "Any", value: "any"}
+        { label: "Yes", value: "yes" },
+        { label: "No", value: "no" },
+        { label: "Any", value: "any" }
     ]
 
     methodsCheckbox = [
-        {label: "Handpoke", value:"handpoke"},
-        {label: "Machine", value: "machine"},
-        {label: "Jagua", value: "jagua"}
+        { label: "Handpoke", value: "handpoke" },
+        { label: "Machine", value: "machine" },
+        { label: "Jagua", value: "jagua" }
     ]
 
     inkCheckbox = [
-        {label: "Black", value:"black"},
-        {label: "Colours", value: "colours"},
-        {label: "UV", value: "uv"},
-        {label: "Jagua", value: "jagua"}
+        { label: "Black", value: "black" },
+        { label: "Colours", value: "colours" },
+        { label: "UV", value: "uv" },
+        { label: "Jagua", value: "jagua" }
     ]
 
     genderRadio = [
-        {label: "Male", value: "male"},
-        {label: "Female", value: "female"},
-        {label: "Others", value: "others"}
+        { label: "Male", value: "male" },
+        { label: "Female", value: "female" },
+        { label: "Others", value: "others" }
     ]
 
     state = {
@@ -191,13 +191,13 @@ export default class Explore extends React.Component {
                             <div><label className="form-label me-2">Apprentice:</label></div>
                             {this.generalRadio.map(each => (
                                 <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="apprentice"
-                                    value={each.value} onChange={this.updateFormField}
-                                    checked={this.state.apprentice === (each.value)} />
-                                <label className="form-check-label">{each.label}</label>
-                            </div>
+                                    <input type="radio" className="form-check-input" name="apprentice"
+                                        value={each.value} onChange={this.updateFormField}
+                                        checked={this.state.apprentice === (each.value)} />
+                                    <label className="form-check-label">{each.label}</label>
+                                </div>
                             ))}
-                            
+
                         </div>
 
                         {/* TEMPORARY FILTER */}
@@ -205,14 +205,14 @@ export default class Explore extends React.Component {
                         <div>
                             <div>
                                 <label className="form-label">Temporary:</label>
-                                </div>
+                            </div>
                             {this.generalRadio.map(each => (
                                 <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="temporary"
-                                    value={each.value} onChange={this.updateFormField}
-                                    checked={this.state.temporary === (each.value)} />
-                                <label className="form-check-label">{each.label}</label>
-                            </div>
+                                    <input type="radio" className="form-check-input" name="temporary"
+                                        value={each.value} onChange={this.updateFormField}
+                                        checked={this.state.temporary === (each.value)} />
+                                    <label className="form-check-label">{each.label}</label>
+                                </div>
                             ))}
 
                         </div>
@@ -224,11 +224,11 @@ export default class Explore extends React.Component {
                             </div>
                             {this.methodsCheckbox.map(each => (
                                 <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value={each.value} name="method"
-                                    onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
-                                <label className="form-check-label">{each.label}</label>
-                            </div>
+                                    <input type="checkbox" className="form-check-input"
+                                        value={each.value} name="method"
+                                        onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
+                                    <label className="form-check-label">{each.label}</label>
+                                </div>
                             ))}
 
                         </div>
@@ -246,11 +246,11 @@ export default class Explore extends React.Component {
                             </div>
                             {this.inkCheckbox.map(each => (
                                 <div className="form-check form-check-inline">
-                                <input type="checkbox" className="form-check-input"
-                                    value={each.value} name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
-                                <label className="form-check-label">{each.label}</label>
-                            </div>
+                                    <input type="checkbox" className="form-check-input"
+                                        value={each.value} name="ink"
+                                        onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
+                                    <label className="form-check-label">{each.label}</label>
+                                </div>
                             ))}
                         </div>
 
@@ -279,10 +279,10 @@ export default class Explore extends React.Component {
                     <button className="btn black-button w-100 mt-2" onClick={() => { this.setState({ showFilters: false }) }}><i className="bi bi-caret-up-fill"></i></button>
                 </div>
         }
-        
+
         return (
             <React.Fragment>
-                <h3>search for artist(s): </h3>
+                <h3 className="mt-4">search for artist(s): </h3>
                 <div className="row">
                     <div className="col-6 col-md-12 d-md-flex">
                         <input type="text" className="form-control me-md-1" placeholder="search for artist name, ig or studio..." name="search" onChange={this.updateFormField} value={this.state.search} />
@@ -504,41 +504,61 @@ export default class Explore extends React.Component {
                                 </div>
                             </div>
                             <div className="row">
+                                <div className="row">
+                                    <div className="d-none d-md-block col-12 col-md-4" style={{ "height": "100%" }}></div>
+                                    <div className="d-none d-md-block col-12 col-md-8">
+                                        <h1 className="text-center">{this.findInstagram(this.state.artistToShow.contact)}</h1>
+                                    </div>
+                                </div>
                                 <div className="col-12 col-md-4">
                                     <h1 className="text-center d-block d-md-none">{this.findInstagram(this.state.artistToShow.contact)}</h1>
-                                    <div className="d-none d-md-block" style={{"color": "white"}}><h1>hello</h1></div>
                                     <div className="single-artist-image" style={{ "width": "100%" }}>
                                         <img src={this.state.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
                                     </div>
                                 </div>
                                 <div className="col-12 col-md-8">
-                                    <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1>
+                                    {/* <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1> */}
                                     <Accordion defaultActiveKey="0" flush>
                                         <Accordion.Item eventKey="0">
                                             <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
                                             <Accordion.Body>
                                                 <div className="text-center card-box">
-                                                    <p>{this.state.artistToShow.name}</p>
+                                                    <h4 className="artist-name">{this.state.artistToShow.name}</h4>
                                                     <p>{this.state.artistToShow.gender}</p>
                                                     <p>{this.state.artistToShow.yearsOfExperience} year(s) of experience</p>
                                                     <p>{"currently " + (this.state.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
-                                                    <div className="text-center">
+                                                    <div className="row">
+                                                        <div className="col-12 col-md-3">
                                                         <div className="card-box-title">Method(s)</div>
-                                                        <div>{this.state.artistToShow.method.map(a => (
-                                                            <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                                {this.state.artistToShow.method.map(a => (
+                                                                    <React.Fragment>
+                                                            <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                            {/* <ul className="d-none d-md-block">
+                                                            <li className="text-start">{a}</li>
+                                                            </ul> */}
+                                                            </React.Fragment>
                                                         ))}
                                                         </div>
                                                         {/* Temporary? {e.temporary} */}
+                                                        <div className="col-12 col-md-6">
                                                         <div className="card-box-title">Style(s)</div>
-                                                        <div>{this.state.artistToShow.style.map(a => (
-                                                            <div className="span-body" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</div>
+                                                        {this.state.artistToShow.style.map(a => (
+                                                            <React.Fragment>
+                                                            <span className="span-body text-md-start" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a].toLowerCase()}</span>
+                                                            {/* <ul className="d-none d-md-block">
+                                                            <li className="text-center">{a}</li>
+                                                            </ul> */}
+                                                            </React.Fragment>
                                                         ))}
+                                                        
                                                         </div>
+                                                        <div className="col-12 col-md-3">
                                                         <div className="card-box-title">Ink(s)</div>
-                                                        <div>
+                                                        
                                                             {this.state.artistToShow.ink.map(a => (
-                                                                <span className="span-body" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                                <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
                                                             ))}
+                                                        
                                                         </div>
                                                     </div>
                                                     <div>
@@ -558,10 +578,10 @@ export default class Explore extends React.Component {
                                             <Accordion.Body>
                                                 <div>
                                                     <div className="card-box">
-                                                        <p>{this.state.artistToShow.studio.name}</p>
-                                                        <p>{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </p>
-                                                        address: {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
-                                                        <p>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
+                                                        <h4 className="artist-name">{this.state.artistToShow.studio.name}</h4>
+                                                        <h6 className="disclaimer">{this.state.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </h6>
+                                                        {this.state.artistToShow.studio.address.street}, {this.state.artistToShow.studio.address.unit}, {this.state.artistToShow.studio.address.postal} <br />
+                                                        <p className='bold-text'>{this.state.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
                                                         {this.state.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + this.state.artistToShow.studio.otherServices}
                                                     </div>
                                                 </div>
@@ -582,7 +602,7 @@ export default class Explore extends React.Component {
             else {
                 return (
                     <React.Fragment>
-                        <div className="container">
+                        <div className="container mt-2">
                             <React.Fragment>
                                 <div>
                                     <div className="container">
@@ -611,11 +631,11 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Gender: </label>
                                                 {this.genderRadio.map(each => (
                                                     <div className="form-check form-check-inline">
-                                                    <input type="radio" className="form-check-input"
-                                                        value={each.value} name="modifiedGender"
-                                                        checked={this.state.modifiedGender === (each.value)} onChange={this.updateFormField} />
-                                                    <label className="form-check-label">{each.label}</label>
-                                                </div>
+                                                        <input type="radio" className="form-check-input"
+                                                            value={each.value} name="modifiedGender"
+                                                            checked={this.state.modifiedGender === (each.value)} onChange={this.updateFormField} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
 
                                             </div>
@@ -625,23 +645,23 @@ export default class Explore extends React.Component {
                                                 <label className="form-label form-check-inline">Are you an apprentice? </label>
                                                 {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
-                                                    <input type="radio" className="form-check-input"
-                                                        value={each.value} name="modifiedApprentice"
-                                                        onChange={this.updateFormField} checked={this.state.modifiedApprentice === (each.value)} />
-                                                    <label className="form-check-label">{each.label}</label>
-                                                </div>
+                                                        <input type="radio" className="form-check-input"
+                                                            value={each.value} name="modifiedApprentice"
+                                                            onChange={this.updateFormField} checked={this.state.modifiedApprentice === (each.value)} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
-                                                </div>
+                                            </div>
 
                                             <div className="col-12 col-md-6">
                                                 <label className="form-label">Please select your method(s) of tattooing:</label>
-                                                {this.methodsCheckbox.map (each => (
-                                                     <div className="form-check form-check-inline">
-                                                     <input type="checkbox" className="form-check-input"
-                                                         value={each.value} name="modifiedMethod"
-                                                         onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes(each.value)} />
-                                                     <label className="form-check-label">{each.label}</label>
-                                                 </div>
+                                                {this.methodsCheckbox.map(each => (
+                                                    <div className="form-check form-check-inline">
+                                                        <input type="checkbox" className="form-check-input"
+                                                            value={each.value} name="modifiedMethod"
+                                                            onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes(each.value)} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
 
                                             </div>
@@ -662,11 +682,11 @@ export default class Explore extends React.Component {
                                                 </div>
                                                 {this.inkCheckbox.map(each => (
                                                     <div className="form-check form-check-inline">
-                                                    <input type="checkbox" className="form-check-input"
-                                                        value={each.value} name="modifiedInk"
-                                                        onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes(each.value)} />
-                                                    <label className="form-check-label">{each.label}</label>
-                                                </div>
+                                                        <input type="checkbox" className="form-check-input"
+                                                            value={each.value} name="modifiedInk"
+                                                            onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes(each.value)} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
                                                 {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"} /> : null}
                                             </div>
@@ -705,25 +725,25 @@ export default class Explore extends React.Component {
 
                                             <div className="col-12 col-md-6">
                                                 <label className="form-label form-check-inline">Is it a private studio? </label>
-                                                {this.generalRadio.slice(0,2).map(each => (
+                                                {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
-                                                    <input type="radio" className="form-check-input"
-                                                        value={each.value} name="modifiedPrivate"
-                                                        onChange={this.updateFormField} checked={this.state.modifiedPrivate === (each.value)} />
-                                                    <label className="form-check-label">{each.label}</label>
-                                                </div>
+                                                        <input type="radio" className="form-check-input"
+                                                            value={each.value} name="modifiedPrivate"
+                                                            onChange={this.updateFormField} checked={this.state.modifiedPrivate === (each.value)} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
                                             </div>
 
                                             <div className="col-12 col-md-6">
                                                 <label className="form-label form-check-inline">Are bookings required? </label>
-                                                {this.generalRadio.slice(0,2).map(each => (
+                                                {this.generalRadio.slice(0, 2).map(each => (
                                                     <div className="form-check form-check-inline">
-                                                    <input type="radio" className="form-check-input"
-                                                        value={each.value} name="modifiedBookingsRequired"
-                                                        onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === (each.value)} />
-                                                    <label className="form-check-label">{each.label}</label>
-                                                </div>
+                                                        <input type="radio" className="form-check-input"
+                                                            value={each.value} name="modifiedBookingsRequired"
+                                                            onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === (each.value)} />
+                                                        <label className="form-check-label">{each.label}</label>
+                                                    </div>
                                                 ))}
                                             </div>
 
@@ -786,7 +806,7 @@ export default class Explore extends React.Component {
                                         <img src={e.image} style={{ "height": "180px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
                                         <div className="card-body">
                                             <div className="card-text">
-                                                <h5 className="text-center"> {e.name} </h5>
+                                                <h5 className="text-center card-name"> {e.name} </h5>
                                                 <p className="text-center card-gender-all"> {e.gender} </p>
                                                 <p className="text-center card-year-all"> tattooing since {e.yearStarted}</p>
                                                 {/* Apprentice? {e.apprentice} */}
@@ -1296,7 +1316,7 @@ export default class Explore extends React.Component {
                             null
                         }
                         <div className={'col-12 ' + (this.state.showOne ? '' : 'col-md-9')}>
-                            {!this.state.showOne ? <h3>Showing {this.state.data.length} result(s): </h3>
+                            {!this.state.showOne ? <h3 className="mt-4">Showing {this.state.data.length} result(s): </h3>
                                 :
                                 null
                             }
