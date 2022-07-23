@@ -1,14 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal, Accordion } from 'react-bootstrap';
-import ContactFields from './ContactFields';
-import StyleMultiSelect from './StyleMultiSelect';
+import { Modal } from 'react-bootstrap';
 import ValidateFields from './Validation';
 import RenderFilters from './RenderFilters';
 import ShowOneArtist from './ShowOneArtist';
+import EditArtist from './EditArtist';
+import ShowAllArtists from './ShowAllArtists';
 
 export default class Explore extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";
+    url = this.props.url;
 
     //have state for view-all (originally true) so that it will change to false whe nclick on artist
     //when click on view-all navbar, check if view-all is false => then change to true 
@@ -81,7 +81,8 @@ export default class Explore extends React.Component {
         showAddReviewButton: true,
         submittedReview: false,
         submittedEditReview: false,
-        checkReviewEmail: false
+        checkReviewEmail: false,
+        showLoader: false
     }
 
     showFilters = () => {
@@ -92,14 +93,21 @@ export default class Explore extends React.Component {
 
 
     async componentDidMount() {
+        this.setState({
+            showLoader: true
+        })
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
-            data: response.data
+            data: response.data,
+            showLoader: false
         })
         console.log(response.data)
     }
 
     ResetSearch = async () => {
+        this.setState({
+            showLoader: true
+        })
         let response = await axios.get(this.url + 'show-artists');
         this.setState({
             search: '',
@@ -113,7 +121,8 @@ export default class Explore extends React.Component {
             private: 'any',
             bookingsRequired: 'any',
             otherServices: [],
-            data: response.data
+            data: response.data,
+            showLoader: false
         })
     }
 
@@ -121,9 +130,24 @@ export default class Explore extends React.Component {
         this.setState({
             showOne: false
         })
+        if (window.innerWidth > 768){
+            this.setState({
+                showFilters: true
+            })
+        }
+    }
+
+    stopEdit = () => {
+        this.setState({
+            editMode: false,
+            showConfirmEdit: false
+        })
     }
 
     clickSearch = async () => {
+        this.setState({
+            showLoader: true
+        })
         let styleQuery = this.state.style.map(value => value.value)
         let response = await axios.get(this.url +
             'show-artists?search=' + this.state.search
@@ -138,8 +162,13 @@ export default class Explore extends React.Component {
             + '&otherServices=' + this.state.otherServices, { params: { style: styleQuery } });
         this.setState({
             data: response.data,
-            showFilters: false
+            showLoader: false
         })
+        if (window.innerWidth < 769) {
+            this.setState({
+                showFilters: false
+            })
+        }
         console.log(response.data)
     }
 
@@ -274,7 +303,8 @@ export default class Explore extends React.Component {
                 showConfirmEdit: false,
                 data: updatedArtists,
                 artistToShow: updatedArtists[indexOfModified],
-                submitted: false
+                submitted: false,
+                confirmEditEmail: false
             })
         }
         catch (e) {
@@ -288,10 +318,11 @@ export default class Explore extends React.Component {
             if (!this.state.editMode) {
                 return (
                     <React.Fragment>
-                        <ShowOneArtist showOne={this.setShowAll} artistToShow={this.state.artistToShow}
-                        styleKeys={this.styleKeys}
-                        confirmEdit={this.confirmEdit} confirmDelete={this.confirmDelete} 
-                        findInstagram={this.findInstagram} RenderReviews={this.RenderReviews()} />
+                        <ShowOneArtist showAll={this.setShowAll} artistToShow={this.state.artistToShow}
+                            styleKeys={this.styleKeys}
+                            ConfirmEdit={this.ConfirmEdit()} ConfirmDelete={this.ConfirmDelete(this.state.artistToShow)}
+                            findInstagram={this.findInstagram} RenderReviews={this.RenderReviews()} />
+
                     </React.Fragment>
                 )
             }
@@ -299,199 +330,21 @@ export default class Explore extends React.Component {
             else {
                 return (
                     <React.Fragment>
-                        <div className="container mt-2">
-                            <React.Fragment>
-                                <div>
-                                    <div className="container">
-                                        <h1>Information about the artist</h1>
-                                        <div className="row">
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label">Name of tattoo artist: </label>
-                                                <input type="text"
-                                                    className="form-control"
-                                                    placeholder="artist name"
-                                                    name="modifiedArtistName"
-                                                    value={this.state.modifiedArtistName}
-                                                    onChange={this.updateFormField} />
-                                                {this.state.submitted ? <ValidateFields field="artist name" state={this.state.artistName} /> : null}
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label">Year started tattooing: </label>
-                                                <input type="text" className="form-control"
-                                                    placeholder="year started tattooing" name="modifiedYearStarted" value={this.state.modifiedYearStarted}
-                                                    onChange={this.updateFormField} />
-                                                {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted} /> : null}
-                                            </div>
-
-                                            <div className="col-12 col-md-6 mt-md-2">
-                                                <label className="form-label form-check-inline">Gender: </label>
-                                                {this.genderRadio.map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="radio" className="form-check-input"
-                                                            value={each.value} name="modifiedGender"
-                                                            checked={this.state.modifiedGender === (each.value)} onChange={this.updateFormField} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-
-                                            </div>
-
-
-                                            <div className="col-12 col-md-6 mt-md-2">
-                                                <label className="form-label form-check-inline">Are you an apprentice? </label>
-                                                {this.generalRadio.slice(0, 2).map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="radio" className="form-check-input"
-                                                            value={each.value} name="modifiedApprentice"
-                                                            onChange={this.updateFormField} checked={this.state.modifiedApprentice === (each.value)} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label">Please select your method(s) of tattooing:</label>
-                                                {this.methodsCheckbox.map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="checkbox" className="form-check-input"
-                                                            value={each.value} name="modifiedMethod"
-                                                            onChange={this.updateCheckboxes} checked={this.state.modifiedMethod.includes(each.value)} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-
-                                            </div>
-                                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedMethod} message={"method"} /> : null}
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label">Is it temporary? </label>
-                                                <select className="form-select" aria-label="Default select example"
-                                                    onChange={this.updateFormField} value={this.state.modifiedTemporary} name="modifiedTemporary">
-                                                    <option value="no">No</option>
-                                                    <option value="yes">Yes</option>
-                                                </select>
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <div>
-                                                    <label className="form-label">Please select your ink(s):</label>
-                                                </div>
-                                                {this.inkCheckbox.map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="checkbox" className="form-check-input"
-                                                            value={each.value} name="modifiedInk"
-                                                            onChange={this.updateCheckboxes} checked={this.state.modifiedInk.includes(each.value)} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-                                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.modifiedInk} message={"ink"} /> : null}
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                                                <StyleMultiSelect handleSelect={this.handleSelectModified} style={this.state.modifiedStyle} />
-                                                {this.state.submitted ? <ValidateFields field="style" state={this.state.modifiedStyle} /> : null}
-                                            </div>
-
-                                            <label className="form-label">Please enter the artist's contact details: </label>
-                                            <ContactFields handleAddClick={this.handleAddClick}
-                                                inputList={this.state.modifiedContact}
-                                                setInputList={this.updateData} />
-                                            {this.state.submitted ? <ValidateFields field="contact" state={this.state.modifiedContact} /> : null}
-                                            <div>
-                                                <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
-                                                <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
-                                                    onChange={this.updateFormField} value={this.state.modifiedImage} />
-                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedImage} message={"a reference image link"} /> : null}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="container">
-                                        <h1>Information about the studio</h1>
-                                        <div className="row">
-                                            <div className="col-12">
-                                                <label className="form-label">Name of studio: </label>
-                                                <input type="text" className="form-control"
-                                                    placeholder="studio name" name="modifiedStudioName"
-                                                    value={this.state.modifiedStudioName}
-                                                    onChange={this.updateFormField} />
-                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStudioName} message={"the studio name"} /> : null}
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label form-check-inline">Is it a private studio? </label>
-                                                {this.generalRadio.slice(0, 2).map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="radio" className="form-check-input"
-                                                            value={each.value} name="modifiedPrivate"
-                                                            onChange={this.updateFormField} checked={this.state.modifiedPrivate === (each.value)} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            <div className="col-12 col-md-6">
-                                                <label className="form-label form-check-inline">Are bookings required? </label>
-                                                {this.generalRadio.slice(0, 2).map(each => (
-                                                    <div className="form-check form-check-inline">
-                                                        <label className="form-check-label">
-                                                        <input type="radio" className="form-check-input"
-                                                            value={each.value} name="modifiedBookingsRequired"
-                                                            onChange={this.updateFormField} checked={this.state.modifiedBookingsRequired === (each.value)} />
-                                                        {each.label}</label>
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            <div className="row">
-                                                <h6>Address</h6>
-
-                                                <div className="col-12">
-                                                    <label className="form-label">Street: (please enter "nil" if not applicable)</label>
-                                                    <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
-                                                        value={this.state.modifiedStreet} onChange={this.updateFormField} />
-                                                    {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedStreet} message={"the street"} /> : null}
-                                                </div>
-
-                                                <div className="col-12 col-md-6">
-                                                    <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
-                                                    <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
-                                                        value={this.state.modifiedUnit} onChange={this.updateFormField} />
-                                                    {this.state.submitted ? <ValidateFields field="unit" state={this.state.modifiedUnit} /> : null}
-                                                </div>
-
-                                                <div className="col-12 col-md-6">
-                                                    <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
-                                                    <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
-                                                        value={this.state.modifiedPostal} onChange={this.updateFormField} />
-                                                    {this.state.submitted ? <ValidateFields field="postal" state={this.state.modifiedPostal} /> : null}
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
-                                                <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
-                                                    value={this.state.modifiedOtherServices} onChange={this.updateFormField} />
-                                                {this.state.submitted ? <ValidateFields field="general" state={this.state.modifiedOtherServices} message={"the services available"} /> : null}
-                                            </div>
-                                        </div>
-
-                                        <button className="btn delete-button my-2 mx-1" onClick={this.updateArtist}>Update artist</button>
-                                        <button className="btn cancel-button my-2 mx-1" onClick={() => { this.setState({ editMode: false, showConfirmEdit: false }) }}>Cancel</button>
-                                    </div>
-
-
-                                </div>
-                            </React.Fragment>
-
-                        </div>
+                        <EditArtist modifiedArtistName={this.state.modifiedArtistName} updateFormField={this.updateFormField}
+                            submitted={this.state.submitted} modifiedYearStarted={this.state.modifiedYearStarted}
+                            genderRadio={this.genderRadio} modifiedGender={this.state.modifiedGender}
+                            generalRadio={this.generalRadio} modifiedApprentice={this.state.modifiedApprentice}
+                            methodsCheckbox={this.methodsCheckbox} updateCheckboxes={this.updateCheckboxes}
+                            modifiedMethod={this.state.modifiedMethod} modifiedTemporary={this.state.modifiedTemporary}
+                            modifiedStyle={this.state.modifiedStyle}
+                            inkCheckbox={this.inkCheckbox} modifiedInk={this.state.modifiedInk}
+                            handleSelectModified={this.handleSelectModified} updateData={this.updateData}
+                            modifiedContact={this.state.modifiedContact} modifiedImage={this.state.modifiedImage}
+                            modifiedStudioName={this.state.modifiedStudioName} modifiedPrivate={this.state.modifiedPrivate}
+                            modifiedBookingsRequired={this.state.modifiedBookingsRequired} modifiedStreet={this.state.modifiedStreet}
+                            modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
+                            modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
+                            stopEdit={this.stopEdit} />
                     </React.Fragment>
                 )
             }
@@ -500,47 +353,13 @@ export default class Explore extends React.Component {
         else {
             return (
                 <React.Fragment>
-                    {this.state.data.length ?
-                        <div className="container d-flex flex-row flex-wrap justify-content-evenly">
-                            {this.state.data.map(e => (
-                                <React.Fragment key={"all" + e._id}>
-                                    <div className="card mx-2 my-2" style={{ "width": "18rem" }}>
-                                        <h4 className="card-title text-center">{this.findInstagram(e.contact)}</h4>
-                                        <img src={e.image} style={{ "height": "180px", "width": "288px", "objectFit": "cover" }} className="card-img-top" alt="..." />
-                                        <div className="card-body">
-                                            <div className="card-text">
-                                                <h5 className="text-center card-name"> {e.name} </h5>
-                                                <p className="text-center card-gender-all"> {e.gender} </p>
-                                                <p className="text-center card-year-all"> tattooing since {e.yearStarted}</p>
-                                                {/* Apprentice? {e.apprentice} */}
-                                                <div className="text-center">
-                                                    <div className="card-box-title-all">Method(s)</div>
-                                                    <div>{e.method.map(a => (
-                                                        <span className="span-body-all" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                    ))}
-                                                    </div>
-                                                    {/* Temporary? {e.temporary} */}
-                                                    <div className="card-box-title-all">Style(s)</div>
-                                                    <div>{e.style.map(a => (
-                                                        <div className="span-body-all" key={a}> <i className="bi bi-dot"></i>{this.styleKeys[a]['label'].toLowerCase()}</div>
-                                                    ))}
-                                                    </div>
-                                                    <div className="card-box-title-all">Ink(s)</div>
-                                                    <div>
-                                                        {e.ink.map(a => (
-                                                            <span className="span-body-all" key={a}><i className="bi bi-dot"></i>{a} </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button className="btn w-100 card-btn" onClick={() => this.showOneArtist(e)}>View</button>
-                                    </div>
-                                </React.Fragment>
-                            ))}
-                        </div>
-                        :
-                        "no results found"}
+                    {this.state.showLoader ? <div className="d-flex justify-content-center"><img src={require('./images/loader.gif')} alt="loader" /></div> :
+                        (this.state.data.length ?
+                            <ShowAllArtists data={this.state.data} styleKeys={this.styleKeys} showOneArtist={this.showOneArtist}
+                                findInstagram={this.findInstagram} />
+                            :
+                            "no results found")
+                    }
                 </React.Fragment>
             )
         }
@@ -574,19 +393,17 @@ export default class Explore extends React.Component {
                                     each => (
                                         <div className="list-group-item my-1" key={each._id + "one"}>
                                             <div className="d-flex w-100 justify-content-between">
-                                                <div>
-                                                    <h5 className="mb-1">{each.reviewer}</h5>
-                                                </div>
-                                                <div className="justify-content-end fs-6">
-                                                    <button className="btn"
+                                                <h6 className="mb-1 align-self-center">{each.reviewer}</h6>
+                                                <div className="justify-content-end">
+                                                    <button className="btn btn-small p-1 review-btn"
                                                         onClick={() => this.setState({
                                                             editReview: true,
                                                             reviewBeingEdited: each,
                                                             updatedRating: each.rating,
                                                             updatedComment: each.comment
-                                                        })}><i className="bi bi-pencil-square"></i></button>
+                                                        })}><i className="bi bi-pencil-square review-btn"></i></button>
 
-                                                    <button className="btn"
+                                                    <button className="btn btn-small p-1"
                                                         onClick={() => this.setState({
                                                             reviewBeingDeleted: each,
                                                             deleteReview: true
@@ -605,8 +422,8 @@ export default class Explore extends React.Component {
                                                     </div>
                                                     {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
                                                     <div className="my-1">
-                                                        <button className="btn black-button mx-1" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
-                                                        <button className="btn cancel-button mx-1" onClick={() => {
+                                                        <button className="btn delete-button my-2 mx-1" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
+                                                        <button className="btn black-button my-2 mx-1" onClick={() => {
                                                             this.setState({
                                                                 editReview: false,
                                                                 checkReviewEmail: false,
@@ -659,8 +476,8 @@ export default class Explore extends React.Component {
                                 :
                                 null}
                             <div className="my-2">
-                                <button className="btn black-button mx-1" onClick={this.updateReview}>Edit</button>
-                                <button className="btn cancel-button mx-1" onClick={() => {
+                                <button className="btn delete-button my-2 mx-1" onClick={this.updateReview}>Edit</button>
+                                <button className="btn black-button my-2 mx-1" onClick={() => {
                                     this.setState({
                                         editReview: false,
                                         correctReviewEmail: false,
@@ -692,9 +509,11 @@ export default class Explore extends React.Component {
                             <label className="form-label">Please enter your email to confirm deletion: </label>
                             <input type="email" name="deleteReviewEmail" className="form-control" onChange={this.updateFormField} />
                         </div>
+                        {!this.state.checkReviewEmail && !this.state.correctDeleteReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
+
                         <div className="my-1">
-                            <button className='btn delete-button mx-1' onClick={this.validateDeleteReviewEmail}>Confirm</button>
-                            <button className='btn cancel-button mx-1' onClick={() => {
+                            <button className='btn delete-button my-2 mx-1' onClick={this.validateDeleteReviewEmail}>Confirm</button>
+                            <button className='btn black-button my-2 mx-1' onClick={() => {
                                 this.setState({
                                     deleteReview: false
                                 })
@@ -788,7 +607,7 @@ export default class Explore extends React.Component {
                             : ""}
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn cancel-button" onClick={handleClose}>
+                        <button className="btn black-button" onClick={handleClose}>
                             Cancel
                         </button>
                         <button className="btn delete-button" onClick={() => { this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email) }}>Confirm identity</button>
@@ -833,7 +652,7 @@ export default class Explore extends React.Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn cancel-button" onClick={handleClose}>
+                        <button className="btn black-button" onClick={handleClose}>
                             Cancel
                         </button>
                         <button className="btn delete-button" onClick={() => { this.processDelete(artist._id, this.state.confirmDeleteEmail) }}>Confirm delete</button>
@@ -877,8 +696,8 @@ export default class Explore extends React.Component {
                         {this.state.submittedReview ? <ValidateFields field="general" state={this.state.addReviewComment} message={"the review"} /> : null}
                     </div>
                     <div className="my-2">
-                        <button className="btn black-button mx-1" onClick={this.AddReviewToArtist}>add review</button>
-                        <button className="btn cancel-button mx-1" onClick={() => {
+                        <button className="btn delete-button my-2 mx-1" onClick={this.AddReviewToArtist}>add review</button>
+                        <button className="btn black-button my-2 mx-1" onClick={() => {
                             this.setState({
                                 addReview: false,
                                 showAddReviewButton: true
@@ -915,7 +734,7 @@ export default class Explore extends React.Component {
                 {[...Array(5)].map((star, index) => {
                     index += 1;
                     return (
-                        <button type="button" className={index <= this.state.updatedRating ? "on" : "off"}
+                        <button type="button" key={"edit" + index} className={index <= this.state.updatedRating ? "on" : "off"}
                             onClick={() => {
                                 this.setState({
                                     updatedRating: index
@@ -956,6 +775,9 @@ export default class Explore extends React.Component {
     }
 
     validateDeleteReviewEmail = async () => {
+        this.setState({
+            checkReviewEmail: true
+        })
         if (this.state.deleteReviewEmail === this.state.reviewBeingDeleted.email) {
             this.setState({
                 correctDeleteReviewEmail: true
@@ -967,7 +789,8 @@ export default class Explore extends React.Component {
                     deleteReviewEmail: "",
                     correctDeleteReviewEmail: false,
                     artistToShow: updatedResponse.data,
-                    deleteReview: false
+                    deleteReview: false,
+                    checkReviewEmail: false
                 })
             }
             catch (e) {
@@ -1015,14 +838,14 @@ export default class Explore extends React.Component {
                             <div className="col-12 col-md-3">
                                 {/* {this.renderFilters()} */}
                                 <RenderFilters showFiltersState={this.state.showFilters}
-                                updateFormField={this.updateFormField} gender={this.state.gender}
-                                yearsOfExperience={this.state.yearsOfExperience} generalRadio={this.generalRadio}
-                                apprentice={this.state.apprentice} temporary={this.state.temporary}
-                                methodsCheckbox={this.methodsCheckbox} updateCheckboxes={this.updateCheckboxes}
-                                method={this.state.method} style={this.state.style} handleSelectFilter={this.handleSelectFilter}
-                                inkCheckbox={this.inkCheckbox} ink={this.state.ink} private={this.state.private}
-                                bookingsRequired={this.state.bookingsRequired} showFilters={this.showFilters}
-                                clickSearch={this.clickSearch} ResetSearch={this.ResetSearch} />
+                                    updateFormField={this.updateFormField} gender={this.state.gender}
+                                    yearsOfExperience={this.state.yearsOfExperience} generalRadio={this.generalRadio}
+                                    apprentice={this.state.apprentice} temporary={this.state.temporary}
+                                    methodsCheckbox={this.methodsCheckbox} updateCheckboxes={this.updateCheckboxes}
+                                    method={this.state.method} style={this.state.style} handleSelectFilter={this.handleSelectFilter}
+                                    inkCheckbox={this.inkCheckbox} ink={this.state.ink} private={this.state.private}
+                                    bookingsRequired={this.state.bookingsRequired} showFilters={this.showFilters}
+                                    clickSearch={this.clickSearch} ResetSearch={this.ResetSearch} />
                             </div>
                             :
                             null
