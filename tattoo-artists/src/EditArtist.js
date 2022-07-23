@@ -32,7 +32,7 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Gender: </label>
                             {props.genderRadio.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-gender-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="radio" className="form-check-input"
                                             value={each.value} name="modifiedGender"
@@ -47,7 +47,7 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Are you an apprentice? </label>
                             {props.generalRadio.slice(0, 2).map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-apprentice-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="radio" className="form-check-input"
                                             value={each.value} name="modifiedApprentice"
@@ -60,7 +60,7 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Please select your method(s) of tattooing:</label>
                             {props.methodsCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-method-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="checkbox" className="form-check-input"
                                             value={each.value} name="modifiedMethod"
@@ -86,7 +86,7 @@ export default function EditArtist(props) {
                                 <label className="form-label">Please select your ink(s):</label>
                             </div>
                             {props.inkCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-ink-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="checkbox" className="form-check-input"
                                             value={each.value} name="modifiedInk"
@@ -132,7 +132,7 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6">
                             <label className="form-label form-check-inline">Is it a private studio? </label>
                             {props.generalRadio.slice(0, 2).map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-private-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="radio" className="form-check-input"
                                             value={each.value} name="modifiedPrivate"
@@ -145,7 +145,7 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6">
                             <label className="form-label form-check-inline">Are bookings required? </label>
                             {props.generalRadio.slice(0, 2).map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"edit-bookings-" + each.value}>
                                     <label className="form-check-label">
                                         <input type="radio" className="form-check-input"
                                             value={each.value} name="modifiedBookingsRequired"
@@ -189,7 +189,7 @@ export default function EditArtist(props) {
                     </div>
 
                     <button className="btn delete-button my-2 mx-1" onClick={props.updateArtist}>Update artist</button>
-                    <button className="btn cancel-button my-2 mx-1" onClick={props.stopEdit}>Cancel</button>
+                    <button className="btn black-button my-2 mx-1" onClick={props.stopEdit}>Cancel</button>
                 </div>
 
 
