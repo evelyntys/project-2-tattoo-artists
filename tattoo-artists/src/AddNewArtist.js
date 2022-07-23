@@ -9,7 +9,7 @@ import ValidateFields from './Validation';
 
 
 export default class AddNewArtist extends React.Component {
-    url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/"
+    url = this.props.url
 
     state = {
         artistName: "",
@@ -88,14 +88,14 @@ export default class AddNewArtist extends React.Component {
                 {this.state.submitted? <ValidateFields field="email" state={this.state.ownerEmail} /> : null}
 
                 <div>
-                    <button className="btn black-button my-1 mx-1" onClick={() => {
+                    <button className="btn black-button my-2 mx-1" onClick={() => {
                         this.setState({
                             firstPage: false,
                             secondPage: true,
                             thirdPage: false
                         })
                     }}>previous</button>
-                    <button className="btn delete-button" onClick={this.addData}>Add new artist</button>
+                    <button className="btn delete-button my-2" onClick={this.addData}>Add new artist</button>
                 </div>
             </React.Fragment>
         );
@@ -402,7 +402,7 @@ export default class AddNewArtist extends React.Component {
                     </div>
 
                     <div>
-                        <button className="btn delete-button my-1" onClick={() => {
+                        <button className="btn delete-button my-2" onClick={() => {
                             this.setState({
                                 firstPage: false,
                                 secondPage: true
@@ -503,14 +503,14 @@ export default class AddNewArtist extends React.Component {
                     </div>
                 </div>
                 <div>
-                    <button className="btn black-button my-1 mx-1" onClick={() => {
+                    <button className="btn black-button my-2 mx-1" onClick={() => {
                         this.setState({
                             firstPage: true,
                             secondPage: false,
                             thirdPage: false
                         })
                     }}>previous</button>
-                    <button className="btn delete-button my-1 mx-1" onClick={() => {
+                    <button className="btn delete-button my-2 mx-1" onClick={() => {
                         this.setState({
                             firstPage: false,
                             secondPage: false,
@@ -534,6 +534,12 @@ export default class AddNewArtist extends React.Component {
 
         return (
             <React.Fragment>
+                <div className="header-banner">
+                    <img className="header-image" src={require('./images/add-new.jpg')} alt="female artist tattooing a client" />
+                    <div className="overlay d-flex align-items-center justify-content-center">
+                        <h1>Add a new artist</h1>
+                    </div>
+                </div>
                 {this.renderSection()}
             </React.Fragment>
 
