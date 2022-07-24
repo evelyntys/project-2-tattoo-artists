@@ -25,9 +25,8 @@ export default class Explore extends React.Component {
     state = {
         data: [],
         showConfirmDelete: false,
-        confirmDeleteEmail: "",
+        confirmEmail: "",
         showConfirmEdit: false,
-        confirmEditEmail: "",
         showOne: false,
         artistToShow: {},
         editMode: false,
@@ -53,12 +52,10 @@ export default class Explore extends React.Component {
         showReviews: false,
         editReview: false,
         reviewBeingEdited: {},
-        editReviewEmail: "",
+        confirmReviewEmail: "",
         correctReviewEmail: false,
         deleteReview: false,
         reviewBeingDeleted: {},
-        deleteReviewEmail: "",
-        correctDeleteReviewEmail: false,
         updatedRating: 0,
         updatedComment: "",
         addReview: false,
@@ -130,7 +127,7 @@ export default class Explore extends React.Component {
         this.setState({
             showOne: false
         })
-        if (window.innerWidth > 768){
+        if (window.innerWidth > 768) {
             this.setState({
                 showFilters: true
             })
@@ -140,7 +137,9 @@ export default class Explore extends React.Component {
     stopEdit = () => {
         this.setState({
             editMode: false,
-            showConfirmEdit: false
+            showConfirmEdit: false,
+            showValidateEmail: false,
+            confirmEmail: ""
         })
     }
 
@@ -263,7 +262,7 @@ export default class Explore extends React.Component {
         })
         try {
             let response = await axios.put(this.url + `tattoo-artist/${id}`, {
-                ownerEmail: this.state.confirmEditEmail,
+                ownerEmail: this.state.confirmEmail,
                 name: this.state.modifiedArtistName,
                 gender: this.state.modifiedGender,
                 yearStarted: this.state.modifiedYearStarted,
@@ -304,7 +303,7 @@ export default class Explore extends React.Component {
                 data: updatedArtists,
                 artistToShow: updatedArtists[indexOfModified],
                 submitted: false,
-                confirmEditEmail: false
+                confirmEmail: ""
             })
         }
         catch (e) {
@@ -365,6 +364,23 @@ export default class Explore extends React.Component {
         }
     }
 
+    toggleAddReview = () => {
+        this.setState({
+            addReview: true,
+            showAddReviewButton: false
+        })
+    }
+
+    cancelModifyReview = () => {
+        this.setState({
+            editReview: false,
+            checkReviewEmail: false,
+            correctReviewEmail: false,
+            confirmReviewEmail: "",
+            deleteReview: false
+        })
+    }
+
     RenderReviews() {
         let contentToReturn = "";
         if (!this.state.editReview || !this.state.correctReviewEmail) {
@@ -376,12 +392,7 @@ export default class Explore extends React.Component {
                             <p>no reviews available</p>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
-                                <button className="btn black-button my-2" onClick={() => {
-                                    this.setState({
-                                        addReview: true,
-                                        showAddReviewButton: false
-                                    })
-                                }}>Add a new review</button>
+                                <button className="btn black-button my-2" onClick={this.toggleAddReview}>Add a new review</button>
                                 :
                                 ""
                             }
@@ -418,35 +429,24 @@ export default class Explore extends React.Component {
                                                 <div>
                                                     <div>
                                                         <label>Please enter your email to confirm your identity to edit this review:</label>
-                                                        <input type="email" className="form-control" name="editReviewEmail" onChange={this.updateFormField} />
+                                                        <input type="email" className="form-control" name="confirmReviewEmail" onChange={this.updateFormField} />
                                                     </div>
                                                     {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
                                                     <div className="my-1">
                                                         <button className="btn delete-button my-2 mx-1" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
-                                                        <button className="btn black-button my-2 mx-1" onClick={() => {
-                                                            this.setState({
-                                                                editReview: false,
-                                                                checkReviewEmail: false,
-                                                                correctReviewEmail: false,
-                                                                editReviewEmail: "",
-                                                            })
-                                                        }}>Cancel</button>
+                                                        <button className="btn black-button my-2 mx-1" onClick={this.cancelModifyReview}>Cancel</button>
                                                     </div>
                                                 </div>
                                                 :
                                                 null
                                             }
+
                                         </div>
                                     ))}
                             </div>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
-                                <button className="btn black-button my-2" onClick={() => {
-                                    this.setState({
-                                        addReview: true,
-                                        showAddReviewButton: false
-                                    })
-                                }}>Add a new review</button>
+                                <button className="btn black-button my-2" onClick={this.toggleAddReview}>Add a new review</button>
                                 :
                                 null
                             }
@@ -457,7 +457,7 @@ export default class Explore extends React.Component {
         if (this.state.editReview && this.state.correctReviewEmail) {
             contentToReturn =
                 <React.Fragment>
-                    <div className="list-group">
+                    <div className="list-group my-2">
                         <div className="list-group-item">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
@@ -477,13 +477,7 @@ export default class Explore extends React.Component {
                                 null}
                             <div className="my-2">
                                 <button className="btn delete-button my-2 mx-1" onClick={this.updateReview}>Edit</button>
-                                <button className="btn black-button my-2 mx-1" onClick={() => {
-                                    this.setState({
-                                        editReview: false,
-                                        correctReviewEmail: false,
-                                        editReviewEmail: ""
-                                    })
-                                }}>Cancel</button>
+                                <button className="btn black-button my-2 mx-1" onClick={this.cancelModifyReview}>Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -507,17 +501,13 @@ export default class Explore extends React.Component {
                     <div>
                         <div>
                             <label className="form-label">Please enter your email to confirm deletion: </label>
-                            <input type="email" name="deleteReviewEmail" className="form-control" onChange={this.updateFormField} />
+                            <input type="email" name="confirmReviewEmail" className="form-control" onChange={this.updateFormField} />
                         </div>
-                        {!this.state.checkReviewEmail && !this.state.correctDeleteReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
+                        {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
 
                         <div className="my-1">
                             <button className='btn delete-button my-2 mx-1' onClick={this.validateDeleteReviewEmail}>Confirm</button>
-                            <button className='btn black-button my-2 mx-1' onClick={() => {
-                                this.setState({
-                                    deleteReview: false
-                                })
-                            }}>Cancel</button>
+                            <button className='btn black-button my-2 mx-1' onClick={this.cancelModifyReview}>Cancel</button>
                         </div>
                     </div>
                 </React.Fragment>
@@ -529,7 +519,7 @@ export default class Explore extends React.Component {
         this.setState({
             checkReviewEmail: true
         })
-        if (this.state.editReviewEmail === review.email) {
+        if (this.state.confirmReviewEmail === review.email) {
             this.setState({
                 correctReviewEmail: true
             })
@@ -537,9 +527,9 @@ export default class Explore extends React.Component {
         console.log(review.email)
     }
 
-    processDelete = async (id, confirmDeleteEmail) => {
+    processDelete = async (id, confirmEmail) => {
         try {
-            let response = await axios.delete(this.url + `tattoo-artist/${id}?email=` + this.state.confirmDeleteEmail);
+            let response = await axios.delete(this.url + `tattoo-artist/${id}?email=` + this.state.confirmEmail);
             const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
             const modifiedData = [...this.state.data.slice(0, index),
             ...this.state.data.slice(index + 1)]
@@ -547,7 +537,7 @@ export default class Explore extends React.Component {
                 showConfirmDelete: false,
                 showOne: false,
                 data: modifiedData,
-                confirmDeleteEmail: ""
+                confirmEmail: ""
             })
             console.log(response.data)
         }
@@ -574,7 +564,8 @@ export default class Explore extends React.Component {
 
         const handleClose = () => this.setState({
             showConfirmEdit: false,
-            confirmEditEmail: ""
+            confirmEmail: "",
+            showValidateEmail: false
         });
         const handleShow = () => this.setState({
             showConfirmEdit: true
@@ -601,7 +592,7 @@ export default class Explore extends React.Component {
                         Please enter your email to confirm your identity:
                         <div>
                             <label className="form-label">Email: </label>
-                            <input type="text" className="form-control" name="confirmEditEmail" placeholder="email" value={this.state.confirmEditEmail} onChange={this.updateFormField} />
+                            <input type="text" className="form-control" name="confirmEmail" placeholder="email" value={this.state.confirmEmail} onChange={this.updateFormField} />
                         </div>
                         {this.state.showValidateEmail ? <div style={{ "color": "red" }}> sorry, it seems that you are not the owner of this document</div>
                             : ""}
@@ -610,7 +601,7 @@ export default class Explore extends React.Component {
                         <button className="btn black-button" onClick={handleClose}>
                             Cancel
                         </button>
-                        <button className="btn delete-button" onClick={() => { this.GoToEdit(this.state.confirmEditEmail, this.state.artistToShow.owner.email) }}>Confirm identity</button>
+                        <button className="btn delete-button" onClick={() => { this.GoToEdit(this.state.confirmEmail, this.state.artistToShow.owner.email) }}>Confirm identity</button>
                     </Modal.Footer>
                 </Modal>
             </React.Fragment>
@@ -622,7 +613,8 @@ export default class Explore extends React.Component {
 
         const handleClose = () => this.setState({
             showConfirmDelete: false,
-            confirmDeleteEmail: ""
+            confirmEmail: "",
+            showValidateEmail: false
         });
         const handleShow = () => this.setState({
             showConfirmDelete: true
@@ -648,14 +640,14 @@ export default class Explore extends React.Component {
                         Please enter your email to confirm deletion of this entry:
                         <div>
                             <label className="form-label">Email: </label>
-                            <input type="text" className="form-control" name="confirmDeleteEmail" placeholder="email" value={this.state.confirmDeleteEmail} onChange={this.updateFormField} />
+                            <input type="text" className="form-control" name="confirmEmail" placeholder="email" value={this.state.confirmEmail} onChange={this.updateFormField} />
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <button className="btn black-button" onClick={handleClose}>
                             Cancel
                         </button>
-                        <button className="btn delete-button" onClick={() => { this.processDelete(artist._id, this.state.confirmDeleteEmail) }}>Confirm delete</button>
+                        <button className="btn delete-button" onClick={() => { this.processDelete(artist._id, this.state.confirmEmail) }}>Confirm delete</button>
                     </Modal.Footer>
                 </Modal>
             </React.Fragment>
@@ -754,7 +746,7 @@ export default class Explore extends React.Component {
         try {
             let result = await axios.post(this.url + `reviews/${this.state.reviewBeingEdited._id}/edit`, {
                 reviewer: this.state.reviewBeingEdited.reviewer,
-                email: this.state.editReviewEmail,
+                email: this.state.confirmReviewEmail,
                 rating: this.state.updatedRating,
                 comment: this.state.updatedComment
             })
@@ -764,7 +756,7 @@ export default class Explore extends React.Component {
                 editReview: false,
                 artistToShow: updatedResponse.data,
                 correctReviewEmail: false,
-                editReviewEmail: "",
+                confirmReviewEmail: "",
                 checkReviewEmail: false
 
             })
@@ -778,16 +770,16 @@ export default class Explore extends React.Component {
         this.setState({
             checkReviewEmail: true
         })
-        if (this.state.deleteReviewEmail === this.state.reviewBeingDeleted.email) {
+        if (this.state.confirmReviewEmail === this.state.reviewBeingDeleted.email) {
             this.setState({
-                correctDeleteReviewEmail: true
+                correctReviewEmail: true
             })
             try {
-                let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`, { params: { email: this.state.deleteReviewEmail } });
+                let result = await axios.get(this.url + `reviews/${this.state.reviewBeingDeleted._id}/delete`, { params: { email: this.state.confirmReviewEmail } });
                 let updatedResponse = await axios.get(this.url + `tattoo-artist/${this.state.artistToShow._id}`);
                 this.setState({
-                    deleteReviewEmail: "",
-                    correctDeleteReviewEmail: false,
+                    confirmReviewEmail: "",
+                    correctReviewEmail: false,
                     artistToShow: updatedResponse.data,
                     deleteReview: false,
                     checkReviewEmail: false
@@ -795,7 +787,6 @@ export default class Explore extends React.Component {
             }
             catch (e) {
                 console.log(e)
-                alert('error deleting')
             }
         }
     }
