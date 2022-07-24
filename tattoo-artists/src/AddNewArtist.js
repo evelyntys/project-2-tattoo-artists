@@ -9,7 +9,15 @@ import ValidateFields from './Validation';
 
 
 export default class AddNewArtist extends React.Component {
-    url = this.props.url
+    url = this.props.url;
+
+    generalRadio = this.props.generalRadio;
+
+    methodsCheckbox = this.props.methodsCheckbox;
+
+    inkCheckbox = this.props.inkCheckbox;
+
+    genderRadio = this.props.genderRadio;
 
     state = {
         artistName: "",
@@ -63,7 +71,7 @@ export default class AddNewArtist extends React.Component {
                 <ToastContainer position="top-end">
                     <Toast onClose={() => this.setState({
                         showCreateToast: false
-                    })} show={this.state.showCreateToast} delay={3000} autohide>
+                    })} show={this.state.showCreateToast} delay={2000} autohide>
                         <Toast.Header>
                             <strong className="me-auto">{this.state.addSuccess ? 'Artist successfully added'
                                 :
@@ -78,7 +86,7 @@ export default class AddNewArtist extends React.Component {
                 </div> */}
                 <h1>your information</h1>
                 <label className="form-label">Your name: </label>
-                <input type="text" className="form-control" placeholder="e.g. John Doe" name="ownerName"
+                <input type="text" className={"form-control " + (this.state.submitted && <ValidateFields/> ? "error-border" : "")} placeholder="e.g. John Doe" name="ownerName"
                     value={this.state.ownerName} onChange={this.updateFormField} />
                 {this.state.submitted? <ValidateFields field="name" state={this.state.ownerName}/> : " null"}
 
@@ -145,8 +153,7 @@ export default class AddNewArtist extends React.Component {
 
     addData = async () => {
         this.setState({
-            submitted: true,
-            showCreateToast: true
+            submitted: true
         })
         try {
             let response = await axios.post(this.url + "add-new-artist", {
@@ -217,6 +224,7 @@ export default class AddNewArtist extends React.Component {
         catch (e) {
             this.setState({
                 addSuccess: false,
+                showCreateToast: true
             })
             console.log(e)
         }
@@ -238,7 +246,7 @@ export default class AddNewArtist extends React.Component {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Name of tattoo artist: </label>
                             <input type="text"
-                                className="form-control"
+                                className={"form-control" + (this.state.submitted && <ValidateFields field="artist name" state={this.state.artistName}/> ? " error-border" : "")}
                                 placeholder="artist name"
                                 name="artistName"
                                 value={this.state.artistName}
@@ -248,7 +256,7 @@ export default class AddNewArtist extends React.Component {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Year started tattooing: </label>
-                            <input type="text" className="form-control"
+                            <input type="text" className={"form-control" + (this.state.submitted && <ValidateFields field="year" state={this.state.yearStarted}/> ? " error-border" : "")}
                                 placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
                                 onChange={this.updateFormField} />
                             {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
@@ -256,86 +264,51 @@ export default class AddNewArtist extends React.Component {
 
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Gender: </label>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value="female" name="gender"
-                                    checked={this.state.gender === "female"} onChange={this.updateFormField} />
-                                Female</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value="male" name="gender"
-                                    checked={this.state.gender === "male"} onChange={this.updateFormField} />
-                                Male</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value="others" name="gender"
-                                    checked={this.state.gender === "others"} onChange={this.updateFormField} />
-                                Others</label>
-                            </div>
+                            {this.props.genderRadio.map(each => (
+                                 <div className="form-check form-check-inline" key={'add-gender ' + each.value}>
+                                 <label className="form-check-label">
+                                     <input type="radio" className="form-check-input"
+                                         value={each.value} name="gender"
+                                         checked={this.state.gender === each.value} onChange={this.updateFormField} />
+                                     {each.label}</label>
+                                 </div>
+     
+                            ))}
                         </div>
 
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Are you an apprentice? </label>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value="yes" name="apprentice"
-                                    onChange={this.updateFormField} checked={this.state.apprentice === "yes"} />
-                                Yes</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value="no" name="apprentice"
-                                    onChange={this.updateFormField} checked={this.state.apprentice === "no"} />
-                                No</label>
-                            </div>
+                            {this.props.generalRadio.slice(0,2).map(each => (
+                                <div className="form-check form-check-inline" key={'add-apprentice ' + each.value}>
+                                <label className="form-check-label">
+                                    <input type="radio" className="form-check-input"
+                                        value={each.value} name="apprentice"
+                                        onChange={this.updateFormField} checked={this.state.apprentice === each.value} />
+                                    {each.label}</label>
+                                </div>
+                            ))}
                         </div>
 
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Please select your method(s) of tattooing: </label>
                             <div>
-                                <div className="form-check form-check-inline">
-                                <label className="form-check-label">
-                                    <input type="checkbox" className="form-check-input"
-                                        value="handpoke" name="method"
-                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('handpoke')} />
-                                    Handpoke</label>
-                                </div>
-
-                                <div className="form-check form-check-inline">
-                                <label className="form-check-label">
-                                    <input type="checkbox" className="form-check-input"
-                                        value="machine" name="method"
-                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('machine')} />
-                                    Machine</label>
-                                </div>
-
-                                <div className="form-check form-check-inline">
-                                <label className="form-check-label">
-                                    <input type="checkbox" className="form-check-input"
-                                        value="jagua" name="method"
-                                        onChange={this.updateCheckboxes} checked={this.state.method.includes('jagua')} />
-                                    Jagua</label>
-                                </div>
+                                {this.props.methodsCheckbox.map(each => (
+                                    <div className="form-check form-check-inline" key={'add-methods ' + each.value}>
+                                    <label className="form-check-label">
+                                        <input type="checkbox" className={"form-check-input"}
+                                            value={each.value} name="method"
+                                            onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
+                                        {each.label}</label>
+                                    </div>
+                                ))}
                                 {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"}/> : null}
                             </div>
                         </div>
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Is it temporary? </label>
-                            <select className="form-select" aria-label="Default select example"
+                            <select className={"form-select"} aria-label="Default select example"
                                 onChange={this.updateFormField} value={this.state.temporary} name="temporary">
                                 <option value="no">No</option>
                                 <option value="yes">Yes</option>
@@ -346,38 +319,15 @@ export default class AddNewArtist extends React.Component {
                             <div>
                                 <label className="form-label">Please select your ink(s):</label>
                             </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input"
-                                    value="black" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('black')} />
-                                Black</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input"
-                                    value="colours" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('colours')} />
-                                Colours</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input"
-                                    value="jagua" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('jagua')} />
-                                Jagua</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input"
-                                    value="uv" name="ink"
-                                    onChange={this.updateCheckboxes} checked={this.state.ink.includes('uv')} />
-                                UV</label>
-                            </div>
+                            {this.props.inkCheckbox.map(each => (
+                                <div className="form-check form-check-inline" key={'add-ink ' + each.value}>
+                                <label className="form-check-label">
+                                    <input type="checkbox" className="form-check-input"
+                                        value={each.value} name="ink"
+                                        onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
+                                    {each.label}</label>
+                                </div>
+                            ))}
                             {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
                         </div>
 
@@ -431,43 +381,29 @@ export default class AddNewArtist extends React.Component {
 
                     <div className="col-12 col-md-6">
                         <label className="form-label form-check-inline">Is it a private studio? </label>
-
-                        <div className="form-check form-check-inline">
-                        <label className="form-check-label">
-                            <input type="radio" className="form-check-input"
-                                value="yes" name="private"
-                                onChange={this.updateFormField} checked={this.state.private === "yes"} />
-                            Yes</label>
-                        </div>
-
-                        <div className="form-check form-check-inline">
-                        <label className="form-check-label">
-                            <input type="radio" className="form-check-input"
-                                value="no" name="private"
-                                onChange={this.updateFormField} checked={this.state.private === "no"} />
-                            No</label>
-                        </div>
+                        {this.props.generalRadio.slice(0,2).map(each => (
+                            <div className="form-check form-check-inline" key={"add-private " + each.value}>
+                            <label className="form-check-label">
+                                <input type="radio" className="form-check-input"
+                                    value={each.value} name="private"
+                                    onChange={this.updateFormField} checked={this.state.private === each.value} />
+                                {each.label}</label>
+                            </div>
+                        ))}
                     </div>
 
                     <div className="col-12 col-md-6">
                         
                         <label className="form-label form-check-inline">Are bookings required? </label>
-
-                        <div className="form-check form-check-inline">
-                        <label className="form-check-label">
-                        <input type="radio" className="form-check-input"
-                            value="yes" name="bookingsRequired"
-                            onChange={this.updateFormField} checked={this.state.bookingsRequired === "yes"} />
-                        Yes</label>
-                        </div>
-
-                        <div className="form-check form-check-inline">
-                        <label className="form-check-label">
-                        <input type="radio" className="form-check-input"
-                            value="no" name="bookingsRequired"
-                            onChange={this.updateFormField} checked={this.state.bookingsRequired === "no"} />
-                        No</label>
-                        </div>
+                        {this.props.generalRadio.slice(0,2).map(each => (
+                            <div className="form-check form-check-inline" key={"add-bookings" + each.value}>
+                            <label className="form-check-label">
+                            <input type="radio" className="form-check-input"
+                                value={each.value} name="bookingsRequired"
+                                onChange={this.updateFormField} checked={this.state.bookingsRequired === each.value} />
+                            {each.label}</label>
+                            </div>
+                        ))}
                     </div>
 
                     <div className="row">
