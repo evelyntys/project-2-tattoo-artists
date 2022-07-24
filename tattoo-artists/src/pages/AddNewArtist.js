@@ -1,11 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ContactFields from './ContactFields';
-import StyleMultiSelect from './StyleMultiSelect';
+import ContactFields from '../ContactFields';
+import StyleMultiSelect from '../components/general/StyleMultiSelect';
 import axios from 'axios';
 import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
-import StepProgressBar from './TestProgressBar';
-import ValidateFields from './Validation';
+import StepProgressBar from '../TestProgressBar';
+import ValidateFields from '../components/general/Validation';
 
 
 export default class AddNewArtist extends React.Component {
@@ -86,7 +86,7 @@ export default class AddNewArtist extends React.Component {
                 </div> */}
                 <h1>your information</h1>
                 <label className="form-label">Your name: </label>
-                <input type="text" className={"form-control " + (this.state.submitted && <ValidateFields/> ? "error-border" : "")} placeholder="e.g. John Doe" name="ownerName"
+                <input type="text" className={"form-control"} placeholder="e.g. John Doe" name="ownerName"
                     value={this.state.ownerName} onChange={this.updateFormField} />
                 {this.state.submitted? <ValidateFields field="name" state={this.state.ownerName}/> : " null"}
 
@@ -246,7 +246,7 @@ export default class AddNewArtist extends React.Component {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Name of tattoo artist: </label>
                             <input type="text"
-                                className={"form-control" + (this.state.submitted && <ValidateFields field="artist name" state={this.state.artistName}/> ? " error-border" : "")}
+                                className={"form-control"}
                                 placeholder="artist name"
                                 name="artistName"
                                 value={this.state.artistName}
@@ -256,7 +256,7 @@ export default class AddNewArtist extends React.Component {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Year started tattooing: </label>
-                            <input type="text" className={"form-control" + (this.state.submitted && <ValidateFields field="year" state={this.state.yearStarted}/> ? " error-border" : "")}
+                            <input type="text" className={"form-control"}
                                 placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
                                 onChange={this.updateFormField} />
                             {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
@@ -471,9 +471,9 @@ export default class AddNewArtist extends React.Component {
         return (
             <React.Fragment>
                 <div className="header-banner">
-                    <img className="header-image" src={require('./images/add-new.jpg')} alt="female artist tattooing a client" />
+                    <img className="header-image" src={require('../images/add-new.jpg')} alt="female artist tattooing a client" />
                     <div className="overlay d-flex align-items-center justify-content-center">
-                        <h1>Add a new artist</h1>
+                        <h1>Add new artist</h1>
                     </div>
                 </div>
                 {this.renderSection()}

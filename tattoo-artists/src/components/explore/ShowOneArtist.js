@@ -7,7 +7,7 @@ export default function ShowOneArtist(props) {
             <div>
                 <div>
                     <button className="btn"
-                        onClick={props.showOne}><i className="bi bi-arrow-90deg-left"></i></button>
+                        onClick={props.showAll}><i className="bi bi-arrow-90deg-left"></i></button>
                 </div>
                 <div className="text-end">
                     {props.ConfirmEdit}
@@ -31,7 +31,7 @@ export default function ShowOneArtist(props) {
                     {/* <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1> */}
                     <Accordion defaultActiveKey="0" flush>
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header><h4>Artist's Details</h4></Accordion.Header>
+                            <Accordion.Header><h4 className="ms-auto">Artist's Details</h4></Accordion.Header>
                             <Accordion.Body>
                                 <div className="text-center card-box">
                                     <h4 className="artist-name">{props.artistToShow.name}</h4>
@@ -42,8 +42,8 @@ export default function ShowOneArtist(props) {
                                         <div className="col-12 col-md-3">
                                             <div className="card-box-title">Method(s)</div>
                                             {props.artistToShow.method.map(a => (
-                                                <React.Fragment>
-                                                    <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                <React.Fragment key={a}>
+                                                    <span className="span-body text-md-start"><i className="bi bi-dot"></i>{a} </span>
                                                     {/* <ul className="d-none d-md-block">
                                                             <li className="text-start">{a}</li>
                                                             </ul> */}
@@ -54,8 +54,8 @@ export default function ShowOneArtist(props) {
                                         <div className="col-12 col-md-6">
                                             <div className="card-box-title">Style(s)</div>
                                             {props.artistToShow.style.map(a => (
-                                                <React.Fragment>
-                                                    <span className="span-body text-md-start" key={a}> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</span>
+                                                <React.Fragment key={a}>
+                                                    <span className="span-body text-md-start"> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</span>
                                                     {/* <ul className="d-none d-md-block m-0 p-0">
                                                                 <div className="row">
                                                                     <div className="col-4"></div>
@@ -90,7 +90,7 @@ export default function ShowOneArtist(props) {
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
-                            <Accordion.Header><h4>Studio Details</h4></Accordion.Header>
+                            <Accordion.Header><h4 className="ms-auto">Studio Details</h4></Accordion.Header>
                             <Accordion.Body>
                                 <div>
                                     <div className="card-box">

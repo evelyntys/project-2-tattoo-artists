@@ -17,23 +17,22 @@ export default class Home extends React.Component {
           </div> */}
                 {/* </div> */}
                 <div className="container">
-                    Interested in getting a tattoo?
                     <div className="row">
-                        <div className="container p-0 col-12 col-md-4 faq" style={{ "border": "1px solid black", "height": "300px" }}>
+                        <div className="container p-0 col-12 col-md-4 faq">
                             <div className='nav-btn d-flex justify-content-center align-items-center'>
-                                <h1 onClick={() => { this.props.ChangePages('faq') }}>FAQ</h1>
+                                <h1 className="home-nav" onClick={() => { this.props.ChangePages('faq') }}>FAQs</h1>
                             </div>
                         </div>
 
-                        <div className="container p-0 col-12 col-md-4 explore" style={{ "border": "1px solid black", "height": "300px" }}>
+                        <div className="container p-0 col-12 col-md-4 explore">
                             <div className='nav-btn d-flex justify-content-center align-items-center'>
-                                <h1 onClick={() => { this.props.ChangePages('explore') }}>Explore</h1>
+                                <h1 className="home-nav" onClick={() => { this.props.ChangePages('explore') }}>Explore</h1>
                             </div>
                         </div>
 
-                        <div className="container p-0 col-12 col-md-4 add-new" style={{ "border": "1px solid black", "height": "300px" }}>
+                        <div className="container p-0 col-12 col-md-4 add-new">
                             <div className='nav-btn d-flex justify-content-center align-items-center'>
-                                <h1 onClick={() => { this.props.ChangePages('add-new') }}>Add new artist</h1>
+                                <h1 className="home-nav" onClick={() => { this.props.ChangePages('add-new') }}>Add new artist</h1>
                             </div>
                         </div>
                     </div>

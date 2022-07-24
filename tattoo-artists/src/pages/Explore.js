@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap';
-import ValidateFields from './Validation';
-import RenderFilters from './RenderFilters';
-import ShowOneArtist from './ShowOneArtist';
-import EditArtist from './EditArtist';
-import ShowAllArtists from './ShowAllArtists';
+import ValidateFields from '../components/general/Validation';
+import RenderFilters from '../components/explore/RenderFilters';
+import ShowOneArtist from '../components/explore/ShowOneArtist';
+import EditArtist from '../components/explore/EditArtist';
+import ShowAllArtists from '../components/explore/ShowAllArtists';
 
 export default class Explore extends React.Component {
     url = this.props.url;
@@ -353,7 +353,7 @@ export default class Explore extends React.Component {
         else {
             return (
                 <React.Fragment>
-                    {this.state.showLoader ? <div className="d-flex justify-content-center"><img src={require('./images/loader.gif')} alt="loader" /></div> :
+                    {this.state.showLoader ? <div className="d-flex justify-content-center"><img src={require('../images/loader.gif')} alt="loader" /></div> :
                         (this.state.data.length ?
                             <ShowAllArtists data={this.state.data} styleKeys={this.styleKeys} showOneArtist={this.showOneArtist}
                                 findInstagram={this.findInstagram} />
@@ -370,10 +370,10 @@ export default class Explore extends React.Component {
         if (!this.state.editReview || !this.state.correctReviewEmail) {
             contentToReturn =
                 <div className="my-md-2">
-                    <h5>Reviews:</h5>
+                    <h2>Reviews:</h2>
                     {this.state.artistToShow.reviews === undefined || this.state.artistToShow.reviews.length === 0 ?
                         <div>
-                            <h1>no reviews available</h1>
+                            <p>no reviews available</p>
                             {this.RenderAddReview()}
                             {this.state.showAddReviewButton ?
                                 <button className="btn black-button my-2" onClick={() => {
@@ -401,9 +401,9 @@ export default class Explore extends React.Component {
                                                             reviewBeingEdited: each,
                                                             updatedRating: each.rating,
                                                             updatedComment: each.comment
-                                                        })}><i className="bi bi-pencil-square review-btn"></i></button>
+                                                        })}><i className="bi bi-pencil-square"></i></button>
 
-                                                    <button className="btn btn-small p-1"
+                                                    <button className="btn btn-small p-1 review-btn"
                                                         onClick={() => this.setState({
                                                             reviewBeingDeleted: each,
                                                             deleteReview: true
@@ -468,7 +468,7 @@ export default class Explore extends React.Component {
                                 {this.EditStarRating()}
                             </small>
 
-                            <textarea className="form-control" name="updatedComment" value={this.state.updatedComment}
+                            <textarea className="form-control mt-2" name="updatedComment" value={this.state.updatedComment}
                                 onChange={this.updateFormField}>
                             </textarea>
                             {this.state.submittedEditReview && this.state.updatedComment.length === 0 ?
@@ -851,7 +851,7 @@ export default class Explore extends React.Component {
                             null
                         }
                         <div className={'col-12 ' + (this.state.showOne ? '' : 'col-md-9')}>
-                            {!this.state.showOne ? <h3 className="mt-4">Showing {this.state.data.length} result(s): </h3>
+                            {!this.state.showOne ? <h3 className="mt-4 text-center text-md-start">Showing {this.state.data.length} result(s): </h3>
                                 :
                                 null
                             }

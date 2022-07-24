@@ -1,7 +1,7 @@
 import React from 'react';
-import ValidateFields from './Validation';
-import StyleMultiSelect from './StyleMultiSelect';
-import ContactFields from './ContactFields';
+import ValidateFields from '../general/Validation';
+import StyleMultiSelect from '../general/StyleMultiSelect';
+import ContactFields from '../../ContactFields';
 
 export default function EditArtist(props) {
     return (

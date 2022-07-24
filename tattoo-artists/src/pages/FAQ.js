@@ -6,7 +6,7 @@ export default class AboutUs extends React.Component {
         return (
             <React.Fragment>
                 <div className="header-banner">
-                    <img className="header-image" src={require('./images/faq-header.jpg')} />
+                    <img className="header-image" src={require('../images/faq.jpg')} alt="tattoo artist discussing with client" />
                     <div className="overlay d-flex align-items-center justify-content-center">
                         <h1>FAQs</h1>
                     </div>

@@ -1,78 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-.logo{
+.logo {
   cursor: pointer;
 }
 
-body{
+body {
   font-family: "Raleway";
 }
 
-button{
+button {
   background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
 }
 
-.on{
+.on {
   color: #000;
 }
 
-.off{
+.off {
   color: #ccc;
 }
 
-.explore{
+.explore {
   background-image: url("images/explore.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  height: 300px;
+  border: 2px solid white;
 }
 
-.nav-btn{
+.nav-btn {
   text-align: center;
   color: white;
-  background-color: rgba(255, 254, 254, 0.489);
+  background-color: rgba(0, 0, 0, 0.449);
   align-items: center;
   font-size: 60px;
   cursor: pointer;
+  height: 100%;
+  font-family: "Poiret One";
 }
 
-.nav-btn:hover{
-  background-color: rgba(0, 0, 0, 0.404);
+.nav-btn> h1{
+  font-weight: 900;
 }
 
-.faq{
+.nav-btn:hover {
+  background-color: rgba(255, 254, 254, 0.338)
+}
+
+.faq {
   background-image: url("images/faq.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  height: 300px;
+  border: 2px solid white;
 }
 
-.add-new{
-    background-image: url("images/add-new.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+.add-new {
+  background-image: url("images/add-new.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 300px;
+  border: 2px solid white;
 }
 
-p{
+p {
   margin: 0px;
   padding: 0px;
 }
 
-h4{
+h4 {
   margin: 0px;
   padding: 0px;
 }
 
-h5{
+h5 {
   margin: 0px;
   padding: 0px;
 }
 
-h6{
+h6 {
   margin: 0px;
   padding: 0px;
 }
@@ -81,12 +93,12 @@ h6{
   display: inline-block
 } */
 
-.card-box{
+.card-box {
   text-align: center;
   font-size: 16px;
 }
 
-.card-box-title{
+.card-box-title {
   /* border: 1px solid black; */
   font-weight: 800;
   letter-spacing: 2px;
@@ -101,26 +113,27 @@ h6{
   margin-bottom: 2px; */
 }
 
-.span-body{
+.span-body {
   font-size: 16px;
   display: inline-block;
 
 }
 
-.artist-name{
+.artist-name {
   font-weight: 800;
   font-size: 25px;
 }
 
-.card{
+.card {
   border: 1px solid black;
 }
 
-.card-box-all{
+.card-box-all {
   text-align: center;
   font-size: 13px;
 }
-.card-box-title-all{
+
+.card-box-title-all {
   /* border: 1px solid black; */
   font-weight: 800;
   letter-spacing: 2px;
@@ -133,22 +146,29 @@ h6{
   padding: 0px;
 }
 
-.card-name{
+.card-name {
   font-weight: 800;
 }
 
-.card-gender-all, .card-year-all, .span-body-all{
+.card-gender-all,
+.card-year-all,
+.span-body-all {
   font-size: 13px;
   font-style: italic;
   margin: 0px;
   padding: 0px;
 }
 
-.span-body-all{
+.span-body-all {
   display: inline-block;
 }
 
-.card-btn{
+.card-title {
+  font-family: "Poiret One";
+  font-weight: 900;
+}
+
+.card-btn {
   border-radius: 0px;
   /* background-color: white; 
   border-color: black;
@@ -161,7 +181,7 @@ h6{
   color: white;
 }
 
-.card-btn:hover{
+.card-btn:hover {
   /* background-color: black;
   color: white; */
   background-color: white;
@@ -173,108 +193,159 @@ h6{
   background-color: black;
   color: white;
 }
-.accordion-button:focus{
-  border-color:rgba(0, 0, 0, 0.404)
+
+.accordion-button:focus {
+  border-color: rgba(0, 0, 0, 0.404)
 }
 
-.accordion-body{
+.accordion-body {
   border: 1px solid black;
 }
 
-.accordion-button{
+.accordion-button {
   border: 1px solid black;
 }
 
-.black-button{
+.black-button {
   background-color: black;
   color: white;
 }
 
-.accordion-header{
+.accordion-header {
   text-align: center;
 }
 
-.black-button:hover{
+.black-button:hover {
   background-color: white;
   border: 1px solid black;
   color: black;
 }
 
-.cancel-button{
+.cancel-button {
   background-color: #5C636A;
   color: white;
 }
 
-.cancel-button:hover{
+.cancel-button:hover {
   background-color: white;
   border: 1px solid #5C636A;
   color: #5C636A
 }
 
-.delete-button{
+.delete-button {
   background-color: #78011A;
   color: white;
 }
 
-.delete-button:hover{
+.delete-button:hover {
   border-color: #78011A;
   background-color: white;
   color: #78011A
 }
 
-.form-check-input:checked{
+.form-check-input:checked {
   background-color: black;
+  border-color: black;
 }
 
-.single-artist-image{
+.single-artist-image {
   height: auto
 }
 
-
-.accordion-button:not(.collapsed)::after{
-  background-image: url('./tattoo.png')
+.review-btn {
+  font-size: 0.8rem;
 }
 
-.header-image{
+.list-group-item {
+  border-color: black;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("./images/down-chevron.png");
+  transform: rotate(0deg);
+}
+
+.accordion-button::after {
+  background-image: url("./images/up-chevron.png");
+  transform: rotate(-180deg)
+}
+
+.header-image {
   height: 300px;
   width: 100vw;
   object-fit: cover;
   position: absolute;
 }
 
-.overlay{
-  background-color: rgba(0,0,0,0.5);
+.header-banner {
+  font-family: "Poiret One";
+  font-weight: 900;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.3);
   position: relative;
   height: 300px;
   width: 100vw;
 }
 
-.overlay h1{
+.overlay h1 {
   text-align: center;
   color: white;
   font-style: italic;
   font-size: 60px;
+  font-weight: 900;
 }
 
-.bold-text{
+.bold-text {
   font-weight: 700;
 }
 
-.disclaimer{
+.disclaimer {
   font-style: italic;
 }
 
+.error-border {
+  border: 1px solid #78011A;
+}
 
+.error-message {
+  color: #78011A;
+}
+
+.navbar-logo,
+.navbar-nav {
+  font-weight: 900;
+  font-family: "Poiret One"
+}
+
+.home-nav {
+  font-size: 60px;
+}
 
 /* screen size responsiveness */
-@media screen and (max-width: 767px){
-  .single-artist-image{
+@media screen and (max-width: 767px) {
+  .single-artist-image {
     max-height: 300px;
   }
-  .header-image, .overlay{
+
+  .header-image,
+  .overlay {
     height: 200px;
   }
-  .overlay h1{
+
+  .overlay h1 {
     font-size: 50px;
+  }
+
+  .nav-btn,
+  .faq,
+  .explore,
+  .add-new {
+    height: 200px;
+    border-bottom: 2px solid white;
+    border-top: 2px solid white;
+    border-left: 0px;
+    border-top: 0px;
   }
 }

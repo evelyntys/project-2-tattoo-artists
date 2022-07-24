@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import StyleMultiSelect from './StyleMultiSelect';
+import StyleMultiSelect from '../general/StyleMultiSelect';
 
 export default class Explore extends React.Component {
     url = "https://8888-evelyntys-project2restf-q3ufqgdmigx.ws-us54.gitpod.io/";

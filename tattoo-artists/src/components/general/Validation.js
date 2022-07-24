@@ -56,7 +56,7 @@ export default function ValidateFields(props) {
     }
 
     return (
-        <div style={{ "color": "red" }}>
+        <div className="error-message">
             {content}
         </div>
     )

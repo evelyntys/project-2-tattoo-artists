@@ -1,16 +1,16 @@
 import React from 'react';
-import StyleMultiSelect from './StyleMultiSelect';
+import StyleMultiSelect from '../general/StyleMultiSelect';
 
 export default function RenderFilters(props){
     let filters = ""
         if (props.showFiltersState) {
             filters =
-                <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="mt-2">
-                    <div className="container">
-                        <h4>filters: </h4>
+                <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="my-2">
+                    <div className="container mb-2">
+                        <h4 className="text-center">FILTERS: </h4>
                         {/* GENDER FILTER */}
                         <div>
-                            <label className="form-label">Gender: </label>
+                            <label className="form-label bold-text">Gender: </label>
                             <select className="form-select" aria-label="select gender"
                                 onChange={props.updateFormField} value={props.gender} name="gender">
                                 <option value="male">Male</option>
@@ -23,43 +23,20 @@ export default function RenderFilters(props){
                         {/* YEARS OF EXPERIENCE FILTER */}
                         <div>
                             <div>
-                                <label className="form-label me-2">Years of experience:</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={0} onChange={props.updateFormField}
-                                    checked={props.yearsOfExperience === "0"} />
-                                newly started this year</label>
-                            </div>
-
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={1} onChange={props.updateFormField}
-                                    checked={props.yearsOfExperience === "1"} />
-                                at least 1 year</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={3} onChange={props.updateFormField}
-                                    checked={props.yearsOfExperience === "3"} />
-                                at least 3 years</label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input" name="yearsOfExperience"
-                                    value={5} onChange={props.updateFormField}
-                                    checked={props.yearsOfExperience === "5"} />
-                                at least 5 years</label>
+                                <label className="form-label bold-text">Years of experience:</label>
+                                <select className="form-select" aria-label="select years of experience"
+                                onChange={props.updateFormField} value={props.yearsOfExperience} name="yearsOfExperience">
+                                <option value="0">Newly started this year</option>
+                                <option value="1">At least 1 year</option>
+                                <option value="3">At least 3 years</option>
+                                <option value="5">At least 5 years</option>
+                            </select>
                             </div>
                         </div>
 
                         {/* APPRENTICE FILTER */}
                         <div>
-                            <div><label className="form-label me-2">Apprentice:</label></div>
+                            <div><label className="form-label bold-text">Apprentice:</label></div>
                             {props.generalRadio.map(each => (
                                 <div className="form-check form-check-inline">
                                     <label className="form-check-label">
@@ -76,7 +53,7 @@ export default function RenderFilters(props){
 
                         <div>
                             <div>
-                                <label className="form-label">Temporary:</label>
+                                <label className="form-label bold-text">Temporary:</label>
                             </div>
                             {props.generalRadio.map(each => (
                                 <div className="form-check form-check-inline">
@@ -93,7 +70,7 @@ export default function RenderFilters(props){
                         {/* METHOD FILTER */}
                         <div>
                             <div>
-                                <label className="form-label me-2">Method(s):</label>
+                                <label className="form-label bold-text">Method(s):</label>
                             </div>
                             {props.methodsCheckbox.map(each => (
                                 <div className="form-check form-check-inline">
@@ -109,14 +86,14 @@ export default function RenderFilters(props){
 
                         {/* STYLE FILTER */}
                         <div>
-                            <label className="form-label me-2">Style(s):</label>
+                            <label className="form-label bold-text">Style(s):</label>
                             <StyleMultiSelect style={props.style} handleSelect={props.handleSelectFilter} />
                         </div>
 
                         {/* INK FILTER */}
                         <div>
                             <div>
-                                <label className="form-label">Ink(s):</label>
+                                <label className="form-label bold-text">Ink(s):</label>
                             </div>
                             {props.inkCheckbox.map(each => (
                                 <div className="form-check form-check-inline">
@@ -131,7 +108,7 @@ export default function RenderFilters(props){
 
                         {/* private */}
                         <div>
-                            <label className="form-label">Private studio: </label>
+                            <label className="form-label bold-text">Private studio: </label>
                             <select className="form-select" aria-label="Default select example"
                                 onChange={props.updateFormField} value={props.private} name="private">
                                 <option value="yes">Yes</option>
@@ -141,7 +118,7 @@ export default function RenderFilters(props){
                         </div>
 
                         <div>
-                            <label className="form-label">Bookings required: </label>
+                            <label className="form-label bold-text">Bookings required: </label>
                             <select className="form-select" aria-label="Default select example"
                                 onChange={props.updateFormField} value={props.bookingsRequired} name="bookingsRequired">
                                 <option value="yes">Yes</option>
@@ -157,13 +134,13 @@ export default function RenderFilters(props){
 
         return (
             <React.Fragment>
-                <h3 className="mt-4">search for artist(s): </h3>
+                <h3 className="mt-4">Search for artist(s): </h3>
                 <div className="row">
                     <div className="col-6 col-md-12 d-md-flex">
                         <input type="text" className="form-control me-md-1" placeholder="search for artist name, ig or studio..." name="search" onChange={props.updateFormField} value={props.search} />
                         <button className="btn black-button d-none d-md-block" onClick={props.clickSearch}><i className="bi bi-search"></i></button>
                     </div>
-                    <div className="col-6 col-md-12 d-md-flex my-md-1">
+                    <div className="col-6 col-md-12 d-md-flex my-md-2">
                         <button className="btn black-button mx-1 d-md-none" onClick={props.clickSearch}><i className="bi bi-search"></i></button>
                         <button className="btn black-button mx-1 d-none d-md-block"
                             onClick={props.ResetSearch}>
