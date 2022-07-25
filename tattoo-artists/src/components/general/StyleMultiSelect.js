@@ -24,6 +24,15 @@ export default function StyleMultiSelect(props) {
             value={props.style}
             onChange={props.handleSelect}
             className="basic-multi-select"
-            classNamePrefix="select" />
+            classNamePrefix="select"
+            theme={(theme) => ({
+                ...theme,
+                borderRadius: 0,
+                colors: {
+                ...theme.colors,
+                  primary25: '#e6e6e6',
+                  primary: 'black',
+                },
+              })} />
     )
 }
