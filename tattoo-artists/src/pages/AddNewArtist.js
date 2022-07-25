@@ -68,7 +68,7 @@ export default class AddNewArtist extends React.Component {
     AutoHideToast() {
         return (
             <React.Fragment>
-                <ToastContainer position="top-end">
+                <ToastContainer>
                     <Toast onClose={() => this.setState({
                         showCreateToast: false
                     })} show={this.state.showCreateToast} delay={2000} autohide>
@@ -378,7 +378,8 @@ export default class AddNewArtist extends React.Component {
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
                             <input type="text" className={"form-control"
-                                + (this.state.submitted && !this.state.image ? " error-border" : "")} placeholder="image link" name="image"
+                                + (this.state.submitted && !this.state.image ? " error-border" : "")}
+                                placeholder="image link" name="image"
                                 onChange={this.updateFormField} value={this.state.image} />
                             {this.state.submitted ? <ValidateFields field="general" state={this.state.image} message={"a reference image link"} /> : null}
                         </div>
