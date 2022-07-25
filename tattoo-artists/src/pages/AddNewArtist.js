@@ -86,14 +86,21 @@ export default class AddNewArtist extends React.Component {
                 </div> */}
                 <h1>your information</h1>
                 <label className="form-label">Your name: </label>
-                <input type="text" className={"form-control"} placeholder="e.g. John Doe" name="ownerName"
+                <input type="text" className={"form-control" + 
+                (this.state.submitted &&
+                    (!this.state.ownerName || this.state.ownerName.length < 2)
+                    ? " error-border" : "")} placeholder="e.g. John Doe" name="ownerName"
                     value={this.state.ownerName} onChange={this.updateFormField} />
-                {this.state.submitted? <ValidateFields field="name" state={this.state.ownerName}/> : " null"}
+                {this.state.submitted ? <ValidateFields field="name" state={this.state.ownerName} /> : " null"}
 
                 <label className="form-label">Your email: </label>
-                <input type="text" className="form-control" placeholder="e.g. johndoe@email.com" name="ownerEmail"
+                <input type="text" className={"form-control" + 
+                (this.state.submitted && 
+                    (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') 
+                    || !this.state.ownerEmail.includes('.com'))? " error-border": "")} 
+                placeholder="e.g. johndoe@email.com" name="ownerEmail"
                     value={this.state.ownerEmail} onChange={this.updateFormField} />
-                {this.state.submitted? <ValidateFields field="email" state={this.state.ownerEmail} /> : null}
+                {this.state.submitted ? <ValidateFields field="email" state={this.state.ownerEmail} /> : null}
 
                 <div>
                     <button className="btn black-button my-2 mx-1" onClick={() => {
@@ -219,7 +226,7 @@ export default class AddNewArtist extends React.Component {
                 thirdPage: false,
                 submitted: false,
             })
-             {this.props.ChangePages('explore')}
+            { this.props.ChangePages('explore') }
         }
         catch (e) {
             this.setState({
@@ -247,10 +254,10 @@ export default class AddNewArtist extends React.Component {
                             <span className="icon1"><i class="bi bi-1-circle"></i></span>
                         </div>
                         <div className="second-prog mx-auto col-4">
-                        <span className="icon2"><i class="bi bi-1-circle"></i></span>
+                            <span className="icon2"><i class="bi bi-1-circle"></i></span>
                         </div>
                         <div className="third-prog me-auto col-4">
-                        <span className="icon3"></span>
+                            <span className="icon3"></span>
                         </div>
                     </div>
                     {/* <StepProgressBar/> */}
@@ -259,45 +266,51 @@ export default class AddNewArtist extends React.Component {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Name of tattoo artist: </label>
                             <input type="text"
-                                className={"form-control"}
+                                className={"form-control" +
+                                    (this.state.submitted &&
+                                        (!this.state.artistName || this.state.artistName.length < 2)
+                                        ? " error-border" : "")}
                                 placeholder="artist name"
                                 name="artistName"
                                 value={this.state.artistName}
                                 onChange={this.updateFormField} />
-                            {this.state.submitted? <ValidateFields field="artist name" state={this.state.artistName}/> : null}
+                            {this.state.submitted ? <ValidateFields field="artist name" state={this.state.artistName} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Year started tattooing: </label>
-                            <input type="text" className={"form-control"}
+                            <input type="text" className={"form-control" +
+                                (this.state.submitted &&
+                                    (!this.state.yearStarted || isNaN(parseInt(this.state.yearStarted))
+                                    ) ? " error-border" : "")}
                                 placeholder="year started tattooing" name="yearStarted" value={this.state.yearStarted}
                                 onChange={this.updateFormField} />
-                            {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted}/> : null}
+                            {this.state.submitted ? <ValidateFields field="year" state={this.state.yearStarted} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Gender: </label>
                             {this.props.genderRadio.map(each => (
-                                 <div className="form-check form-check-inline" key={'add-gender ' + each.value}>
-                                 <label className="form-check-label">
-                                     <input type="radio" className="form-check-input"
-                                         value={each.value} name="gender"
-                                         checked={this.state.gender === each.value} onChange={this.updateFormField} />
-                                     {each.label}</label>
-                                 </div>
-     
+                                <div className="form-check form-check-inline" key={'add-gender ' + each.value}>
+                                    <label className="form-check-label">
+                                        <input type="radio" className="form-check-input"
+                                            value={each.value} name="gender"
+                                            checked={this.state.gender === each.value} onChange={this.updateFormField} />
+                                        {each.label}</label>
+                                </div>
+
                             ))}
                         </div>
 
                         <div className="col-12 col-md-6 mt-md-2">
                             <label className="form-label form-check-inline">Are you an apprentice? </label>
-                            {this.props.generalRadio.slice(0,2).map(each => (
+                            {this.props.generalRadio.slice(0, 2).map(each => (
                                 <div className="form-check form-check-inline" key={'add-apprentice ' + each.value}>
-                                <label className="form-check-label">
-                                    <input type="radio" className="form-check-input"
-                                        value={each.value} name="apprentice"
-                                        onChange={this.updateFormField} checked={this.state.apprentice === each.value} />
-                                    {each.label}</label>
+                                    <label className="form-check-label">
+                                        <input type="radio" className="form-check-input"
+                                            value={each.value} name="apprentice"
+                                            onChange={this.updateFormField} checked={this.state.apprentice === each.value} />
+                                        {each.label}</label>
                                 </div>
                             ))}
                         </div>
@@ -308,14 +321,16 @@ export default class AddNewArtist extends React.Component {
                             <div>
                                 {this.props.methodsCheckbox.map(each => (
                                     <div className="form-check form-check-inline" key={'add-methods ' + each.value}>
-                                    <label className="form-check-label">
-                                        <input type="checkbox" className={"form-check-input"}
-                                            value={each.value} name="method"
-                                            onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
-                                        {each.label}</label>
+                                        <label className="form-check-label">
+                                            <input type="checkbox" className={"form-check-input" +
+                                                (this.state.submitted && this.state.method.length === 0 ?
+                                                    " error-border" : "")}
+                                                value={each.value} name="method"
+                                                onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
+                                            {each.label}</label>
                                     </div>
                                 ))}
-                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"}/> : null}
+                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"} /> : null}
                             </div>
                         </div>
 
@@ -334,11 +349,13 @@ export default class AddNewArtist extends React.Component {
                             </div>
                             {this.props.inkCheckbox.map(each => (
                                 <div className="form-check form-check-inline" key={'add-ink ' + each.value}>
-                                <label className="form-check-label">
-                                    <input type="checkbox" className="form-check-input"
-                                        value={each.value} name="ink"
-                                        onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
-                                    {each.label}</label>
+                                    <label className="form-check-label">
+                                        <input type="checkbox" className={"form-check-input" +
+                                            (this.state.submitted && this.state.ink.length === 0 ?
+                                                " error-border" : "")}
+                                            value={each.value} name="ink"
+                                            onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
+                                        {each.label}</label>
                                 </div>
                             ))}
                             {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
@@ -347,7 +364,9 @@ export default class AddNewArtist extends React.Component {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
                             <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} />
-                            {this.state.submitted ? <ValidateFields field="style" state={this.state.style} /> : null}
+                            {this.state.submitted ? <ValidateFields field="style" state={this.state.style}
+                                border={this.state.submitted && (this.state.ink === 0 || this.state.ink > 3) ? "#78011A" : "neutral-15"}
+                            /> : null}
                         </div>
 
                         <label className="form-label">Please enter the artist's contact details: </label>
@@ -358,7 +377,8 @@ export default class AddNewArtist extends React.Component {
 
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
-                            <input type="text" className="form-control" placeholder="image link" name="image"
+                            <input type="text" className={"form-control"
+                                + (this.state.submitted && !this.state.image ? " error-border" : "")} placeholder="image link" name="image"
                                 onChange={this.updateFormField} value={this.state.image} />
                             {this.state.submitted ? <ValidateFields field="general" state={this.state.image} message={"a reference image link"} /> : null}
                         </div>
@@ -385,7 +405,9 @@ export default class AddNewArtist extends React.Component {
                 <div className="row">
                     <div className="col-12">
                         <label className="form-label">Name of studio: </label>
-                        <input type="text" className="form-control"
+                        <input type="text" className={"form-control" +
+                            (this.state.submitted && !this.state.studioName
+                                ? " error-border" : "")}
                             placeholder="studio name" name="studioName"
                             value={this.state.studioName}
                             onChange={this.updateFormField} />
@@ -394,27 +416,27 @@ export default class AddNewArtist extends React.Component {
 
                     <div className="col-12 col-md-6">
                         <label className="form-label form-check-inline">Is it a private studio? </label>
-                        {this.props.generalRadio.slice(0,2).map(each => (
+                        {this.props.generalRadio.slice(0, 2).map(each => (
                             <div className="form-check form-check-inline" key={"add-private " + each.value}>
-                            <label className="form-check-label">
-                                <input type="radio" className="form-check-input"
-                                    value={each.value} name="private"
-                                    onChange={this.updateFormField} checked={this.state.private === each.value} />
-                                {each.label}</label>
+                                <label className="form-check-label">
+                                    <input type="radio" className="form-check-input"
+                                        value={each.value} name="private"
+                                        onChange={this.updateFormField} checked={this.state.private === each.value} />
+                                    {each.label}</label>
                             </div>
                         ))}
                     </div>
 
                     <div className="col-12 col-md-6">
-                        
+
                         <label className="form-label form-check-inline">Are bookings required? </label>
-                        {this.props.generalRadio.slice(0,2).map(each => (
+                        {this.props.generalRadio.slice(0, 2).map(each => (
                             <div className="form-check form-check-inline" key={"add-bookings" + each.value}>
-                            <label className="form-check-label">
-                            <input type="radio" className="form-check-input"
-                                value={each.value} name="bookingsRequired"
-                                onChange={this.updateFormField} checked={this.state.bookingsRequired === each.value} />
-                            {each.label}</label>
+                                <label className="form-check-label">
+                                    <input type="radio" className="form-check-input"
+                                        value={each.value} name="bookingsRequired"
+                                        onChange={this.updateFormField} checked={this.state.bookingsRequired === each.value} />
+                                    {each.label}</label>
                             </div>
                         ))}
                     </div>
@@ -423,32 +445,44 @@ export default class AddNewArtist extends React.Component {
                         <h6>Address</h6>
 
                         <div className="col-12">
-                        <label className="form-label">Street: (please enter "nil" if not applicable)</label>
-                        <input type="text" className="form-control" placeholder="street" name="street"
-                            value={this.state.street} onChange={this.updateFormField} />
-                        {this.state.submitted ? <ValidateFields field="general" state={this.state.street} message={"the street"} /> : null}
+                            <label className="form-label">Street: (please enter "nil" if not applicable)</label>
+                            <input type="text" className={"form-control" +
+                                (this.state.submitted && !this.state.street ? " error-border" : "")}
+                                placeholder="street" name="street"
+                                value={this.state.street} onChange={this.updateFormField} />
+                            {this.state.submitted ? <ValidateFields field="general" state={this.state.street} message={"the street"} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
-                        <label className="form-label">Unit: (please enter "#00-00" if not applicable)</label>
-                        <input type="text" className="form-control" placeholder="unit" name="unit"
-                            value={this.state.unit} onChange={this.updateFormField} />
-                        {this.state.submitted ? <ValidateFields field={"unit"} state={this.state.unit} />: null}
+                            <label className="form-label">Unit: (please enter "#00-00" if not applicable)</label>
+                            <input type="text" className={"form-control" +
+                                (this.state.submitted &&
+                                    (!this.state.unit || !this.state.unit.includes('#')
+                                        || !this.state.unit.includes('-'))? " error-border" : "")}
+                                placeholder="unit" name="unit"
+                                value={this.state.unit} onChange={this.updateFormField} />
+                            {this.state.submitted ? <ValidateFields field={"unit"} state={this.state.unit} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
-                        <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
-                        <input type="text" className="form-control" placeholder="postal code" name="postal"
-                            value={this.state.postal} onChange={this.updateFormField} />
-                        {this.state.submitted ? <ValidateFields field={"postal"} state={this.state.postal}/> : null}
+                            <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
+                            <input type="text" className={"form-control" +
+                            (this.state.submitted && 
+                                (!this.state.postal || this.state.postal.length !==6 
+                                    || isNaN(parseInt(this.state.postal)))? " error-border": "")} 
+                                    placeholder="postal code" name="postal"
+                                value={this.state.postal} onChange={this.updateFormField} />
+                            {this.state.submitted ? <ValidateFields field={"postal"} state={this.state.postal} /> : null}
                         </div>
                     </div>
 
                     <div>
                         <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
-                        <input type="text" className="form-control" placeholder="e.g. piercings" name="otherServices"
+                        <input type="text" className={"form-control" +
+                        (this.state.submitted && this.state.otherServices.length ===0 ? " error-border": "")}
+                        placeholder="e.g. piercings" name="otherServices"
                             value={this.state.otherServices} onChange={this.updateFormField} />
-                        {this.state.submitted? <ValidateFields field="general" state={this.state.otherServices} message={"the services available"} /> : null}
+                        {this.state.submitted ? <ValidateFields field="general" state={this.state.otherServices} message={"the services available"} /> : null}
                     </div>
                 </div>
                 <div>
