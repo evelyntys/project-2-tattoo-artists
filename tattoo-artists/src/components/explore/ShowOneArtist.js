@@ -18,7 +18,7 @@ export default function ShowOneArtist(props) {
                 <div className="row">
                     <div className="d-none d-md-block col-12 col-md-4" style={{ "height": "100%" }}></div>
                     <div className="d-none d-md-block col-12 col-md-8">
-                        <h1 className="text-center">{props.findInstagram(props.artistToShow.contact)}</h1>
+                        <h1 className="text-center insta-title">{props.findInstagram(props.artistToShow.contact)}</h1>
                     </div>
                 </div>
                 <div className="col-12 col-md-4">

@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ContactFields from '../ContactFields';
+import ContactFields from '../components/general/ContactFields';
 import StyleMultiSelect from '../components/general/StyleMultiSelect';
 import axios from 'axios';
 import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
@@ -239,7 +239,20 @@ export default class AddNewArtist extends React.Component {
                 <div className="container">
                     {/* <div className="progress my-2">
                         <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "33%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <span className="progress-icon"><i class="bi bi-1-circle"></i></span>
+                        <span className="progress-2"><i class="bi bi-1-circle"></i></span>
                     </div> */}
+                    <div className="prog row">
+                        <div className="first-prog ms-auto col-4">
+                            <span className="icon1"><i class="bi bi-1-circle"></i></span>
+                        </div>
+                        <div className="second-prog mx-auto col-4">
+                        <span className="icon2"><i class="bi bi-1-circle"></i></span>
+                        </div>
+                        <div className="third-prog me-auto col-4">
+                        <span className="icon3"></span>
+                        </div>
+                    </div>
                     {/* <StepProgressBar/> */}
                     <h1>Information about the artist</h1>
                     <div className="row">

@@ -6,8 +6,8 @@ export default function RenderFilters(props){
         if (props.showFiltersState) {
             filters =
                 <div style={{ "border": "1px solid gray", "borderRadius": "0.6px" }} className="my-2">
+                    <h4 className="text-center" style={{"backgroundColor": "black", "color": "white", "width": "100%" }}>FILTERS: </h4>
                     <div className="container mb-2">
-                        <h4 className="text-center">FILTERS: </h4>
                         {/* GENDER FILTER */}
                         <div>
                             <label className="form-label bold-text">Gender: </label>
@@ -136,11 +136,11 @@ export default function RenderFilters(props){
             <React.Fragment>
                 <h3 className="mt-4">Search for artist(s): </h3>
                 <div className="row">
-                    <div className="col-6 col-md-12 d-md-flex">
+                    <div className="col-7 col-md-12 d-flex">
                         <input type="text" className="form-control me-md-1" placeholder="search for artist name, ig or studio..." name="search" onChange={props.updateFormField} value={props.search} />
                         <button className="btn black-button d-none d-md-block" onClick={props.clickSearch}><i className="bi bi-search"></i></button>
                     </div>
-                    <div className="col-6 col-md-12 d-md-flex my-md-2">
+                    <div className="col-5 col-md-12 d-flex my-md-2 filter-buttons">
                         <button className="btn black-button mx-1 d-md-none" onClick={props.clickSearch}><i className="bi bi-search"></i></button>
                         <button className="btn black-button mx-1 d-none d-md-block"
                             onClick={props.ResetSearch}>
