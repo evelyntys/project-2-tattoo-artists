@@ -13,7 +13,10 @@ export default function EditArtist(props) {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Name of tattoo artist: </label>
                             <input type="text"
-                                className="form-control"
+                                 className={"form-control" +
+                                 (props.submitted &&
+                                     (!props.modifiedArtistName || props.modifiedArtistName.length < 2)
+                                     ? " error-border" : "")}
                                 placeholder="artist name"
                                 name="modifiedArtistName"
                                 value={props.modifiedArtistName}
@@ -23,7 +26,10 @@ export default function EditArtist(props) {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Year started tattooing: </label>
-                            <input type="text" className="form-control"
+                            <input type="text" className={"form-control" +
+                                (props.submitted &&
+                                    (!props.modifiedYearStarted || isNaN(parseInt(props.modifiedYearStarted))
+                                    ) ? " error-border" : "")}
                                 placeholder="year started tattooing" name="modifiedYearStarted" value={props.modifiedYearStarted}
                                 onChange={props.updateFormField} />
                             {props.submitted ? <ValidateFields field="year" state={props.modifiedYearStarted} /> : null}
@@ -62,7 +68,9 @@ export default function EditArtist(props) {
                             {props.methodsCheckbox.map(each => (
                                 <div className="form-check form-check-inline" key={"edit-method-" + each.value}>
                                     <label className="form-check-label">
-                                        <input type="checkbox" className="form-check-input"
+                                        <input type="checkbox" className={"form-check-input" +
+                                                (props.submitted && props.modifiedMethod.length === 0 ?
+                                                    " error-border" : "")}
                                             value={each.value} name="modifiedMethod"
                                             onChange={props.updateCheckboxes} checked={props.modifiedMethod.includes(each.value)} />
                                         {each.label}</label>
@@ -88,7 +96,9 @@ export default function EditArtist(props) {
                             {props.inkCheckbox.map(each => (
                                 <div className="form-check form-check-inline" key={"edit-ink-" + each.value}>
                                     <label className="form-check-label">
-                                        <input type="checkbox" className="form-check-input"
+                                        <input type="checkbox" className={"form-check-input" +
+                                            (props.submitted && props.modifiedInk.length === 0 ?
+                                                " error-border" : "")}
                                             value={each.value} name="modifiedInk"
                                             onChange={props.updateCheckboxes} checked={props.modifiedInk.includes(each.value)} />
                                         {each.label}</label>
@@ -110,7 +120,9 @@ export default function EditArtist(props) {
                         {props.submitted ? <ValidateFields field="contact" state={props.modifiedContact} /> : null}
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
-                            <input type="text" className="form-control" placeholder="image link" name="modifiedImage"
+                            <input type="text" className={"form-control"
+                                + (props.submitted && !props.modifiedImage ? " error-border" : "")} 
+                                placeholder="image link" name="modifiedImage"
                                 onChange={props.updateFormField} value={props.modifiedImage} />
                             {props.submitted ? <ValidateFields field="general" state={props.modifiedImage} message={"a reference image link"} /> : null}
                         </div>
@@ -122,7 +134,9 @@ export default function EditArtist(props) {
                     <div className="row">
                         <div className="col-12">
                             <label className="form-label">Name of studio: </label>
-                            <input type="text" className="form-control"
+                            <input type="text" className={"form-control" +
+                            (props.submitted && !props.modifiedStudioName
+                                ? " error-border" : "")}
                                 placeholder="studio name" name="modifiedStudioName"
                                 value={props.modifiedStudioName}
                                 onChange={props.updateFormField} />
@@ -160,21 +174,31 @@ export default function EditArtist(props) {
 
                             <div className="col-12">
                                 <label className="form-label">Street: (please enter "nil" if not applicable)</label>
-                                <input type="text" className="form-control" placeholder="street" name="modifiedStreet"
+                                <input type="text" className={"form-control" +
+                                (props.submitted && !props.modifiedStreet ? " error-border" : "")} 
+                                placeholder="street" name="modifiedStreet"
                                     value={props.modifiedStreet} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="general" state={props.modifiedStreet} message={"the street"} /> : null}
                             </div>
 
                             <div className="col-12 col-md-6">
                                 <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
-                                <input type="text" className="form-control" placeholder="unit" name="modifiedUnit"
+                                <input type="text" className={"form-control" +
+                                (props.submitted &&
+                                    (!props.modifiedUnit || !props.modifiedUnit.includes('#')
+                                        || !props.modifiedUnit.includes('-'))? " error-border" : "")}
+                                         placeholder="unit" name="modifiedUnit"
                                     value={props.modifiedUnit} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="unit" state={props.modifiedUnit} /> : null}
                             </div>
 
                             <div className="col-12 col-md-6">
                                 <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
-                                <input type="text" className="form-control" placeholder="postal code" name="modifiedPostal"
+                                <input type="text" className={"form-control" +
+                            (props.submitted && 
+                                (!props.modifiedPostal || props.modifiedPostal.length !==6 
+                                    || isNaN(parseInt(props.modifiedPostal)))? " error-border": "")} 
+                                    placeholder="postal code" name="modifiedPostal"
                                     value={props.modifiedPostal} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="postal" state={props.modifiedPostal} /> : null}
                             </div>
@@ -182,7 +206,9 @@ export default function EditArtist(props) {
 
                         <div>
                             <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
-                            <input type="text" className="form-control" placeholder="e.g. piercings" name="modifiedOtherServices"
+                            <input type="text" className={"form-control" +
+                        (props.submitted && props.modifiedOtherServices.length ===0 ? " error-border": "")}
+                         placeholder="e.g. piercings" name="modifiedOtherServices"
                                 value={props.modifiedOtherServices} onChange={props.updateFormField} />
                             {props.submitted ? <ValidateFields field="general" state={props.modifiedOtherServices} message={"the services available"} /> : null}
                         </div>
