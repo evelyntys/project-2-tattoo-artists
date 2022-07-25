@@ -81,24 +81,31 @@ export default class AddNewArtist extends React.Component {
                         <Toast.Body>{this.renderToastContent()}</Toast.Body>
                     </Toast>
                 </ToastContainer>
-                {/* <div className="progress my-2">
-                    <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> */}
+                <div className="container ps-0 my-4">
+                    <div className="progress">
+                        <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
+                            <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span>
+                            <span class="progress-icon2" style={{"color": "white", "backgroundColor": "black"}}>2</span>
+                            <span class="progress-icon3" style={{"color": "white", "backgroundColor": "black"}}>3</span>
+                            <div class="progress-value"></div>
+                        </div>
+                    </div>
+                    </div>
                 <h1>your information</h1>
                 <label className="form-label">Your name: </label>
-                <input type="text" className={"form-control" + 
-                (this.state.submitted &&
-                    (!this.state.ownerName || this.state.ownerName.length < 2)
-                    ? " error-border" : "")} placeholder="e.g. John Doe" name="ownerName"
+                <input type="text" className={"form-control" +
+                    (this.state.submitted &&
+                        (!this.state.ownerName || this.state.ownerName.length < 2)
+                        ? " error-border" : "")} placeholder="e.g. John Doe" name="ownerName"
                     value={this.state.ownerName} onChange={this.updateFormField} />
                 {this.state.submitted ? <ValidateFields field="name" state={this.state.ownerName} /> : " null"}
 
                 <label className="form-label">Your email: </label>
-                <input type="text" className={"form-control" + 
-                (this.state.submitted && 
-                    (!this.state.ownerEmail || !this.state.ownerEmail.includes('@') 
-                    || !this.state.ownerEmail.includes('.com'))? " error-border": "")} 
-                placeholder="e.g. johndoe@email.com" name="ownerEmail"
+                <input type="text" className={"form-control" +
+                    (this.state.submitted &&
+                        (!this.state.ownerEmail || !this.state.ownerEmail.includes('@')
+                            || !this.state.ownerEmail.includes('.com')) ? " error-border" : "")}
+                    placeholder="e.g. johndoe@email.com" name="ownerEmail"
                     value={this.state.ownerEmail} onChange={this.updateFormField} />
                 {this.state.submitted ? <ValidateFields field="email" state={this.state.ownerEmail} /> : null}
 
@@ -244,23 +251,16 @@ export default class AddNewArtist extends React.Component {
         if (this.state.firstPage) {
             contentToRender =
                 <div className="container">
-                    {/* <div className="progress my-2">
-                        <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "33%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        <span className="progress-icon"><i class="bi bi-1-circle"></i></span>
-                        <span className="progress-2"><i class="bi bi-1-circle"></i></span>
-                    </div> */}
-                    <div className="prog row">
-                        <div className="first-prog ms-auto col-4">
-                            <span className="icon1"><i class="bi bi-1-circle"></i></span>
-                        </div>
-                        <div className="second-prog mx-auto col-4">
-                            <span className="icon2"><i class="bi bi-1-circle"></i></span>
-                        </div>
-                        <div className="third-prog me-auto col-4">
-                            <span className="icon3"></span>
+                    <div className="container ps-0 my-4">
+                    <div className="progress">
+                        <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
+                            <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span>
+                            <span class="progress-icon2" style={{"color": "black", "backgroundColor": "white"}}>2</span>
+                            <span class="progress-icon3" style={{"color": "black", "backgroundColor": "white"}}>3</span>
+                            <div class="progress-value"></div>
                         </div>
                     </div>
-                    {/* <StepProgressBar/> */}
+                    </div>
                     <h1>Information about the artist</h1>
                     <div className="row">
                         <div className="col-12 col-md-6">
@@ -399,9 +399,16 @@ export default class AddNewArtist extends React.Component {
 
         else if (this.state.secondPage) {
             contentToRender = <div className="container">
-                {/* <div className="progress my-2">
-                    <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "66%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div> */}
+                <div className="container ps-0 my-4">
+                    <div className="progress">
+                        <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
+                            <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span>
+                            <span class="progress-icon2" style={{"color": "white", "backgroundColor": "black"}}>2</span>
+                            <span class="progress-icon3" style={{"color": "black", "backgroundColor": "white"}}>3</span>
+                            <div class="progress-value"></div>
+                        </div>
+                    </div>
+                    </div>
                 <h1>Information about the studio</h1>
                 <div className="row">
                     <div className="col-12">
@@ -459,7 +466,7 @@ export default class AddNewArtist extends React.Component {
                             <input type="text" className={"form-control" +
                                 (this.state.submitted &&
                                     (!this.state.unit || !this.state.unit.includes('#')
-                                        || !this.state.unit.includes('-'))? " error-border" : "")}
+                                        || !this.state.unit.includes('-')) ? " error-border" : "")}
                                 placeholder="unit" name="unit"
                                 value={this.state.unit} onChange={this.updateFormField} />
                             {this.state.submitted ? <ValidateFields field={"unit"} state={this.state.unit} /> : null}
@@ -468,10 +475,10 @@ export default class AddNewArtist extends React.Component {
                         <div className="col-12 col-md-6">
                             <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                             <input type="text" className={"form-control" +
-                            (this.state.submitted && 
-                                (!this.state.postal || this.state.postal.length !==6 
-                                    || isNaN(parseInt(this.state.postal)))? " error-border": "")} 
-                                    placeholder="postal code" name="postal"
+                                (this.state.submitted &&
+                                    (!this.state.postal || this.state.postal.length !== 6
+                                        || isNaN(parseInt(this.state.postal))) ? " error-border" : "")}
+                                placeholder="postal code" name="postal"
                                 value={this.state.postal} onChange={this.updateFormField} />
                             {this.state.submitted ? <ValidateFields field={"postal"} state={this.state.postal} /> : null}
                         </div>
@@ -480,8 +487,8 @@ export default class AddNewArtist extends React.Component {
                     <div>
                         <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
                         <input type="text" className={"form-control" +
-                        (this.state.submitted && this.state.otherServices.length ===0 ? " error-border": "")}
-                        placeholder="e.g. piercings" name="otherServices"
+                            (this.state.submitted && this.state.otherServices.length === 0 ? " error-border" : "")}
+                            placeholder="e.g. piercings" name="otherServices"
                             value={this.state.otherServices} onChange={this.updateFormField} />
                         {this.state.submitted ? <ValidateFields field="general" state={this.state.otherServices} message={"the services available"} /> : null}
                     </div>
