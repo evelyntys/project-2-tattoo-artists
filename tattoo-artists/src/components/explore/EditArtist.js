@@ -4,19 +4,30 @@ import StyleMultiSelect from '../general/StyleMultiSelect';
 import ContactFields from '../general/ContactFields';
 
 export default function EditArtist(props) {
-    return (
-        <div className="container mt-2">
-            <div>
-                <div className="container">
+    function pageToRender() {
+        let content = ""
+        if (props.editFirstPage) {
+            content =
+                <div className="container my-2">
+                    <div className="container ps-0 my-4">
+                        <div className="progress">
+                            <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
+                                {/* <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span> */}
+                                <span class="progress-icon" style={{ "color": "white", "backgroundColor": "black" }}>1</span>
+                                <span class="progress-icon3" style={{ "color": "black", "backgroundColor": "white" }}>2</span>
+                                <div class="progress-value"></div>
+                            </div>
+                        </div>
+                    </div>
                     <h1>Information about the artist</h1>
                     <div className="row">
                         <div className="col-12 col-md-6">
                             <label className="form-label">Name of tattoo artist: </label>
                             <input type="text"
-                                 className={"form-control" +
-                                 (props.submitted &&
-                                     (!props.modifiedArtistName || props.modifiedArtistName.length < 2)
-                                     ? " error-border" : "")}
+                                className={"form-control" +
+                                    (props.submitted &&
+                                        (!props.modifiedArtistName || props.modifiedArtistName.length < 2)
+                                        ? " error-border" : "")}
                                 placeholder="artist name"
                                 name="modifiedArtistName"
                                 value={props.modifiedArtistName}
@@ -64,18 +75,20 @@ export default function EditArtist(props) {
                         </div>
 
                         <div className="col-12 col-md-6">
-                            <label className="form-label">Please select your method(s) of tattooing:</label>
-                            {props.methodsCheckbox.map(each => (
-                                <div className="form-check form-check-inline" key={"edit-method-" + each.value}>
-                                    <label className="form-check-label">
-                                        <input type="checkbox" className={"form-check-input" +
+                            <label className="form-label">Please select your method(s) of tattooing: </label>
+                            <div>
+                                {props.methodsCheckbox.map(each => (
+                                    <div className="form-check form-check-inline" key={"edit-method-" + each.value}>
+                                        <label className="form-check-label">
+                                            <input type="checkbox" className={"form-check-input" +
                                                 (props.submitted && props.modifiedMethod.length === 0 ?
                                                     " error-border" : "")}
-                                            value={each.value} name="modifiedMethod"
-                                            onChange={props.updateCheckboxes} checked={props.modifiedMethod.includes(each.value)} />
-                                        {each.label}</label>
-                                </div>
-                            ))}
+                                                value={each.value} name="modifiedMethod"
+                                                onChange={props.updateCheckboxes} checked={props.modifiedMethod.includes(each.value)} />
+                                            {each.label}</label>
+                                    </div>
+                                ))}
+                            </div>
 
                         </div>
                         {props.submitted ? <ValidateFields field="general-checkbox" state={props.modifiedMethod} message={"method"} /> : null}
@@ -121,22 +134,39 @@ export default function EditArtist(props) {
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
                             <input type="text" className={"form-control"
-                                + (props.submitted && !props.modifiedImage ? " error-border" : "")} 
+                                + (props.submitted && !props.modifiedImage ? " error-border" : "")}
                                 placeholder="image link" name="modifiedImage"
                                 onChange={props.updateFormField} value={props.modifiedImage} />
                             {props.submitted ? <ValidateFields field="general" state={props.modifiedImage} message={"a reference image link"} /> : null}
                         </div>
                     </div>
+                    <div className="d-flex flex-end my-2">
+                        <button className="btn black-button ms-auto" onClick={props.stopEdit}>Cancel</button>
+                        <button className="btn delete-button mx-1" onClick={props.changeEditPage}>Next</button>
+                    </div>
                 </div>
 
-                <div className="container">
+        }
+        else if (props.editSecondPage) {
+            content =
+                <div className="container my-2">
+                    <div className="container ps-0 my-4">
+                        <div className="progress">
+                            <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
+                                {/* <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span> */}
+                                <span class="progress-icon" style={{ "color": "white", "backgroundColor": "black" }}>1</span>
+                                <span class="progress-icon3" style={{ "color": "white", "backgroundColor": "black" }}>2</span>
+                                <div class="progress-value"></div>
+                            </div>
+                        </div>
+                    </div>
                     <h1>Information about the studio</h1>
                     <div className="row">
                         <div className="col-12">
                             <label className="form-label">Name of studio: </label>
                             <input type="text" className={"form-control" +
-                            (props.submitted && !props.modifiedStudioName
-                                ? " error-border" : "")}
+                                (props.submitted && !props.modifiedStudioName
+                                    ? " error-border" : "")}
                                 placeholder="studio name" name="modifiedStudioName"
                                 value={props.modifiedStudioName}
                                 onChange={props.updateFormField} />
@@ -175,8 +205,8 @@ export default function EditArtist(props) {
                             <div className="col-12">
                                 <label className="form-label">Street: (please enter "nil" if not applicable)</label>
                                 <input type="text" className={"form-control" +
-                                (props.submitted && !props.modifiedStreet ? " error-border" : "")} 
-                                placeholder="street" name="modifiedStreet"
+                                    (props.submitted && !props.modifiedStreet ? " error-border" : "")}
+                                    placeholder="street" name="modifiedStreet"
                                     value={props.modifiedStreet} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="general" state={props.modifiedStreet} message={"the street"} /> : null}
                             </div>
@@ -184,10 +214,10 @@ export default function EditArtist(props) {
                             <div className="col-12 col-md-6">
                                 <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
                                 <input type="text" className={"form-control" +
-                                (props.submitted &&
-                                    (!props.modifiedUnit || !props.modifiedUnit.includes('#')
-                                        || !props.modifiedUnit.includes('-'))? " error-border" : "")}
-                                         placeholder="unit" name="modifiedUnit"
+                                    (props.submitted &&
+                                        (!props.modifiedUnit || !props.modifiedUnit.includes('#')
+                                            || !props.modifiedUnit.includes('-')) ? " error-border" : "")}
+                                    placeholder="unit" name="modifiedUnit"
                                     value={props.modifiedUnit} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="unit" state={props.modifiedUnit} /> : null}
                             </div>
@@ -195,9 +225,9 @@ export default function EditArtist(props) {
                             <div className="col-12 col-md-6">
                                 <label className="form-label">Postal Code: (please enter "000000" if not applicable)</label>
                                 <input type="text" className={"form-control" +
-                            (props.submitted && 
-                                (!props.modifiedPostal || props.modifiedPostal.length !==6 
-                                    || isNaN(parseInt(props.modifiedPostal)))? " error-border": "")} 
+                                    (props.submitted &&
+                                        (!props.modifiedPostal || props.modifiedPostal.length !== 6
+                                            || isNaN(parseInt(props.modifiedPostal))) ? " error-border" : "")}
                                     placeholder="postal code" name="modifiedPostal"
                                     value={props.modifiedPostal} onChange={props.updateFormField} />
                                 {props.submitted ? <ValidateFields field="postal" state={props.modifiedPostal} /> : null}
@@ -207,19 +237,25 @@ export default function EditArtist(props) {
                         <div>
                             <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
                             <input type="text" className={"form-control" +
-                        (props.submitted && props.modifiedOtherServices.length ===0 ? " error-border": "")}
-                         placeholder="e.g. piercings" name="modifiedOtherServices"
+                                (props.submitted && props.modifiedOtherServices.length === 0 ? " error-border" : "")}
+                                placeholder="e.g. piercings" name="modifiedOtherServices"
                                 value={props.modifiedOtherServices} onChange={props.updateFormField} />
                             {props.submitted ? <ValidateFields field="general" state={props.modifiedOtherServices} message={"the services available"} /> : null}
                         </div>
                     </div>
-
-                    <button className="btn delete-button my-2 mx-1" onClick={props.updateArtist}>Update artist</button>
-                    <button className="btn black-button my-2 mx-1" onClick={props.stopEdit}>Cancel</button>
+                    <div className="d-flex flex-end my-2">
+                        <button className="btn black-button ms-auto" onClick={props.changeEditPage}>Previous</button>
+                        <button className="btn delete-button mx-1" onClick={props.updateArtist}>Update artist</button>
+                    </div>
                 </div>
 
+        }
+        return content
+    }
+    return (
+        <React.Fragment>
+            {pageToRender()}
+        </React.Fragment>
 
-            </div>
-        </div>
     )
 }

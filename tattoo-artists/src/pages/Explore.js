@@ -79,7 +79,9 @@ export default class Explore extends React.Component {
         submittedReview: false,
         submittedEditReview: false,
         checkReviewEmail: false,
-        showLoader: false
+        showLoader: false,
+        editFirstPage: true,
+        editSecondPage: false
     }
 
     showFilters = () => {
@@ -139,7 +141,9 @@ export default class Explore extends React.Component {
             editMode: false,
             showConfirmEdit: false,
             showValidateEmail: false,
-            confirmEmail: ""
+            confirmEmail: "",
+            editFirstPage: true, 
+            editSecondPage: false
         })
     }
 
@@ -311,6 +315,13 @@ export default class Explore extends React.Component {
         }
     }
 
+    changeEditPage = () => {
+        this.setState({
+            editFirstPage: !this.state.editFirstPage,
+            editSecondPage: !this.state.editSecondPage
+        })
+    }
+
     ShowOneOrAll() {
         if (this.state.showOne) {
             // showing one artist, not editing
@@ -343,7 +354,8 @@ export default class Explore extends React.Component {
                             modifiedBookingsRequired={this.state.modifiedBookingsRequired} modifiedStreet={this.state.modifiedStreet}
                             modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
                             modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
-                            stopEdit={this.stopEdit} />
+                            stopEdit={this.stopEdit} changeEditPage={this.changeEditPage} editFirstPage={this.state.editFirstPage}
+                            editSecondPage={this.state.editSecondPage}/>
                     </React.Fragment>
                 )
             }
@@ -823,6 +835,12 @@ export default class Explore extends React.Component {
     render() {
         return (
             <React.Fragment>
+                {this.state.editMode? <div className="header-banner">
+                <img className="header-image" src={require('../images/edit.jpg')} alt="male artist tattooing a client" />
+                <div className="overlay d-flex align-items-center justify-content-center">
+                    <h1>Edit artist details</h1>
+                </div>
+            </div> : null}
                 <div className="container">
                     <div className="row">
                         {!this.state.showOne ?
@@ -841,7 +859,7 @@ export default class Explore extends React.Component {
                             :
                             null
                         }
-                        <div className={'col-12 ' + (this.state.showOne ? '' : 'col-md-9')}>
+                        <div className={(!this.state.editMode? ('col-12 ' + (this.state.showOne ? '' : 'col-md-9')) : null)}>
                             {!this.state.showOne ? <h3 className="mt-4 text-center text-md-start">Showing {this.state.data.length} result(s): </h3>
                                 :
                                 null
