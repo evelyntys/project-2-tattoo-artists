@@ -90,6 +90,15 @@ export default class Explore extends React.Component {
         })
     }
 
+    multiSelectBorder(){
+        if (this.state.submitted & !this.ValidationChecker("style", this.state.modifiedStyle)){
+            return "basic-multi-select error-border"
+        
+        }
+        else{
+            return "basic-multi-select"
+        }
+    }
 
     async componentDidMount() {
         this.setState({
@@ -137,13 +146,31 @@ export default class Explore extends React.Component {
     }
 
     stopEdit = () => {
+        let updatedStyle = this.state.artistToShow.style.map(style => this.styleKeys[style])
         this.setState({
             editMode: false,
             showConfirmEdit: false,
             showValidateEmail: false,
             confirmEmail: "",
             editFirstPage: true, 
-            editSecondPage: false
+            editSecondPage: false,
+            modifiedArtistName: this.state.artistToShow.name,
+            modifiedGender: this.state.artistToShow.gender,
+            modifiedYearStarted: this.state.artistToShow.yearStarted,
+            modifiedApprentice: this.state.artistToShow.apprentice,
+            modifiedMethod: this.state.artistToShow.method,
+            modifiedTemporary: this.state.artistToShow.temporary,
+            modifiedStyle: updatedStyle,
+            modifiedInk: this.state.artistToShow.ink,
+            modifiedContact: this.state.artistToShow.contact,
+            modifiedImage: this.state.artistToShow.image,
+            modifiedStudioName: this.state.artistToShow.studio.name,
+            modifiedPrivate: this.state.artistToShow.studio.private,
+            modifiedBookingsRequired: this.state.artistToShow.studio.bookingsRequired,
+            modifiedStreet: this.state.artistToShow.studio.address.street,
+            modifiedUnit: this.state.artistToShow.studio.address.unit,
+            modifiedPostal: this.state.artistToShow.studio.address.postal,
+            modifiedOtherServices: this.state.artistToShow.studio.otherServices,
         })
     }
 
@@ -450,7 +477,8 @@ export default class Explore extends React.Component {
                             modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
                             modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
                             stopEdit={this.stopEdit} validateFirstPage={this.validateFirstPage} changeEditPage={this.changeEditPage} editFirstPage={this.state.editFirstPage}
-                            editSecondPage={this.state.editSecondPage} contactBorder={this.contactBorder()}/>
+                            editSecondPage={this.state.editSecondPage} contactBorder={this.contactBorder()}
+                            border={this.multiSelectBorder()}/>
                     </React.Fragment>
                 )
             }
