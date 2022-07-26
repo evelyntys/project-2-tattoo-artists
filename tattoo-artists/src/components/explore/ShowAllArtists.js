@@ -13,14 +13,12 @@ export default function ShowAllArtists(props) {
                                 <h5 className="text-center card-name"> {e.name} </h5>
                                 <p className="text-center card-gender-all"> {e.gender} </p>
                                 <p className="text-center card-year-all"> tattooing since {e.yearStarted}</p>
-                                {/* Apprentice? {e.apprentice} */}
                                 <div className="text-center">
                                     <div className="card-box-title-all">Method(s)</div>
                                     <div>{e.method.map(a => (
                                         <span className="span-body-all" key={a}><i className="bi bi-dot"></i>{a} </span>
                                     ))}
                                     </div>
-                                    {/* Temporary? {e.temporary} */}
                                     <div className="card-box-title-all">Style(s)</div>
                                     <div>{e.style.map(a => (
                                         <div className="span-body-all" key={a}> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</div>
