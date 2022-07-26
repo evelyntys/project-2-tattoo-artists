@@ -1,4 +1,5 @@
 # TATTOOFINDWHO
+![device mockup](tattoo-artists/readme/mockup.png)
 The live demo of the site is available [here](https://tattoofindwho.netlify.app/).
 
 ## Project Summary
@@ -84,14 +85,14 @@ The github repository for the restful API can be found [here](https://github.com
 
 ### <b> 3. Structure</b>
 Below shows the skeleton structure of the web application in the early stages of brainstorming.
-![Structure of the website](tattoo-artists/public/readme/structure.png)
+![Structure of the website](tattoo-artists/readme/structure.png)
 
 Attached is a draft image describing the entities and attributes to serve as a guide when constructing the database.
-![ERD Draft](tattoo-artists/public/readme/erd-draft.png)
+![ERD Draft](tattoo-artists/readme/erd-draft.png)
 
 
 ### <b> 4. Skeleton</b>
-An initial wireframe of the site layout has been attached [here](tattoo-artists/public/readme/wireframe.pdf) for reference.
+An initial wireframe of the site layout has been attached [here](tattoo-artists/readme/wireframe.pdf) for reference.
 
 ### <b> 5. Surface</b>
 * The main colours used in this website include black, white and dark red to create a sleek and consistent look with a mature theme.
@@ -100,7 +101,7 @@ An initial wireframe of the site layout has been attached [here](tattoo-artists/
     * Poiret One for headings 
 
 ## Testing
-Details for the test cases can be found [here](tattoo-artists/public/readme/wireframe.pdf).
+Details for the test cases can be found [here](tattoo-artists/readme/test-cases.pdf).
 
 ## Technologies Used
 <b>Backend</b>
