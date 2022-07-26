@@ -15,7 +15,6 @@ class App extends React.Component {
 
   state = {
     active: "home",
-    showOne: "false"
   }
 
   styleKeys = {
@@ -56,8 +55,7 @@ class App extends React.Component {
 
   changeActive = (page) => {
     this.setState({
-      active: page,
-      showOne: "false"
+      active: page
     })
   }
 
@@ -84,7 +82,7 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar bg="dark" expand="lg" variant="dark">
+        {this.state.active !="home"? <Navbar bg="dark" expand="lg" variant="dark">
           <Container>
             <Navbar.Brand className="logo navbar-logo" onClick={() => this.changeActive("home")}>
               <img src={require('./images/tattoo.png')} width="40px" className="me-2" alt="logo of website" />TATTOOFINDWHO</Navbar.Brand>
@@ -97,7 +95,7 @@ class App extends React.Component {
               </Nav>
             </Navbar.Collapse>
           </Container>
-        </Navbar>
+        </Navbar> : null}
         {this.changePages()}
       </React.Fragment>
     );
