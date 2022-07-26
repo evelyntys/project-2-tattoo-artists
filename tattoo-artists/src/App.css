@@ -307,6 +307,7 @@ h6 {
 
 .error-border {
   border: 1px solid #78011A;
+  border-radius: 0.25rem;
 }
 
 .error-message {
@@ -332,6 +333,73 @@ h6 {
 
 .first-prog, .second-prog, .third-prog{
   position: relative;
+} */
+
+.progress{
+  height:  5px;
+  overflow: visible !important;
+  background: grey;
+}
+
+.progress-bar{
+  overflow: visible
+}
+
+.progress .progress-bar{
+  position: relative;
+}
+
+.progress .progress-icon{
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  border-radius: 50%;
+  font-size: 13px;
+  position: absolute;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.progress .progress-icon2{
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  border-radius: 50%;
+  font-size: 13px;
+  position: absolute;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  left: 50%;
+}
+
+.progress .progress-icon3{
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  border-radius: 50%;
+  font-size: 13px;
+  position: absolute;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  left: 100%;
+}
+
+
+/* .progress .progress-icon2{
+  width: 15px;
+  height: 15px;
+  line-height: 25px;
+  border-radius: 50%;
+  font-size: 13px;
+  position: absolute;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  background-color: black;
+  left: 100%;
 } */
 
 .toast-container{
@@ -384,5 +452,13 @@ h6 {
 
   .filter-buttons{
     justify-content: center;
+  }
+
+  .progress .progress-icon2{
+    left: 45%;
+  }
+
+  .progress .progress-icon3{
+    left: 95%;
   }
 }

@@ -75,6 +75,16 @@ export default class AddNewArtist extends React.Component {
         }
     }
 
+    multiSelectBorder(){
+        if (this.state.submitted & !this.ValidationChecker("style", this.state.style)){
+            return "basic-multi-select error-border"
+        
+        }
+        else{
+            return "basic-multi-select"
+        }
+    }
+
     // AutoHideToast() {
     //     return (
     //         <React.Fragment>
@@ -489,10 +499,8 @@ renderSection() {
 
                     <div className="col-12 col-md-6">
                         <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                        <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} />
-                        {this.state.submitted ? <ValidateFields field="style" state={this.state.style}
-                            border={this.state.submitted && (this.state.ink === 0 || this.state.ink > 3) ? "#78011A" : "neutral-15"}
-                        /> : null}
+                        <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} border={this.multiSelectBorder()} />
+                        {this.state.submitted ? <ValidateFields field="style" state={this.state.style}/> : null}
                     </div>
 
                     <label className="form-label">Please enter the artist's contact details: </label>

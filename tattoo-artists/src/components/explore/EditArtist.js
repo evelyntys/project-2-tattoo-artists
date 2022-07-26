@@ -121,7 +121,8 @@ export default function EditArtist(props) {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
-                            <StyleMultiSelect handleSelect={props.handleSelectModified} style={props.modifiedStyle} />
+                            <StyleMultiSelect handleSelect={props.handleSelectModified} style={props.modifiedStyle}
+                            border={props.border} />
                             {props.submitted ? <ValidateFields field="style" state={props.modifiedStyle} /> : null}
                         </div>
 
