@@ -16,11 +16,11 @@ button {
 }
 
 .on {
-  color: #000;
+  color: #d81d46;
 }
 
 .off {
-  color: #ccc;
+  color: black;
 }
 
 .explore {
@@ -41,10 +41,11 @@ button {
   cursor: pointer;
   height: 100%;
   font-family: "Poiret One";
+  letter-spacing: 5px;
 }
 
-.nav-btn> h1{
-  font-weight: 900;
+.header-logo{
+  height: 70px;
 }
 
 .nav-btn:hover {
@@ -156,6 +157,7 @@ h6 {
 .card-title {
   font-family: "Poiret One";
   font-weight: 900;
+  letter-spacing: 2px;
 }
 
 .card-btn {
@@ -276,9 +278,9 @@ h6 {
 .overlay h1 {
   text-align: center;
   color: white;
-  font-style: italic;
   font-size: 60px;
   font-weight: 900;
+  letter-spacing: 5px;
 }
 
 .bold-text {
@@ -290,18 +292,22 @@ h6 {
 }
 
 .error-border {
-  border: 1px solid #78011A;
+  border: 1px solid #d81d46;
   border-radius: 0.25rem;
 }
 
 .error-message {
-  color: #78011A;
+  color: #d81d46;
 }
 
 .navbar-logo,
 .navbar-nav, .insta-title {
   font-weight: 900;
   font-family: "Poiret One"
+}
+
+.insta-title{
+  letter-spacing: 2px;
 }
 
 .home-nav {
@@ -366,15 +372,20 @@ h6 {
 
   .header-image,
   .overlay {
-    height: 150px;
+    height: 180px;
+  }
+
+  .header-banner{
+    letter-spacing: 2px;
+    width: 100vw;
   }
 
   .overlay h1 {
-    font-size: 40px;
+    font-size: 35px;
   }
 
   .header-logo{
-    height: 55px;
+    height: 45px;
   }
 
   .home-nav{

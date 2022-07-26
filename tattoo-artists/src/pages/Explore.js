@@ -626,6 +626,11 @@ export default class Explore extends React.Component {
                 data: modifiedData,
                 confirmEmail: ""
             })
+            if (window.innerWidth > 768) {
+                this.setState({
+                    showFilters: true
+                })
+            }
             console.log(response.data)
         }
         catch (e) {

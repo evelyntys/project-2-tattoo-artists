@@ -6,12 +6,12 @@ export default class Home extends React.Component {
             <React.Fragment>
                 <div className="header-banner mb-2">
                     {/* <img className="header-image" src="https://drive.google.com/uc?id=12PQFEtg6EJ7kSUiO8MWeHwYQ0O74b8hd" alt="tattoo artist tattooing a client" /> */}
-                    <video className="header-image" autoPlay loop>
+                    <video className="header-image" autoPlay loop muted>
                         <source src={require('../header.mp4')} type="video/mp4"/>
                                 Your browser does not support the video tag.
                             </video>
                             <div className="overlay d-flex align-items-center justify-content-center">
-                                <img className="header-logo" src={require("../images/tattoo.png")} style={{ "height": "70px" }} alt="logo" /> <h1> TATTOOFINDWHO</h1>
+                                <img className="header-logo" src={require("../images/tattoo.png")} alt="logo" /> <h1> TATTOOFINDWHO</h1>
                             </div>
                         </div>
 
