@@ -265,7 +265,7 @@ export default class Explore extends React.Component {
             submitted: true
         })
         try {
-            let response = await axios.put(this.url + `tattoo-artist/${id}`, {
+            let response = await axios.put(this.url + `tattoo-artist/${id}/edit`, {
                 ownerEmail: this.state.confirmEmail,
                 name: this.state.modifiedArtistName,
                 gender: this.state.modifiedGender,
@@ -315,10 +315,96 @@ export default class Explore extends React.Component {
         }
     }
 
+    ValidationChecker(field,state) {
+        let content = true
+        if (field.includes("name") && (!state || state.length < 2)) {
+            content = false
+        }
+    
+        if (field.includes("year") && (!state || isNaN(parseInt(state)))) {
+            content = false
+        }
+    
+        if (field.includes("general-checkbox") && state.length === 0) {
+            content = false
+        }
+    
+        if (field.includes("style") && (state.length === 0 || state === null || state.length > 3)) {
+            content = false
+        }
+    
+        if (field.includes('contact')) {
+            if (!state[0].contactKey || !state[0].contactValue) {
+                content = false 
+            }
+            let instagram = state.find((element) => {
+                return element.contactKey === 'instagram';
+            })
+            if (instagram) {
+                if (!instagram.contactValue.includes('@'))
+                    content = false
+                else {
+                    content = true
+                }
+            }
+            else {
+                content += false
+            }
+    
+            
+        }
+    
+        if (field.includes("general") && state.length === 0){
+            content = false
+        }
+    
+        if (field.includes("unit") && (!state || !state.includes('#') || !state.includes('-'))){
+            content = false
+        }
+    
+        if (field.includes("postal") && (!state || state.length !==6 || isNaN(parseInt(state)))){
+            content = false
+        }
+    
+        if (field.includes("email") && (!state || !state.includes('@') || !state.includes('.com'))){
+            content = false
+        }
+    
+        return (
+            content
+        )
+    }
+
+    firstPageValidationChecker = () => {
+        let validation =
+            (this.ValidationChecker("artist name", this.state.modifiedArtistName)) &&
+            (this.ValidationChecker("year",this.state.modifiedYearStarted)) &&
+            (this.ValidationChecker("general-checkbox", this.state.modifiedMethod)) &&
+            (this.ValidationChecker("general-checkbox",this.state.modifiedInk)) &&
+            (this.ValidationChecker("style", this.state.modifiedStyle)) &&
+            (this.ValidationChecker("contact", this.state.modifiedContact)) &&
+            (this.ValidationChecker("general", this.state.modifiedImage))
+
+            return validation
+    }
+
+    validateFirstPage = () => {
+        this.setState({
+            submitted: true
+        })
+        if (this.firstPageValidationChecker()){
+        this.setState({
+            editFirstPage: !this.state.editFirstPage,
+            editSecondPage: !this.state.editSecondPage,
+            submitted: false
+        })
+    }
+    }
+
     changeEditPage = () => {
         this.setState({
             editFirstPage: !this.state.editFirstPage,
-            editSecondPage: !this.state.editSecondPage
+            editSecondPage: !this.state.editSecondPage,
         })
     }
 
@@ -354,7 +440,7 @@ export default class Explore extends React.Component {
                             modifiedBookingsRequired={this.state.modifiedBookingsRequired} modifiedStreet={this.state.modifiedStreet}
                             modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
                             modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
-                            stopEdit={this.stopEdit} changeEditPage={this.changeEditPage} editFirstPage={this.state.editFirstPage}
+                            stopEdit={this.stopEdit} validateFirstPage={this.validateFirstPage} changeEditPage={this.changeEditPage} editFirstPage={this.state.editFirstPage}
                             editSecondPage={this.state.editSecondPage}/>
                     </React.Fragment>
                 )
@@ -541,7 +627,7 @@ export default class Explore extends React.Component {
 
     processDelete = async (id, confirmEmail) => {
         try {
-            let response = await axios.delete(this.url + `tattoo-artist/${id}?email=` + this.state.confirmEmail);
+            let response = await axios.delete(this.url + `tattoo-artist/${id}/delete?email=` + this.state.confirmEmail);
             const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
             const modifiedData = [...this.state.data.slice(0, index),
             ...this.state.data.slice(index + 1)]

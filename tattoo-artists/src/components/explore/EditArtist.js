@@ -89,9 +89,8 @@ export default function EditArtist(props) {
                                     </div>
                                 ))}
                             </div>
-
+                            {props.submitted ? <ValidateFields field="general-checkbox" state={props.modifiedMethod} message={"method"} /> : null}
                         </div>
-                        {props.submitted ? <ValidateFields field="general-checkbox" state={props.modifiedMethod} message={"method"} /> : null}
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Is it temporary? </label>
@@ -142,7 +141,7 @@ export default function EditArtist(props) {
                     </div>
                     <div className="d-flex flex-end my-2">
                         <button className="btn black-button ms-auto" onClick={props.stopEdit}>Cancel</button>
-                        <button className="btn delete-button mx-1" onClick={props.changeEditPage}>Next</button>
+                        <button className="btn delete-button mx-1" onClick={props.validateFirstPage}>Next</button>
                     </div>
                 </div>
 
@@ -212,7 +211,7 @@ export default function EditArtist(props) {
                             </div>
 
                             <div className="col-12 col-md-6">
-                                <label className="form-label">Unit: (please enter "nil" if not applicable)</label>
+                                <label className="form-label">Unit: (please enter "#00-00" if not applicable)</label>
                                 <input type="text" className={"form-control" +
                                     (props.submitted &&
                                         (!props.modifiedUnit || !props.modifiedUnit.includes('#')
@@ -235,7 +234,7 @@ export default function EditArtist(props) {
                         </div>
 
                         <div>
-                            <label className="form-label">Does your studio offer any other services? (please enter nil if no): </label>
+                            <label className="form-label">Does your studio offer any other services? (please enter nil if no, and separate with a ',' if more than 1): </label>
                             <input type="text" className={"form-control" +
                                 (props.submitted && props.modifiedOtherServices.length === 0 ? " error-border" : "")}
                                 placeholder="e.g. piercings" name="modifiedOtherServices"
