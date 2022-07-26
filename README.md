@@ -1,4 +1,5 @@
 # TATTOOFINDWHO
+The live demo of the site is available [here](https://tattoofindwho.netlify.app/).
 
 ## Project Summary
 This website aims to serve as a source of reference for users interested in getting a tattoo or just discovering tattoo artists in Singapore.
@@ -38,11 +39,24 @@ As someone interested in getting a tattoo, I am concerned about whether the tatt
 As someone planning to get a tattoo on a possibly intimate area, I would be concerned about whether the studio offers a private space, about the gender of the tattoo artist, and also to read available reviews | <ul><li>Listings to be searchable by the tattoo artist's gender and whether the studio is private</li><li>Each tattoo artist to have a review section for users to freely view and add reviews</li></ul>
 As a tattoo artist looking to gain exposure and potentially increase my customer base, I would want to be able to showcase my works and be easily contactable if there are potential interested clients. | <ul><li>A create form to allow users to add their contact information, reference image link & display artists by their instagram handle</li></ul>
 
+<b> Features based on user stories:</b>
+
+1. Create a new tattoo artist listing
+2. Update the tattoo artist listing
+3. Delete a tattoo artist listing
+4. View all tattoo artist listings and narrow the search by search criterias
+5. View reviews tagged each tattoo artist
+6. Add, edit or delete a review tagged to a particular tattoo artist
+
 ### <b> 2. Scope</b>
 
 <b>Content</b>
 
-Content from the website is largely dependent on contribution from the general public. Contributions will be stored in a database, hence a backend server is required for communication between React and MongoDB. An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](https://etys-tattoo-artists.herokuapp.com/).
+Content from the website is largely dependent on contribution from the general public. Contributions will be stored in a database, hence a backend server is required for communication between React and MongoDB. 
+
+An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](https://etys-tattoo-artists.herokuapp.com/).
+
+The github repository for the restful API can be found [here](https://github.com/evelyntys/project-2-restful-api).
 
 <b>Functional Requirements</b>
 * Search filters to include:
@@ -69,10 +83,15 @@ Content from the website is largely dependent on contribution from the general p
 * Loading gif to indicate that the site is still retrieivng data from the restful API
 
 ### <b> 3. Structure</b>
-A structure of the website initially developed during brainstorming has been attached [here](link) for reference.
+Below shows the skeleton structure of the web application in the early stages of brainstorming.
+![Structure of the website](tattoo-artists/public/readme/structure.png)
+
+Attached is a draft image describing the entities and attributes to serve as a guide when constructing the database.
+![ERD Draft](tattoo-artists/public/readme/erd-draft.png)
+
 
 ### <b> 4. Skeleton</b>
-An initial wireframe of the site layout has been attached [here](link) for reference.
+An initial wireframe of the site layout has been attached [here](tattoo-artists/public/readme/wireframe.pdf) for reference.
 
 ### <b> 5. Surface</b>
 * The main colours used in this website include black, white and dark red to create a sleek and consistent look with a mature theme.
@@ -81,7 +100,7 @@ An initial wireframe of the site layout has been attached [here](link) for refer
     * Poiret One for headings 
 
 ## Testing
-Details for the test cases can be found [here](link).
+Details for the test cases can be found [here](tattoo-artists/public/readme/wireframe.pdf).
 
 ## Technologies Used
 <b>Backend</b>
