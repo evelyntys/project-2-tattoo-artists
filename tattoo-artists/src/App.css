@@ -28,7 +28,7 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  height: 300px;
+  height: 180px;
   border: 2px solid white;
 }
 
@@ -56,7 +56,7 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  height: 300px;
+  height: 180px;
   border: 2px solid white;
 }
 
@@ -65,7 +65,7 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  height: 300px;
+  height: 180px;
   border: 2px solid white;
 }
 
@@ -89,28 +89,20 @@ h6 {
   padding: 0px;
 }
 
-/* .contact-span{
-  display: inline-block
-} */
-
 .card-box {
   text-align: center;
   font-size: 16px;
 }
 
 .card-box-title {
-  /* border: 1px solid black; */
   font-weight: 800;
   letter-spacing: 2px;
-  /* font-style: italic; */
   text-transform: lowercase;
   font-size: 20px;
   text-align: center;
   margin-top: 0px;
   margin-bottom: 0px;
   padding: 0px;
-  /* margin-top: 2px;
-  margin-bottom: 2px; */
 }
 
 .span-body {
@@ -134,10 +126,8 @@ h6 {
 }
 
 .card-box-title-all {
-  /* border: 1px solid black; */
   font-weight: 800;
   letter-spacing: 2px;
-  /* font-style: italic; */
   text-transform: lowercase;
   font-size: 15px;
   text-align: center;
@@ -170,20 +160,14 @@ h6 {
 
 .card-btn {
   border-radius: 0px;
-  /* background-color: white; 
-  border-color: black;
-  color: black; */
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 1px;
   background-color: black;
-  /* border: 1px solid black; */
   color: white;
 }
 
 .card-btn:hover {
-  /* background-color: black;
-  color: white; */
   background-color: white;
   border: 1px solid black;
   color: black;
@@ -271,7 +255,7 @@ h6 {
 }
 
 .header-image {
-  height: 300px;
+  height: 200px;
   width: 100vw;
   object-fit: cover;
   position: absolute;
@@ -285,7 +269,7 @@ h6 {
 .overlay {
   background-color: rgba(0, 0, 0, 0.3);
   position: relative;
-  height: 300px;
+  height: 200px;
   width: 100vw;
 }
 
@@ -324,29 +308,15 @@ h6 {
   font-size: 60px;
 }
 
-/* .prog{
-  background-color: grey;
-  width: 100%;
-  height: 20px;
-  positionL 
-}
-
-.first-prog, .second-prog, .third-prog{
-  position: relative;
-} */
-
 .progress{
   height:  5px;
-  overflow: visible !important;
+  overflow: visible;
   background: grey;
 }
 
 .progress-bar{
-  overflow: visible
-}
-
-.progress .progress-bar{
-  position: relative;
+  overflow: visible;
+  position: relative
 }
 
 .progress .progress-icon{
@@ -388,33 +358,6 @@ h6 {
 }
 
 
-/* .progress .progress-icon2{
-  width: 15px;
-  height: 15px;
-  line-height: 25px;
-  border-radius: 50%;
-  font-size: 13px;
-  position: absolute;
-  border-color: black;
-  border-width: 3px;
-  border-style: solid;
-  background-color: black;
-  left: 100%;
-} */
-
-.toast-container{
-  top: 65px;
-  margin-left: auto;
-}
-
-.toast-header{
-  color:#78011A;
-}
-
-.toast-body{
-  color: black;
-}
-
 /* screen size responsiveness */
 @media screen and (max-width: 767px) {
   .single-artist-image {
@@ -423,7 +366,7 @@ h6 {
 
   .header-image,
   .overlay {
-    height: 200px;
+    height: 150px;
   }
 
   .overlay h1 {
@@ -442,11 +385,12 @@ h6 {
   .faq,
   .explore,
   .add-new {
-    height: 150px;
+    height: 220px;
     border-bottom: 2px solid white;
     border-top: 2px solid white;
     border-left: 0px;
     border-top: 0px;
+    width: 80vw;
 
   }
 
