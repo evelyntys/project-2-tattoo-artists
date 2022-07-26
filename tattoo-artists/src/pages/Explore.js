@@ -670,10 +670,10 @@ export default class Explore extends React.Component {
                         </div>
                         :
                         <div>
-                            <div className="list-group">
+                            <div className="list-group my-1">
                                 {this.state.artistToShow.reviews.map(
                                     each => (
-                                        <div className="list-group-item my-1" key={each._id + "one"}>
+                                        <div className="list-group-item" key={each._id + "one"}>
                                             <div className="d-flex w-100 justify-content-between">
                                                 <h6 className="mb-1 align-self-center">{each.reviewer}</h6>
                                                 <div className="justify-content-end">
@@ -805,7 +805,7 @@ export default class Explore extends React.Component {
                 submittedReview: false,
                 addReviewReviewer: "",
                 addReviewEmail: "",
-                addReviewRating: 1,
+                addReviewRating: 0,
                 addReviewComment: "",
                 artistToShow: updatedResponse.data
             })
