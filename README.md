@@ -95,7 +95,7 @@ Details for the test cases can be found [here](link).
 6. [Explore image](https://www.pexels.com/photo/a-topless-man-leaning-on-white-metal-handrails-5319874/)
 7. [Loader](https://loading.io/spinner/bars/-bounce-bar-column-chart-equalizer-histogram-rectangle-block-progress-facebook)
 
-#### Other accreditations
+#### Adapted codes/functionality
 1. [Display images from Google Drive](https://support.awesome-table.com/hc/en-us/articles/115002196665-Display-images-from-Google-Drive)
 2. [ContactFields component](https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5)
 3. [Star Rating component](https://dev.to/michaelburrows/create-a-custom-react-star-rating-component-5o6)
@@ -104,6 +104,7 @@ Details for the test cases can be found [here](link).
     1. https://www.vectornator.io/blog/tattoo-styles/
     2. https://www.10masters.com/en/blog/tattoo-styles/
     3. https://my.dailyvanity.com/trends/tattoo-style-guide/
+6. [Progress bar for add new artist & edit artist](http://bestjquery.com/tutorial/progress-bar/demo32/)
 
 
 ## Deployment
