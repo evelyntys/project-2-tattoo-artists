@@ -3,22 +3,24 @@
 ## Project Summary
 This website aims to serve as a source of reference for users interested in getting a tattoo or just discovering tattoo artists in Singapore.
 
-This website could also serve as a platform for newer tattoo artists to be visible to potential customers.
+This website could also serve as a platform for newer tattoo artists to increase visibility to potential clients.
 
 The main target audience intended would be:
-* Individuals above 18 looking for a tattoo artist to get a tattoo
-* Tattoo artists interested in growing their customer base
+* Individuals above 18 looking for a tattoo artist 
+* Tattoo artists interested in growing their clientele
+* Individuals generally interested in looking at tattoos and discovering new tattoo artists
 
 ### <b>Organisation's Goals</b>
-* As there are various tattoo artists available with different methods and styles as well as inks used, we aim to compile a centralised list of tattoo artists available in Singapore.
+* To provide a platform for the compilation of tattoo artists in Singapore as currently, no such platform exists and tattoo artists not tagged to any studios might be hard to discover
 
 ### <b>User's Goals</b>
-* Users should be able to easily obtain information about the various artists in Singapore, such as their contact information as well as their portfolio. They should also be able to view the reviews left behind by previous clients to help them make an informed decision on something that will be on their body permanently.
+* Users should be able to easily obtain information about the various artists in Singapore, such as their contact information as well as their portfolio. 
+* They should also be able to view the reviews left behind by previous clients to help them better make an informed decision.
 
 ## The Five Planes of UI/UX
 ### <b>1. Strategy</b>
 #### Organisation
-* Objective: To provide information about the available tattoo artists in the database
+* Objective: To provide information about the available tattoo artists in Singapore
 
 #### Users: Potential clients and tattoo artists
 * Objective: To discover the various tattoo artists in Singapore and view their portfolio of works
@@ -34,19 +36,37 @@ The main target audience intended would be:
  -------------   | ---------------------      
 As someone interested in getting a tattoo, I am concerned about whether the tattoo artist offers my style(s) and/or method(s) and/or ink(s) of interest, and if bookings are required beforehand.| <ul><li>Listings to be searchable by styles, methods, ink, and if bookings are required prior</li></ul>
 As someone planning to get a tattoo on a possibly intimate area, I would be concerned about whether the studio offers a private space, about the gender of the tattoo artist, and also to read available reviews | <ul><li>Listings to be searchable by the tattoo artist's gender and whether the studio is private</li><li>Each tattoo artist to have a review section for users to freely view and add reviews</li></ul>
-As a tattoo artist looking to gain exposure and potentially increase my customer base, I would want to be able to showcase my works and be easily contactable if there are potential interested clients. | <ul><li>A create form to allow users to add their contact information and reference image link</li></ul>
+As a tattoo artist looking to gain exposure and potentially increase my customer base, I would want to be able to showcase my works and be easily contactable if there are potential interested clients. | <ul><li>A create form to allow users to add their contact information, reference image link & display artists by their instagram handle</li></ul>
 
 ### <b> 2. Scope</b>
 
 <b>Content</b>
 
-Content from the website is largely dependent on contribution the general public. Contributions will be stored in a database, hence a backend server is required for communication between React and MongoDB. An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](link).
+Content from the website is largely dependent on contribution from the general public. Contributions will be stored in a database, hence a backend server is required for communication between React and MongoDB. An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](https://etys-tattoo-artists.herokuapp.com/).
 
 <b>Functional Requirements</b>
-<ul><li>Search filters to include: artist name, artist's instagram handle, studio name, gender, years of experience, whether they are an apprentice, whether they offer temporary or permanent tattoos methods, inks, styles, whether bookings are required, whether the studio is private</li><li>Create new tattoo artist listing</li><li>Edit and delete for each tattoo artist listing</li><li>Reviews for each tattoo artist listing</li><li>Each listing and review will be tagged to a specific owner, and the same email has to be provided before modifications/deletions can occur</li></ul>
+* Search filters to include:
+    * Artist name
+    * Artist's instagram handle
+    * Studio name
+    * Gender
+    * Years of experience
+    * Whether they are an apprentice
+    * Whether they offer temporary or permanent tattoos
+    * Methods
+    * Inks
+    * Styles
+    * Whether bookings are required
+    * Whether the studio is private
+* Create new tattoo artist listing
+* Edit and delete for each tattoo artist listing
+* Reviews for each tattoo artist listing
+    * Create, read, update and delete for each review
+* Each listing and review will be tagged to a specific owner, and the same email has to be provided before modifications/deletions can occur
 
 <b>Non-functional Requirements</b>
-<ul><li>Mobile responsiveness: the site's functionality should still remain on mobile version and their experience should still be optimized</li><li>Loading gif to indicate that the site is still retrieivng data from the restful API</li></ul>
+* Mobile responsiveness: the site's functionality should still remain on mobile version and their experience should still be optimized
+* Loading gif to indicate that the site is still retrieivng data from the restful API
 
 ### <b> 3. Structure</b>
 A structure of the website initially developed during brainstorming has been attached [here](link) for reference.
@@ -92,7 +112,8 @@ Details for the test cases can be found [here](link).
 3. [Landing page header](https://www.pexels.com/video/hands-art-creative-hand-4125837/)
 4. [FAQ header](https://www.pexels.com/photo/person-holding-white-and-red-card-4123737/)
 5. [Add new header](https://www.pexels.com/photo/woman-in-black-shirt-holding-black-smartphone-4123827/)
-6. [Explore image](https://www.pexels.com/photo/a-topless-man-leaning-on-white-metal-handrails-5319874/)
+6. [Explore header](https://www.pexels.com/photo/a-topless-man-leaning-on-white-metal-handrails-5319874/)
+8. [Edit header](https://www.pexels.com/photo/back-view-of-a-woman-getting-a-tattoo-on-her-arm-5088466/)
 7. [Loader](https://loading.io/spinner/bars/-bounce-bar-column-chart-equalizer-histogram-rectangle-block-progress-facebook)
 
 #### Adapted codes/functionality
