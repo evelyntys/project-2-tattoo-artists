@@ -7,7 +7,7 @@ export default class Home extends React.Component {
                 <div className="header-banner mb-2">
                     <img className="header-image" src="https://drive.google.com/uc?id=12PQFEtg6EJ7kSUiO8MWeHwYQ0O74b8hd" alt="tattoo artist tattooing a client" />
                     <div className="overlay d-flex align-items-center justify-content-center">
-                        <h1>TATTOOFINDWHO</h1>
+                    <img className="header-logo" src={require("../images/tattoo.png")} style={{"height": "70px"}}/> <h1> TATTOOFINDWHO</h1>
                     </div>
                 </div>
                 {/* <div style={{ "maxHeight": "300px", "width": "100vw", "position": "relative" }}>

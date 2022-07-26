@@ -82,7 +82,7 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.active !="home"? <Navbar bg="dark" expand="lg" variant="dark">
+        {this.state.active !=="home"? <Navbar bg="dark" expand="lg" variant="dark">
           <Container>
             <Navbar.Brand className="logo navbar-logo" onClick={() => this.changeActive("home")}>
               <img src={require('./images/tattoo.png')} width="40px" className="me-2" alt="logo of website" />TATTOOFINDWHO</Navbar.Brand>
