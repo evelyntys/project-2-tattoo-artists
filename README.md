@@ -135,6 +135,8 @@ Details for the test cases can be found [here](tattoo-artists/readme/test-cases.
 6. [Explore header](https://www.pexels.com/photo/a-topless-man-leaning-on-white-metal-handrails-5319874/)
 8. [Edit header](https://www.pexels.com/photo/back-view-of-a-woman-getting-a-tattoo-on-her-arm-5088466/)
 7. [Loader](https://loading.io/spinner/bars/-bounce-bar-column-chart-equalizer-histogram-rectangle-block-progress-facebook)
+8. [Shotsnapp](https://app.shotsnapp.com/) for creation of device mockups
+9. Tattoo images taken from the instagrams of the tattoo artists
 
 #### Adapted codes/functionality
 1. [Display images from Google Drive](https://support.awesome-table.com/hc/en-us/articles/115002196665-Display-images-from-Google-Drive)
