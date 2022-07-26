@@ -28,7 +28,6 @@ export default function ShowOneArtist(props) {
                     </div>
                 </div>
                 <div className="col-12 col-md-8">
-                    {/* <h1 className="text-center d-none d-md-block">{this.findInstagram(this.state.artistToShow.contact)}</h1> */}
                     <Accordion defaultActiveKey="0" flush>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header><h4 className="ms-auto">Artist's Details</h4></Accordion.Header>
@@ -44,26 +43,14 @@ export default function ShowOneArtist(props) {
                                             {props.artistToShow.method.map(a => (
                                                 <React.Fragment key={a}>
                                                     <span className="span-body text-md-start"><i className="bi bi-dot"></i>{a} </span>
-                                                    {/* <ul className="d-none d-md-block">
-                                                            <li className="text-start">{a}</li>
-                                                            </ul> */}
                                                 </React.Fragment>
                                             ))}
                                         </div>
-                                        {/* Temporary? {e.temporary} */}
                                         <div className="col-12 col-md-6">
                                             <div className="card-box-title">Style(s)</div>
                                             {props.artistToShow.style.map(a => (
                                                 <React.Fragment key={a}>
                                                     <span className="span-body text-md-start"> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</span>
-                                                    {/* <ul className="d-none d-md-block m-0 p-0">
-                                                                <div className="row">
-                                                                    <div className="col-4"></div>
-                                                                    <div className="col-2">
-                                                            <li className="text-start m-0 p-0">{this.styleKeys[a].toLowerCase()}</li>
-                                                            </div>
-                                                            </div>
-                                                            </ul> */}
                                                 </React.Fragment>
                                             ))}
 

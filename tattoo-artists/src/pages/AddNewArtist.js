@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ContactFields from '../components/general/ContactFields';
 import StyleMultiSelect from '../components/general/StyleMultiSelect';
 import axios from 'axios';
-import { Toast, ToastContainer, ProgressBar } from 'react-bootstrap';
-import StepProgressBar from '../TestProgressBar';
 import ValidateFields from '../components/general/Validation';
 
 
