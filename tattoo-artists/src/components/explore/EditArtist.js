@@ -128,7 +128,7 @@ export default function EditArtist(props) {
                         <label className="form-label">Please enter the artist's contact details: </label>
                         <ContactFields handleAddClick={props.handleAddClick}
                             inputList={props.modifiedContact}
-                            setInputList={props.updateData} />
+                            setInputList={props.updateData} class={props.contactBorder} />
                         {props.submitted ? <ValidateFields field="contact" state={props.modifiedContact} /> : null}
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>

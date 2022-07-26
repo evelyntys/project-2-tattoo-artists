@@ -66,6 +66,15 @@ export default class AddNewArtist extends React.Component {
         return contentToRender
     }
 
+    contactBorder(){
+        if (this.state.submitted && !this.ValidationChecker('contact', this.state.contact)){
+            return "form-control error-border"
+        }
+        else{
+            return "form-control"
+        }
+    }
+
     // AutoHideToast() {
     //     return (
     //         <React.Fragment>
@@ -489,7 +498,7 @@ renderSection() {
                     <label className="form-label">Please enter the artist's contact details: </label>
                     <ContactFields handleAddClick={this.handleAddClick}
                         inputList={this.state.contact}
-                        setInputList={this.updateData} />
+                        setInputList={this.updateData} class={this.contactBorder()}/>
                     {this.state.submitted ? <ValidateFields field="contact" state={this.state.contact} /> : null}
 
                     <div>

@@ -23,7 +23,7 @@ export default function ContactFields(props) {
                         <div className="row my-2">
                             <div className="col col-md-5">
                                 <input type="text"
-                                    className="form-control"
+                                    className={props.class}
                                     name="contactKey"
                                     value={x.contactKey}
                                     placeholder="platform e.g. instagram"
@@ -32,7 +32,7 @@ export default function ContactFields(props) {
 
                             <div className="col col-md-5">
                                 <input type="text"
-                                    className="form-control"
+                                    className={props.class}
                                     name="contactValue"
                                     value={x.contactValue}
                                     placeholder="platform e.g. @todayi.poke"

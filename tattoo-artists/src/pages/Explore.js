@@ -408,6 +408,15 @@ export default class Explore extends React.Component {
         })
     }
 
+    contactBorder(){
+        if (this.state.submitted && !this.ValidationChecker('contact', this.state.modifiedContact)){
+            return "form-control error-border"
+        }
+        else{
+            return "form-control"
+        }
+    }
+
     ShowOneOrAll() {
         if (this.state.showOne) {
             // showing one artist, not editing
@@ -441,7 +450,7 @@ export default class Explore extends React.Component {
                             modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
                             modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
                             stopEdit={this.stopEdit} validateFirstPage={this.validateFirstPage} changeEditPage={this.changeEditPage} editFirstPage={this.state.editFirstPage}
-                            editSecondPage={this.state.editSecondPage}/>
+                            editSecondPage={this.state.editSecondPage} contactBorder={this.contactBorder()}/>
                     </React.Fragment>
                 )
             }
