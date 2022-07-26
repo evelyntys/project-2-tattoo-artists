@@ -159,7 +159,6 @@ export default class AddNewArtist extends React.Component {
             (this.ValidationChecker("style", this.state.style)) &&
             (this.ValidationChecker("contact", this.state.contact)) &&
             (this.ValidationChecker("general", this.state.image))
-        // console.log(validation)
         if (validation) {
             this.setState({
                 firstPage: false,
@@ -179,7 +178,6 @@ export default class AddNewArtist extends React.Component {
             (this.ValidationChecker("unit", this.state.unit)) &&
             (this.ValidationChecker("postal", this.state.postal)) &&
             (this.ValidationChecker("general", this.state.otherServices))
-        console.log(validation)
 
         if (validation) {
             this.setState({

@@ -983,7 +983,6 @@ export default class Explore extends React.Component {
                 correctReviewEmail: true
             })
         }
-        console.log(review.email)
     }
 
     EditStarRating = () => {
