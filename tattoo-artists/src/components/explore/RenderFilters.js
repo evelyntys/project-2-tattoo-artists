@@ -38,7 +38,7 @@ export default function RenderFilters(props){
                         <div>
                             <div><label className="form-label bold-text">Apprentice:</label></div>
                             {props.generalRadio.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"filter-apprentice " + each.value}>
                                     <label className="form-check-label">
                                     <input type="radio" className="form-check-input" name="apprentice"
                                         value={each.value} onChange={props.updateFormField}
@@ -56,7 +56,7 @@ export default function RenderFilters(props){
                                 <label className="form-label bold-text">Temporary:</label>
                             </div>
                             {props.generalRadio.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"filter-temporary " + each.value}>
                                     <label className="form-check-label">
                                     <input type="radio" className="form-check-input" name="temporary"
                                         value={each.value} onChange={props.updateFormField}
@@ -73,7 +73,7 @@ export default function RenderFilters(props){
                                 <label className="form-label bold-text">Method(s):</label>
                             </div>
                             {props.methodsCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"filter-methods " + each.value}>
                                     <label className="form-check-label">
                                     <input type="checkbox" className="form-check-input"
                                         value={each.value} name="method"
@@ -96,7 +96,7 @@ export default function RenderFilters(props){
                                 <label className="form-label bold-text">Ink(s):</label>
                             </div>
                             {props.inkCheckbox.map(each => (
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline" key={"filter-inks " + each.value}>
                                     <label className="form-check-label">
                                     <input type="checkbox" className="form-check-input"
                                         value={each.value} name="ink"
