@@ -21,7 +21,7 @@ export default function ContactFields(props) {
                 return (
                     <React.Fragment key={i}>
                         <div className="row my-2">
-                            <div className="col col-md-5">
+                            <div className="col-4 col-md-5">
                                 <input type="text"
                                     className={props.class}
                                     name="contactKey"
@@ -30,7 +30,7 @@ export default function ContactFields(props) {
                                     onChange={e => handleInputChange(e, i)} />
                             </div>
 
-                            <div className="col col-md-5">
+                            <div className="col-4 col-md-5">
                                 <input type="text"
                                     className={props.class}
                                     name="contactValue"
@@ -39,7 +39,7 @@ export default function ContactFields(props) {
                                     onChange={e => handleInputChange(e, i)} />
                             </div>
 
-                            <div className="col-3 col-md-2">
+                            <div className="col-4 col-md-2">
                                 {props.inputList.length !== 1 && <button
                                     className="btn delete-button me-1 me-md-2"
                                     onClick={() => handleRemoveClick(i)}>-</button>}
