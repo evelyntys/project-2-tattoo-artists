@@ -65,16 +65,50 @@ Details for the test cases can be found [here](link).
 
 ## Technologies Used
 <b>Backend</b>
-* MongoDB was used as the database to create a restful API
-* Express
-* NodeJS
-* cors
-* dotenv 
+* [MongoDB](https://www.mongodb.com/) as the database to create a restful API
+* [Express & NodeJS](https://expressjs.com/) as the framework for API endpoints
+* [cors middleware](https://expressjs.com/en/resources/middleware/cors.html) to enable CORS
+* [dotenv](https://www.npmjs.com/package/dotenv) for .env file containing environment variables
 
 <b>Frontend</b>
-* React
-* Axios
-* Bootstrap
-* React Bootstrap
+* HTML/CSS
+* [React](https://reactjs.org/) for the frontend framework
+* [Axios](https://github.com/axios/axios) for calling API and getting data from promises
+* [Bootstrap v5.2](https://getbootstrap.com/) for general styling of the website
+* [React Bootstrap](https://react-bootstrap.github.io/) for reactive components such as Accordions, Modals and Navbar.
+* [Bootstrap icons](https://icons.getbootstrap.com/)
+* [React-Select](https://react-select.com/home) for multi-select drop-down
+
+<b>Platforms and Softwares</b>
+* [Github](https://github.com/) for the repository and version control
+* [Gitpod](https://gitpod.io/) for code editing
+* [Heroku](https://www.heroku.com/) to deploy Express server
+* [Netlify](https://www.netlify.com/) to deploy React app
 
 ## Credits
+#### Images and icons
+1. Tattoo logo: <a href="https://www.flaticon.com/free-icons/tattoo" title="tattoo icons">Tattoo icons created by cube29 - Flaticon</a>
+2. [Google Fonts](https://www.fonts.google.com)
+3. [Landing page header](https://www.pexels.com/video/hands-art-creative-hand-4125837/)
+4. [FAQ header](https://www.pexels.com/photo/person-holding-white-and-red-card-4123737/)
+5. [Add new header](https://www.pexels.com/photo/woman-in-black-shirt-holding-black-smartphone-4123827/)
+6. [Explore image](https://www.pexels.com/photo/a-topless-man-leaning-on-white-metal-handrails-5319874/)
+7. [Loader](https://loading.io/spinner/bars/-bounce-bar-column-chart-equalizer-histogram-rectangle-block-progress-facebook)
+
+#### Other accreditations
+1. [Display images from Google Drive](https://support.awesome-table.com/hc/en-us/articles/115002196665-Display-images-from-Google-Drive)
+2. [ContactFields component](https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5)
+3. [Star Rating component](https://dev.to/michaelburrows/create-a-custom-react-star-rating-component-5o6)
+4. Information for FAQ page from the various instagram stories archive of the different tattoo artists
+5. Reference for tattoo styles
+    1. https://www.vectornator.io/blog/tattoo-styles/
+    2. https://www.10masters.com/en/blog/tattoo-styles/
+    3. https://my.dailyvanity.com/trends/tattoo-style-guide/
+
+
+## Deployment
+### <b>Backend</b>
+Deployment for express server was completed using [Heroku](https://www.heroku.com/).
+
+### <b>Frontend</b>
+Deployment for React app was completed using [Netlify](https://www.netlify.com/).
