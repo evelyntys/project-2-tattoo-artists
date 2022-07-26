@@ -16,11 +16,15 @@ button {
 }
 
 .on {
-  color: #d81d46;
+  color: #78011A;
 }
 
 .off {
-  color: black;
+  color: rgba(0, 0, 0, 0.18);
+}
+
+.stars{
+  color: #78011A;
 }
 
 .explore {

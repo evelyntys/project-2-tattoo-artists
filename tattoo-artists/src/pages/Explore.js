@@ -727,7 +727,7 @@ export default class Explore extends React.Component {
                                                         })}><i className="bi bi-trash"></i></button>
                                                 </div>
                                             </div>
-                                            <small className="text-muted">
+                                            <small className="stars">
                                                 {[...Array(each.rating)].map((rating) =>
                                                     <span className="rating-star" key={rating}> 
                                                     <i class="bi bi-star-fill"></i>&nbsp;  
@@ -786,10 +786,9 @@ export default class Explore extends React.Component {
                                 <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
                             </div>
 
-                            <small className="text-muted">
+                            <label>Rating: </label>
                                 {this.EditStarRating()}
-                            </small>
-
+                            
                             <textarea className={"form-control mt-2" +
                                 (this.state.submittedEditReview && this.state.updatedComment.length === 0
                                     ? " error-border" : "")}
@@ -822,7 +821,7 @@ export default class Explore extends React.Component {
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{this.state.reviewBeingDeleted.reviewer}</h5>
                             </div>
-                            <small className="text-muted">
+                            <small className="stars">
                                 {[...Array(this.state.reviewBeingDeleted.rating)].map((rating) =>
                                     <span className="rating-star" key={rating}> 
                                     <i class="bi bi-star-fill"></i>&nbsp; 
@@ -888,7 +887,7 @@ export default class Explore extends React.Component {
     RenderAddReview() {
         if (this.state.addReview) {
             return (
-                <div className="container">
+                <React.Fragment>
                     <div className="row">
                         <div className="col-6">
                             <label>Name: </label>
@@ -948,7 +947,7 @@ export default class Explore extends React.Component {
                                 })
                             }}>Cancel</button>
                     </div>
-                </div>
+                </React.Fragment>
             )
         }
     }
