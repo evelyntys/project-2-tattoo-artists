@@ -222,7 +222,8 @@ export default class Explore extends React.Component {
                             handleSelectModified={this.handleSelectModified} updateData={this.updateData}
                             modifiedContact={this.state.modifiedContact} modifiedImage={this.state.modifiedImage}
                             modifiedStudioName={this.state.modifiedStudioName} modifiedPrivate={this.state.modifiedPrivate}
-                            modifiedBookingsRequired={this.state.modifiedBookingsRequired} modifiedStreet={this.state.modifiedStreet}
+                            modifiedBookingsRequired={this.state.modifiedBookingsRequired} 
+                            modifiedStreet={this.state.modifiedStreet}
                             modifiedUnit={this.state.modifiedUnit} modifiedPostal={this.state.modifiedPostal}
                             modifiedOtherServices={this.state.modifiedOtherServices} updateArtist={this.updateArtist}
                             stopEdit={this.stopEdit} validateFirstPage={this.validateFirstPage}
@@ -729,7 +730,9 @@ export default class Explore extends React.Component {
                                             <small className="text-muted">
                                                 ratings:
                                                 {[...Array(each.rating)].map((rating) =>
-                                                    <span className="rating-star" key={rating}> <i class="bi bi-star-fill"></i></span>)}
+                                                    <span className="rating-star" key={rating}> 
+                                                    <i class="bi bi-star-fill"></i>
+                                                    </span>)}
                                             </small>
                                             <p className="mb-1">{each.comment}</p>
                                             {this.state.editReview && this.state.reviewBeingEdited === each ?
@@ -737,14 +740,20 @@ export default class Explore extends React.Component {
                                                     <div>
                                                         <label>Please enter your email to confirm your identity to edit this review:</label>
                                                         <input type="email"
-                                                            className={"form-control" + (!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                                                                ? "" : " error-border")} name="confirmReviewEmail" onChange={this.updateFormField} />
+                                                            className={"form-control" + 
+                                                            (!this.state.checkReviewEmail && !this.state.correctReviewEmail
+                                                                ? "" : " error-border")} 
+                                                                name="confirmReviewEmail" onChange={this.updateFormField} />
                                                     </div>
                                                     {!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                                                        ? null : <div className="error-message">sorry, it seems that you are not the owner of this review</div>}
+                                                        ? null : <div className="error-message">
+                                                            sorry, it seems that you are not the owner of this review
+                                                            </div>}
                                                     <div className="my-1">
                                                         <button className="btn delete-button my-2 mx-1"
-                                                            onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>
+                                                            onClick={() => { 
+                                                                this.validateEditEmail(this.state.reviewBeingEdited) 
+                                                                }}>
                                                             Confirm</button>
                                                         <button className="btn black-button my-2 mx-1"
                                                             onClick={this.cancelModifyReview}>
@@ -776,7 +785,6 @@ export default class Explore extends React.Component {
                         <div className="list-group-item">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
-                                <small className="text-muted">{this.state.reviewBeingEdited._id}</small>
                             </div>
 
                             <small className="text-muted">ratings:
@@ -817,7 +825,9 @@ export default class Explore extends React.Component {
                             </div>
                             <small className="text-muted">ratings:
                                 {[...Array(this.state.reviewBeingDeleted.rating)].map((rating) =>
-                                    <span className="rating-star" key={rating}> <i class="bi bi-star-fill"></i></span>)}</small>
+                                    <span className="rating-star" key={rating}> 
+                                    <i class="bi bi-star-fill"></i></span>)}
+                                    </small>
                             <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
                         </div>
                     </div>
@@ -830,7 +840,9 @@ export default class Explore extends React.Component {
                                 onChange={this.updateFormField} />
                         </div>
                         {!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                            ? null : <div className="error-message">sorry, it seems that you are not the owner of this review</div>}
+                            ? null : <div className="error-message">
+                                sorry, it seems that you are not the owner of this review
+                                </div>}
 
                         <div className="my-1">
                             <button className='btn delete-button my-2 mx-1'
@@ -1078,7 +1090,8 @@ export default class Explore extends React.Component {
                             null
                         }
                         <div className={(!this.state.editMode ? ('col-12 ' + (this.state.showOne ? '' : 'col-md-9')) : null)}>
-                            {!this.state.showOne ? <h3 className="mt-4 text-center text-md-start">Showing {this.state.data.length} result(s): </h3>
+                            {!this.state.showOne ? <h3 className="mt-4 text-center text-md-start">
+                                Showing {this.state.data.length} result(s): </h3>
                                 :
                                 null
                             }

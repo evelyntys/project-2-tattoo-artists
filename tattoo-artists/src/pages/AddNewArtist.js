@@ -242,7 +242,8 @@ export default class AddNewArtist extends React.Component {
                                 name="artistName"
                                 value={this.state.artistName}
                                 onChange={this.updateFormField} />
-                            {this.state.submitted ? <ValidateFields field="artist name" state={this.state.artistName} /> : null}
+                            {this.state.submitted ?
+                                <ValidateFields field="artist name" state={this.state.artistName} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
@@ -294,11 +295,13 @@ export default class AddNewArtist extends React.Component {
                                                 (this.state.submitted && this.state.method.length === 0 ?
                                                     " error-border" : "")}
                                                 value={each.value} name="method"
-                                                onChange={this.updateCheckboxes} checked={this.state.method.includes(each.value)} />
+                                                onChange={this.updateCheckboxes}
+                                                checked={this.state.method.includes(each.value)} />
                                             {each.label}</label>
                                     </div>
                                 ))}
-                                {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.method} message={"method"} /> : null}
+                                {this.state.submitted ?
+                                    <ValidateFields field="general-checkbox" state={this.state.method} message={"method"} /> : null}
                             </div>
                         </div>
 
@@ -322,24 +325,28 @@ export default class AddNewArtist extends React.Component {
                                             (this.state.submitted && this.state.ink.length === 0 ?
                                                 " error-border" : "")}
                                             value={each.value} name="ink"
-                                            onChange={this.updateCheckboxes} checked={this.state.ink.includes(each.value)} />
+                                            onChange={this.updateCheckboxes}
+                                            checked={this.state.ink.includes(each.value)} />
                                         {each.label}</label>
                                 </div>
                             ))}
-                            {this.state.submitted ? <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
+                            {this.state.submitted ?
+                                <ValidateFields field="general-checkbox" state={this.state.ink} message={"ink"} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Please select your style(s) of tattoo (up to 3): </label>
                             <StyleMultiSelect handleSelect={this.handleSelect} style={this.state.style} border={this.multiSelectBorder()} />
-                            {this.state.submitted ? <ValidateFields field="style" state={this.state.style} /> : null}
+                            {this.state.submitted ?
+                                <ValidateFields field="style" state={this.state.style} /> : null}
                         </div>
 
                         <label className="form-label">Please enter the artist's contact details: </label>
                         <ContactFields handleAddClick={this.handleAddClick}
                             inputList={this.state.contact}
                             setInputList={this.updateData} class={this.contactBorder()} />
-                        {this.state.submitted ? <ValidateFields field="contact" state={this.state.contact} /> : null}
+                        {this.state.submitted ?
+                            <ValidateFields field="contact" state={this.state.contact} /> : null}
 
                         <div>
                             <label className="form-label">Please provide an image link to the artist's reference artwork: </label>
@@ -347,7 +354,8 @@ export default class AddNewArtist extends React.Component {
                                 + (this.state.submitted && !this.state.image ? " error-border" : "")}
                                 placeholder="image link" name="image"
                                 onChange={this.updateFormField} value={this.state.image} />
-                            {this.state.submitted ? <ValidateFields field="general" state={this.state.image} message={"a reference image link"} /> : null}
+                            {this.state.submitted ?
+                                <ValidateFields field="general" state={this.state.image} message={"a reference image link"} /> : null}
                         </div>
                     </div>
 
@@ -380,7 +388,8 @@ export default class AddNewArtist extends React.Component {
                             placeholder="studio name" name="studioName"
                             value={this.state.studioName}
                             onChange={this.updateFormField} />
-                        {this.state.submitted ? <ValidateFields field="general" state={this.state.studioName} message={"the studio name"} /> : null}
+                        {this.state.submitted ? <ValidateFields field="general"
+                            state={this.state.studioName} message={"the studio name"} /> : null}
                     </div>
 
                     <div className="col-12 col-md-6">
@@ -419,7 +428,8 @@ export default class AddNewArtist extends React.Component {
                                 (this.state.submitted && !this.state.street ? " error-border" : "")}
                                 placeholder="street" name="street"
                                 value={this.state.street} onChange={this.updateFormField} />
-                            {this.state.submitted ? <ValidateFields field="general" state={this.state.street} message={"the street"} /> : null}
+                            {this.state.submitted ? <ValidateFields field="general"
+                                state={this.state.street} message={"the street"} /> : null}
                         </div>
 
                         <div className="col-12 col-md-6">
@@ -451,7 +461,8 @@ export default class AddNewArtist extends React.Component {
                             (this.state.submitted && this.state.otherServices.length === 0 ? " error-border" : "")}
                             placeholder="e.g. piercings" name="otherServices"
                             value={this.state.otherServices} onChange={this.updateFormField} />
-                        {this.state.submitted ? <ValidateFields field="general" state={this.state.otherServices} message={"the services available"} /> : null}
+                        {this.state.submitted ? <ValidateFields field="general"
+                            state={this.state.otherServices} message={"the services available"} /> : null}
                     </div>
                 </div>
                 <div className="d-flex flex-end">
@@ -599,7 +610,8 @@ export default class AddNewArtist extends React.Component {
         return (
             <React.Fragment>
                 <div className="header-banner">
-                    <img className="header-image" src={require('../images/add-new.jpg')} alt="female artist tattooing a client" />
+                    <img className="header-image" src={require('../images/add-new.jpg')}
+                        alt="female artist tattooing a client" />
                     <div className="overlay d-flex align-items-center justify-content-center">
                         <h1>Add new artist</h1>
                     </div>

@@ -85,13 +85,17 @@ class App extends React.Component {
         {this.state.active !=="home"? <Navbar bg="dark" expand="lg" variant="dark">
           <Container>
             <Navbar.Brand className="logo navbar-logo" onClick={() => this.changeActive("home")}>
-              <img src={require('./images/tattoo.png')} width="40px" className="me-2" alt="logo of website" />TATTOOFINDWHO</Navbar.Brand>
+              <img src={require('./images/tattoo.png')} width="40px" className="me-2" 
+              alt="logo of website" />TATTOOFINDWHO</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ms-auto">
-                <Nav.Link className="mx-auto navbar-nav" value='about-us' onClick={() => { this.changeActive("faq") }} >FAQs</Nav.Link>
-                <Nav.Link className="mx-auto navbar-nav" value='explore' onClick={() => { this.changeActive("explore") }}>Explore</Nav.Link>
-                <Nav.Link className="mx-auto navbar-nav" value='add-new' onClick={() => { this.changeActive("add-new") }} >Add new</Nav.Link>
+                <Nav.Link className="mx-auto navbar-nav" value='about-us' 
+                onClick={() => { this.changeActive("faq") }} >FAQs</Nav.Link>
+                <Nav.Link className="mx-auto navbar-nav" value='explore' 
+                onClick={() => { this.changeActive("explore") }}>Explore</Nav.Link>
+                <Nav.Link className="mx-auto navbar-nav" value='add-new' 
+                onClick={() => { this.changeActive("add-new") }} >Add new</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>

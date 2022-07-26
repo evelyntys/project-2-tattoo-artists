@@ -24,7 +24,8 @@ export default function ShowOneArtist(props) {
                 <div className="col-12 col-md-4">
                     <h1 className="text-center d-block d-md-none">{props.findInstagram(props.artistToShow.contact)}</h1>
                     <div className="single-artist-image" style={{ "width": "100%" }}>
-                        <img src={props.artistToShow.image} className="card-img-top" style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
+                        <img src={props.artistToShow.image} className="card-img-top" 
+                        style={{ "objectFit": "cover", "height": "100%" }} alt="artist's artwork" />
                     </div>
                 </div>
                 <div className="col-12 col-md-8">
@@ -36,13 +37,16 @@ export default function ShowOneArtist(props) {
                                     <h4 className="artist-name">{props.artistToShow.name}</h4>
                                     <p>{props.artistToShow.gender}</p>
                                     <p>{props.artistToShow.yearsOfExperience} year(s) of experience</p>
-                                    <p>{"currently " + (props.artistToShow.apprentice.includes('yes') ? `an apprentice` : `a tattoo artist`)}</p>
+                                    <p>{"currently " + (props.artistToShow.apprentice.includes('yes') 
+                                    ? `an apprentice` : `a tattoo artist`)}</p>
                                     <div className="row">
                                         <div className="col-12 col-md-3">
                                             <div className="card-box-title">Method(s)</div>
                                             {props.artistToShow.method.map(a => (
                                                 <React.Fragment key={a}>
-                                                    <span className="span-body text-md-start"><i className="bi bi-dot"></i>{a} </span>
+                                                    <span className="span-body text-md-start">
+                                                        <i className="bi bi-dot"></i>{a} 
+                                                        </span>
                                                 </React.Fragment>
                                             ))}
                                         </div>
@@ -50,7 +54,9 @@ export default function ShowOneArtist(props) {
                                             <div className="card-box-title">Style(s)</div>
                                             {props.artistToShow.style.map(a => (
                                                 <React.Fragment key={a}>
-                                                    <span className="span-body text-md-start"> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</span>
+                                                    <span className="span-body text-md-start"> 
+                                                    <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}
+                                                    </span>
                                                 </React.Fragment>
                                             ))}
 
@@ -59,7 +65,9 @@ export default function ShowOneArtist(props) {
                                             <div className="card-box-title">Ink(s)</div>
 
                                             {props.artistToShow.ink.map(a => (
-                                                <span className="span-body text-md-start" key={a}><i className="bi bi-dot"></i>{a} </span>
+                                                <span className="span-body text-md-start" key={a}>
+                                                    <i className="bi bi-dot"></i>{a} 
+                                                    </span>
                                             ))}
 
                                         </div>
@@ -82,10 +90,15 @@ export default function ShowOneArtist(props) {
                                 <div>
                                     <div className="card-box">
                                         <h4 className="artist-name">{props.artistToShow.studio.name}</h4>
-                                        <h6 className="disclaimer">{props.artistToShow.studio.private.includes('no') ? "shared studio" : "private studio"} </h6>
-                                        {props.artistToShow.studio.address.street}, {props.artistToShow.studio.address.unit}, {props.artistToShow.studio.address.postal} <br />
-                                        <p className='bold-text'>{props.artistToShow.studio.bookingsRequired.includes('no') ? null : "bookings required"} </p>
-                                        {props.artistToShow.studio.otherServices.includes("nil") ? null : 'services available: ' + props.artistToShow.studio.otherServices}
+                                        <h6 className="disclaimer">{props.artistToShow.studio.private.includes('no') 
+                                        ? "shared studio" : "private studio"} </h6>
+                                        {props.artistToShow.studio.address.street}, 
+                                        {props.artistToShow.studio.address.unit}, 
+                                        {props.artistToShow.studio.address.postal} <br />
+                                        <p className='bold-text'>{props.artistToShow.studio.bookingsRequired.includes('no') 
+                                        ? null : "bookings required"} </p>
+                                        {props.artistToShow.studio.otherServices.includes("nil") 
+                                        ? null : 'services available: ' + props.artistToShow.studio.otherServices}
                                     </div>
                                 </div>
                             </Accordion.Body>

@@ -35,7 +35,7 @@ export default function ContactFields(props) {
                                     className={props.class}
                                     name="contactValue"
                                     value={x.contactValue}
-                                    placeholder="platform e.g. @todayi.poke"
+                                    placeholder="corresponding contact e.g. @todayi.poke"
                                     onChange={e => handleInputChange(e, i)} />
                             </div>
 
@@ -43,7 +43,8 @@ export default function ContactFields(props) {
                                 {props.inputList.length !== 1 && <button
                                     className="btn delete-button me-1 me-md-2"
                                     onClick={() => handleRemoveClick(i)}>-</button>}
-                                {props.inputList.length - 1 === i && <button className="btn black-button" onClick={props.handleAddClick}>+</button>}
+                                {props.inputList.length - 1 === i && <button className="btn black-button" 
+                                onClick={props.handleAddClick}>+</button>}
                             </div>
                         </div>
                     </React.Fragment>

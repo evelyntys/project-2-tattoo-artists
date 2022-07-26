@@ -7,7 +7,8 @@ export default function ShowAllArtists(props) {
                 <React.Fragment key={"all" + e._id}>
                     <div className="card mx-2 my-2" style={{ "width": "18rem" }}>
                         <h4 className="card-title text-center">{props.findInstagram(e.contact)}</h4>
-                        <img src={e.image} style={{ "height": "180px", "width": "auto", "objectFit": "cover" }} className="card-img-top" alt="..." />
+                        <img src={e.image} style={{ "height": "180px", "width": "auto", "objectFit": "cover" }}
+                            className="card-img-top" alt="..." />
                         <div className="card-body">
                             <div className="card-text">
                                 <h5 className="text-center card-name"> {e.name} </h5>
@@ -21,7 +22,8 @@ export default function ShowAllArtists(props) {
                                     </div>
                                     <div className="card-box-title-all">Style(s)</div>
                                     <div>{e.style.map(a => (
-                                        <div className="span-body-all" key={a}> <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</div>
+                                        <div className="span-body-all" key={a}>
+                                            <i className="bi bi-dot"></i>{props.styleKeys[a]['label'].toLowerCase()}</div>
                                     ))}
                                     </div>
                                     <div className="card-box-title-all">Ink(s)</div>
@@ -33,7 +35,7 @@ export default function ShowAllArtists(props) {
                                 </div>
                             </div>
                         </div>
-                        <button className="btn w-100 card-btn" onClick={()=> {props.showOneArtist(e)}}>View</button>
+                        <button className="btn w-100 card-btn" onClick={() => { props.showOneArtist(e) }}>View</button>
                     </div>
                 </React.Fragment>
             ))}
