@@ -74,10 +74,13 @@ export default class AboutUs extends React.Component {
                                 However, if the bandage starts peeling, feel free to peel it off completely.<br/>
                                 <span className='disclaimer'>*Some fluid and ink may appear under the bandage as it heals but
                                 rest assured that it is part of the healing process.</span><br/>
+                                <br/>
                                 <span className="bold-text">Avoid strenous exercise and swimming for the next 2 weeks
                                 and avoid alcohol immediately after the tattoo.</span> <br/>
+                                <br/>
                                 Once the bandage has been removed, apply a thin layer of unscented moistuizer to the area, 
                                 and moisturize it whenever it feels dry. <br/>
+                                <br/>
                                 It takes about <span className="bold-text"> one month </span> for a tattoo to be fully healed.
                             </Accordion.Body>
                         </Accordion.Item>
