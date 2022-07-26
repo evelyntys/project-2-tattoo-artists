@@ -12,10 +12,8 @@ export default function EditArtist(props) {
                     <div className="container ps-0 my-4">
                         <div className="progress">
                             <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
-                                {/* <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span> */}
                                 <span class="progress-icon" style={{ "color": "white", "backgroundColor": "black" }}>1</span>
                                 <span class="progress-icon3" style={{ "color": "black", "backgroundColor": "white" }}>2</span>
-                                <div class="progress-value"></div>
                             </div>
                         </div>
                     </div>
@@ -153,11 +151,8 @@ export default function EditArtist(props) {
                     <div className="container ps-0 my-4">
                         <div className="progress">
                             <div className="progress-bar" style={{ "width": "100%", "backgroundColor": "black" }}>
-                                {/* <span class="progress-icon" style={{"color": "white", "backgroundColor": "black"}}>1</span> */}
                                 <span class="progress-icon" style={{ "color": "white", "backgroundColor": "black" }}>1</span>
-                                <span class="progress-icon3" style={{ "color": "white", "backgroundColor": "black" }}>2</span>
-                                <div class="progress-value"></div>
-                            </div>
+                                <span class="progress-icon3" style={{ "color": "white", "backgroundColor": "black" }}>2</span>                            </div>
                         </div>
                     </div>
                     <h1>Information about the studio</h1>
