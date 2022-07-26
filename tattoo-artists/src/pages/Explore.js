@@ -728,10 +728,9 @@ export default class Explore extends React.Component {
                                                 </div>
                                             </div>
                                             <small className="text-muted">
-                                                ratings:
                                                 {[...Array(each.rating)].map((rating) =>
                                                     <span className="rating-star" key={rating}> 
-                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>&nbsp;  
                                                     </span>)}
                                             </small>
                                             <p className="mb-1">{each.comment}</p>
@@ -741,14 +740,14 @@ export default class Explore extends React.Component {
                                                         <label>Please enter your email to confirm your identity to edit this review:</label>
                                                         <input type="email"
                                                             className={"form-control" + 
-                                                            (!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                                                                ? "" : " error-border")} 
+                                                            (this.state.checkReviewEmail && !this.state.correctReviewEmail
+                                                                ? " error-border" : "")} 
                                                                 name="confirmReviewEmail" onChange={this.updateFormField} />
                                                     </div>
-                                                    {!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                                                        ? null : <div className="error-message">
+                                                    {this.state.checkReviewEmail && !this.state.correctReviewEmail
+                                                        ? <div className="error-message">
                                                             sorry, it seems that you are not the owner of this review
-                                                            </div>}
+                                                            </div> : null} 
                                                     <div className="my-1">
                                                         <button className="btn delete-button my-2 mx-1"
                                                             onClick={() => { 
@@ -787,7 +786,7 @@ export default class Explore extends React.Component {
                                 <h5 className="mb-1">{this.state.reviewBeingEdited.reviewer}</h5>
                             </div>
 
-                            <small className="text-muted">ratings:
+                            <small className="text-muted">
                                 {this.EditStarRating()}
                             </small>
 
@@ -823,10 +822,11 @@ export default class Explore extends React.Component {
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{this.state.reviewBeingDeleted.reviewer}</h5>
                             </div>
-                            <small className="text-muted">ratings:
+                            <small className="text-muted">
                                 {[...Array(this.state.reviewBeingDeleted.rating)].map((rating) =>
                                     <span className="rating-star" key={rating}> 
-                                    <i class="bi bi-star-fill"></i></span>)}
+                                    <i class="bi bi-star-fill"></i>&nbsp; 
+                                    </span>)}
                                     </small>
                             <p className="mb-1">{this.state.reviewBeingDeleted.comment}</p>
                         </div>
@@ -836,13 +836,13 @@ export default class Explore extends React.Component {
                             <label className="form-label">Please enter your email to confirm deletion: </label>
                             <input type="email" name="confirmReviewEmail"
                                 className={"form-control" +
-                                    (!this.state.checkReviewEmail && !this.state.correctReviewEmail ? "" : " error-border")}
+                                    (this.state.checkReviewEmail && !this.state.correctReviewEmail ? " error-border" : "")}
                                 onChange={this.updateFormField} />
                         </div>
-                        {!this.state.checkReviewEmail && !this.state.correctReviewEmail
-                            ? null : <div className="error-message">
+                        {this.state.checkReviewEmail && !this.state.correctReviewEmail
+                            ? <div className="error-message">
                                 sorry, it seems that you are not the owner of this review
-                                </div>}
+                                </div> : null}
 
                         <div className="my-1">
                             <button className='btn delete-button my-2 mx-1'
