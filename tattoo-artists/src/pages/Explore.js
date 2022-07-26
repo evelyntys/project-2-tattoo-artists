@@ -331,7 +331,7 @@ export default class Explore extends React.Component {
                             <label className="form-label">Email: </label>
                             <input type="text" className="form-control" name="confirmEmail" placeholder="email" value={this.state.confirmEmail} onChange={this.updateFormField} />
                         </div>
-                        {this.state.showValidateEmail ? <div style={{ "color": "red" }}> sorry, it seems that you are not the owner of this document</div>
+                        {this.state.showValidateEmail ? <div className="error-message"> sorry, it seems that you are not the owner of this document</div>
                             : ""}
                     </Modal.Body>
                     <Modal.Footer>
@@ -652,6 +652,8 @@ export default class Explore extends React.Component {
         })
     }
 
+    // REVIEW BORDER
+
     RenderReviews() {
         let contentToReturn = "";
         if (!this.state.editReview || !this.state.correctReviewEmail) {
@@ -693,7 +695,8 @@ export default class Explore extends React.Component {
                                                 </div>
                                             </div>
                                             <small className="text-muted">
-                                                ratings: {each.rating} &#9733;
+                                                ratings: 
+                                                {[...Array(each.rating)].map((rating) => <span className="rating-star" key={rating}> <i class="bi bi-star-fill"></i></span>)}
                                             </small>
                                             <p className="mb-1">{each.comment}</p>
                                             {this.state.editReview && this.state.reviewBeingEdited === each ?
@@ -702,7 +705,7 @@ export default class Explore extends React.Component {
                                                         <label>Please enter your email to confirm your identity to edit this review:</label>
                                                         <input type="email" className="form-control" name="confirmReviewEmail" onChange={this.updateFormField} />
                                                     </div>
-                                                    {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
+                                                    {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div className="error-message">sorry, it seems that you are not the owner of this review</div>}
                                                     <div className="my-1">
                                                         <button className="btn delete-button my-2 mx-1" onClick={() => { this.validateEditEmail(this.state.reviewBeingEdited) }}>Confirm</button>
                                                         <button className="btn black-button my-2 mx-1" onClick={this.cancelModifyReview}>Cancel</button>
@@ -739,11 +742,13 @@ export default class Explore extends React.Component {
                                 {this.EditStarRating()}
                             </small>
 
-                            <textarea className="form-control mt-2" name="updatedComment" value={this.state.updatedComment}
+                            <textarea className={"form-control mt-2" + 
+                            (this.state.submittedEditReview && this.state.updatedComment.length === 0? " error-border": "")} 
+                            name="updatedComment" value={this.state.updatedComment}
                                 onChange={this.updateFormField}>
                             </textarea>
                             {this.state.submittedEditReview && this.state.updatedComment.length === 0 ?
-                                <div style={{ "color": "red" }}>Please enter your review</div>
+                                <div className="error-message">Please enter your review</div>
                                 :
                                 null}
                             <div className="my-2">
@@ -774,7 +779,7 @@ export default class Explore extends React.Component {
                             <label className="form-label">Please enter your email to confirm deletion: </label>
                             <input type="email" name="confirmReviewEmail" className="form-control" onChange={this.updateFormField} />
                         </div>
-                        {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div style={{ "color": "red" }}>sorry, it seems that you are not the owner of this review</div>}
+                        {!this.state.checkReviewEmail && !this.state.correctReviewEmail ? null : <div className="error-message">sorry, it seems that you are not the owner of this review</div>}
 
                         <div className="my-1">
                             <button className='btn delete-button my-2 mx-1' onClick={this.validateDeleteReviewEmail}>Confirm</button>
@@ -822,21 +827,28 @@ export default class Explore extends React.Component {
                     <div className="row">
                         <div className="col-6">
                             <label>Name: </label>
-                            <input type="text" className="form-control" name="addReviewReviewer" value={this.state.addReviewReviewer} onChange={this.updateFormField} />
+                            <input type="text" className={"form-control" + 
+                            (this.state.submittedReview && this.state.addReviewReviewer.length < 2? " error-border": "")}
+                            name="addReviewReviewer" value={this.state.addReviewReviewer} 
+                            onChange={this.updateFormField} />
                             {this.state.submittedReview ? <ValidateFields field="reviewer name" state={this.state.addReviewReviewer} /> : null}
                         </div>
                         <div className="col-6">
                             <label>Email: </label>
-                            <input type="email" className="form-control" name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
+                            <input type="email" className={"form-control" + 
+                            (this.state.submittedReview && 
+                                (!this.state.addReviewEmail || 
+                                    !this.state.addReviewEmail.includes('@') || 
+                                    !this.state.addReviewEmail.includes('.com'))? " error-border": "")}
+                            name="addReviewEmail" value={this.state.addReviewEmail} onChange={this.updateFormField} />
                             {this.state.submittedReview ? <ValidateFields field="email" state={this.state.addReviewEmail} /> : null}
                         </div>
                         <div>
                         </div>
                         <label>Rating: </label>
-                        {/* <input type="text" className="form-control" name="addReviewRating" value={this.state.addReviewRating} onChange={this.updateFormField} /> */}
                         {this.AddStarRating()}
                         {this.state.submittedReview && this.state.addReviewRating === 0 ?
-                            <div style={{ "color": "red" }}>
+                            <div className="error-message">
                                 Please ensure that you select a rating
                             </div>
                             :
@@ -844,18 +856,24 @@ export default class Explore extends React.Component {
                     </div>
                     <div>
                         <label>Comment: </label>
-                        <textarea className="form-control" name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
+                        <textarea className={"form-control" + (this.state.submittedReview && !this.state.addReviewComment? " error-border": "")} 
+                        name="addReviewComment" value={this.state.addReviewComment} onChange={this.updateFormField}>
                         </textarea>
                         {this.state.submittedReview ? <ValidateFields field="general" state={this.state.addReviewComment} message={"the review"} /> : null}
                     </div>
                     <div className="my-2">
-                        <button className="btn delete-button my-2 mx-1" onClick={this.AddReviewToArtist}>add review</button>
+                        <button className="btn delete-button my-2 mx-1" onClick={this.AddReviewToArtist}>Add review</button>
                         <button className="btn black-button my-2 mx-1" onClick={() => {
                             this.setState({
                                 addReview: false,
-                                showAddReviewButton: true
+                                showAddReviewButton: true,
+                                submittedReview: false,
+                                addReviewReviewer: "",
+                                addReviewRating: 0,
+                                addReviewEmail: "",
+                                addReviewComment: ""
                             })
-                        }}>cancel</button>
+                        }}>Cancel</button>
                     </div>
                 </div>
             )
@@ -874,7 +892,7 @@ export default class Explore extends React.Component {
                                     addReviewRating: index
                                 })
                             }}>
-                            <span className="star">&#9733;</span></button>
+                            <span className="star"><i class="bi bi-star-fill"></i></span></button>
                     )
                 })}
             </div>
@@ -906,7 +924,7 @@ export default class Explore extends React.Component {
                                     updatedRating: index
                                 })
                             }}>
-                            <span className="star">&#9733;</span></button>
+                            <span className="star"><i class="bi bi-star-fill"></i></span></button>
                     )
                 })}
             </div>
