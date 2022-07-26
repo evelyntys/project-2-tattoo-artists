@@ -109,7 +109,7 @@ export default function RenderFilters(props){
                         {/* private */}
                         <div>
                             <label className="form-label bold-text">Private studio: </label>
-                            <select className="form-select" aria-label="Default select example"
+                            <select className="form-select" aria-label="select private studio"
                                 onChange={props.updateFormField} value={props.private} name="private">
                                 <option value="yes">Yes</option>
                                 <option value="no">No</option>
@@ -119,7 +119,7 @@ export default function RenderFilters(props){
 
                         <div>
                             <label className="form-label bold-text">Bookings required: </label>
-                            <select className="form-select" aria-label="Default select example"
+                            <select className="form-select" aria-label="select bookings required"
                                 onChange={props.updateFormField} value={props.bookingsRequired} name="bookingsRequired">
                                 <option value="yes">Yes</option>
                                 <option value="no">No</option>

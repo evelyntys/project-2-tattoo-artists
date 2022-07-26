@@ -92,7 +92,7 @@ export default function EditArtist(props) {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Is it temporary? </label>
-                            <select className="form-select" aria-label="Default select example"
+                            <select className="form-select" aria-label="Select temporary"
                                 onChange={props.updateFormField} value={props.modifiedTemporary} name="modifiedTemporary">
                                 <option value="no">No</option>
                                 <option value="yes">Yes</option>

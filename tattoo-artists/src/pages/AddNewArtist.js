@@ -304,7 +304,7 @@ export default class AddNewArtist extends React.Component {
 
                         <div className="col-12 col-md-6">
                             <label className="form-label">Is it temporary? </label>
-                            <select className={"form-select"} aria-label="Default select example"
+                            <select className={"form-select"} aria-label="select temporary"
                                 onChange={this.updateFormField} value={this.state.temporary} name="temporary">
                                 <option value="no">No</option>
                                 <option value="yes">Yes</option>
