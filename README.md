@@ -45,8 +45,8 @@ As a tattoo artist looking to gain exposure and potentially increase my customer
 1. Create a new tattoo artist listing
 2. Update the tattoo artist listing
 3. Delete a tattoo artist listing
-4. View all tattoo artist listings and narrow the search by search criterias
-5. View reviews tagged each tattoo artist
+4. View all tattoo artist listings and narrow the results by search criterias
+5. View reviews tagged to each tattoo artist
 6. Add, edit or delete a review tagged to a particular tattoo artist
 
 ### <b> 2. Scope</b>
@@ -81,7 +81,7 @@ The github repository for the restful API can be found [here](https://github.com
 
 <b>Non-functional Requirements</b>
 * Mobile responsiveness: the site's functionality should still remain on mobile version and their experience should still be optimized
-* Loading gif to indicate that the site is still retrieivng data from the restful API
+* Loading gif to indicate that the site is still retrieving data from the restful API
 
 ### <b> 3. Structure</b>
 Below shows the skeleton structure of the web application in the early stages of brainstorming.
