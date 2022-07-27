@@ -81,7 +81,7 @@ The github repository for the restful API can be found [here](https://github.com
 
 <b>Non-functional Requirements</b>
 * Mobile responsiveness: the site's functionality should still remain on mobile version and their experience should still be optimized
-* Loading gif to indicate that the site is still retrieivng data from the restful API
+* Loading gif to indicate that the site is still retrieving data from the restful API
 
 ### <b> 3. Structure</b>
 Below shows the skeleton structure of the web application in the early stages of brainstorming.
