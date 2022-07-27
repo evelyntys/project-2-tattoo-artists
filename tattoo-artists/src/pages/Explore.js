@@ -635,7 +635,7 @@ export default class Explore extends React.Component {
         );
     }
     processDelete = async (id, confirmEmail) => {
-        if (this.state.confirmEmail === this.state.artistToShow.ownerEmail) {
+        if (this.state.confirmEmail === this.state.artistToShow.owner.email) {
             try {
                 let response = await axios.delete(this.url + `tattoo-artist/${id}/delete?email=` + this.state.confirmEmail);
                 const index = this.state.data.findIndex(artist => artist._id === this.state.artistToShow._id);
