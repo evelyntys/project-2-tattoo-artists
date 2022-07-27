@@ -92,9 +92,9 @@ export default function ShowOneArtist(props) {
                                         <h4 className="artist-name">{props.artistToShow.studio.name}</h4>
                                         <h6 className="disclaimer">{props.artistToShow.studio.private.includes('no') 
                                         ? "shared studio" : "private studio"} </h6>
-                                        {props.artistToShow.studio.address.street}, 
-                                        {props.artistToShow.studio.address.unit}, 
-                                        {props.artistToShow.studio.address.postal} <br />
+                                        {props.artistToShow.studio.address.street},
+                                        &nbsp;{props.artistToShow.studio.address.unit}, 
+                                        &nbsp;{props.artistToShow.studio.address.postal} <br />
                                         <p className='bold-text'>{props.artistToShow.studio.bookingsRequired.includes('no') 
                                         ? null : "bookings required"} </p>
                                         {props.artistToShow.studio.otherServices.includes("nil") 
