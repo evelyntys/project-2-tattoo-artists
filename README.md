@@ -45,8 +45,8 @@ As a tattoo artist looking to gain exposure and potentially increase my customer
 1. Create a new tattoo artist listing
 2. Update the tattoo artist listing
 3. Delete a tattoo artist listing
-4. View all tattoo artist listings and narrow the search by search criterias
-5. View reviews tagged each tattoo artist
+4. View all tattoo artist listings and narrow the results by search criterias
+5. View reviews tagged to each tattoo artist
 6. Add, edit or delete a review tagged to a particular tattoo artist
 
 ### <b> 2. Scope</b>
