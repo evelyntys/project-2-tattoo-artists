@@ -55,7 +55,7 @@ As a tattoo artist looking to gain exposure and potentially increase my customer
 
 Content from the website is largely dependent on contribution from the general public. Contributions will be stored in a database, hence a backend server is required for communication between React and MongoDB. 
 
-An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](https://etys-tattoo-artists.herokuapp.com/).
+An Express server has been set up and deployed to Heroku, and API endpoints are accessible via the base [link](https://tattoo-find-who-api.onrender.com/).
 
 The github repository for the restful API can be found [here](https://github.com/evelyntys/project-2-restful-api).
 

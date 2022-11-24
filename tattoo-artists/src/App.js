@@ -11,7 +11,7 @@ import Home from './pages/Home';
 //pass in the view-all state to show artists
 
 class App extends React.Component {
-  url = "https://etys-tattoo-artists.herokuapp.com/"
+  url = "https://tattoo-find-who-api.onrender.com/"
 
   state = {
     active: "home",
